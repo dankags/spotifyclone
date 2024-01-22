@@ -1,0 +1,34 @@
+"use client"
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import React from 'react'
+import { LuUser2 } from 'react-icons/lu'
+
+const UserLikedMusicInfo = () => {
+    const{data}=useSession()
+  return (
+    <div className="flex items-center mt-7">
+                  <div className="h-6 w-6 mr-2">
+                   {data?.user.image ? <Image
+                      src={ data.user.image }
+                      alt="userProfile"
+                      width={250}
+                      height={250}
+                      className="w-full h-full rounded-full object-cover shadow-md shadow-neutral-950"
+                    />
+                  :
+                  
+                  <LuUser2 size={20} className='m-auto h-6 w-6 p-1 rounded-full bg-neutral-900/80 shadow-md shadow-neutral-950/20 text-stone-300'/>                
+                }
+                  </div>
+                  <span className="mr-2 text-sm text-neutral-50 font-semibold ">
+                    {data?.user.name ? data.user.name : "User" } .
+                  </span>
+                  <span className="text-sm text-neutral-50 font-medium">
+                    12 songs
+                  </span>
+                </div>
+  )
+}
+
+export default UserLikedMusicInfo
