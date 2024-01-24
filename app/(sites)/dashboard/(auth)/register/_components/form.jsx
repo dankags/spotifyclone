@@ -1,5 +1,6 @@
 "use client"
 import Link from 'next/link'
+import { redirect, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md"
 
@@ -18,9 +19,41 @@ const months = [
   "December",
 ];
 export const Form = () => {
+  const route=useRouter()
   const [showPassWord,setShowPassWord]=useState(false)
+  const [inputValue,setInputValue]=useState({
+    email:"",
+    password:"",
+    name:"",
+    gender:null
+  })
+  const [dateInput,setDateInput]=useState({
+    day:null,
+    month:null,
+    year:null
+  })
+  const handleRegister=async(e)=>{
+    e.preventDefault();
+    const birthDate=new Date(`${dateInput.day}-${dateInput.month}-${dateInput.year}`).toISOString()
+    const formData={...inputValue,birthDate}
+    try {
+      const res=await fetch("/api/register",{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(formData)
+      })
+      if (res.ok) {
+        route.replace("/dashboard/login")
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
-    <form action="" className="w-10/12 flex flex-col items-center">
+    <form onSubmit={handleRegister} className="w-10/12 flex flex-col items-center">
     <div className="w-full flex flex-col items-start gap-3">
       <div className="w-full flex flex-col">
         <label htmlFor="email" className="mb-2 text-xs font-extrabold ">
@@ -30,6 +63,7 @@ export const Form = () => {
           required={true}
           type="email"
           placeholder="Enter your email."
+          onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}}
           name="email"
           id=""
           className="py-2 pl-2 text-base font-medium placeholder:text-stone-500 placeholder:text-base placeholder:font-medium ring-1 ring-gray-500 rounded-md focus:outline-green-500"
@@ -50,8 +84,9 @@ export const Form = () => {
           <input
             required={true}
             type={showPassWord ? "text" : "password"}
+            onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}}
             placeholder="Create password."
-            name="email"
+            name="password"
             id=""
             className="w-11/12 focus:outline-none py-2 pl-2 text-base font-medium rounded-md placeholder:text-stone-500 placeholder:text-base placeholder:font-medium "
           />
@@ -75,9 +110,10 @@ export const Form = () => {
         </label>
         <input
           required={true}
+          onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}}
           type="text"
           placeholder="Enter a profile name."
-          name="email"
+          name="name"
           id=""
           className="py-2 pl-2 text-base font-medium placeholder:text-stone-500 placeholder:text-base placeholder:font-medium ring-1 ring-gray-500 rounded-md focus:outline-green-500"
         />
@@ -99,7 +135,8 @@ export const Form = () => {
             required
             placeholder="DD"
             type="number"
-            name=""
+            onChange={(e)=>{setDateInput(prev=>({...prev,[e.target.name]:`${e.target.value<10 ? `0${e.target.value}`:`${e.target.value}`}`}))}}
+            name="day"
             id="day"
             max="31"
             min="1"
@@ -112,8 +149,9 @@ export const Form = () => {
             Month
           </label>
           <select
-            name="months"
+            name="month"
             id="month"
+            onChange={(e)=>{setDateInput(prev=>({...prev,[e.target.name]:`${months.indexOf(e.target.value)<10 ? `0${months.indexOf(e.target.value)}`:`${months.indexOf(e.target.value)}` }`}))}}
             placeholder="Month"
             required
             className="pl-2 py-2 ring-1 ring-gray-500 rounded-md text-base font-medium focus:outline-green-500"
@@ -139,7 +177,8 @@ export const Form = () => {
             required
             placeholder="YYYY"
             type="number"
-            name=""
+            onChange={(e)=>{setDateInput(prev=>({...prev,[e.target.name]:e.target.value}))}}
+            name="year"
             id="year"
             min="1990"
             className="pl-2 py-2 text-base font-medium ring-1  ring-gray-500 rounded-md placeholder:text-stone-500 placeholder:text-base placeholder:font-medium focus:outline-green-500"
@@ -156,13 +195,15 @@ export const Form = () => {
 
         <div className="pt-3">
           <div className="flex gap-4 pb-3">
-            <input type="radio" name="gender" id="Male" className="" />
+            <input type="radio" required name="gender"  onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}} id="Male" value="male" className="" />
             <label className="mr-4 text-sm font-bold " htmlFor="Male">
               Male
             </label>
             <input
               type="radio"
+              required
               name="gender"
+              onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}}
               id="Female"
               value="Female"
             />
@@ -171,7 +212,9 @@ export const Form = () => {
             </label>
             <input
               type="radio"
+              required
               name="gender"
+              onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}}
               id="nonBinary"
               value="Non binary"
             />
@@ -184,7 +227,9 @@ export const Form = () => {
           </div>
           <input
             type="radio"
+            required
             name="gender"
+            onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}}
             id="notToSay"
             value="Prefer not to say"
           />
@@ -197,6 +242,7 @@ export const Form = () => {
           <div>
             <input
               type="checkbox"
+              required
               name=""
               id=""
               className="accent-green-500 mr-2"
@@ -209,6 +255,7 @@ export const Form = () => {
           <div>
             <input
               type="checkbox"
+              required
               name=""
               id=""
               className="accent-green-500 mr-2"

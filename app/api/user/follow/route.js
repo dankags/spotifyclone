@@ -1,47 +1,32 @@
 import prisma from "@/utils/connect"
 import { NextResponse } from "next/server"
 
-export const PUT = async (req) => {
-    const {userName}=req.query
+export const POST = async (req) => {
+    const {followId}=await req.query
     const body = await req.json()
     try {
-        const artist = await prisma.artist.findUnique({
+        if(followId === body.id){NextResponse.json("you cannot follow your self",{status:403})}
+        const followExist = await prisma.following.findUnique({
             where: {
-                id: body.artistId,
-                name:body.artistName
+                initiateFollowId : followId,
+                followingId :body.id
             }
         })
-        const user = await prisma.user.findUnique({
-            where: {
-                name: userName,
-               email:body.userEmail 
+        if(followExist){return NextResponse.json("You already follow this artist", { status: 403 })}
+        const follow = await prisma.following.create({
+             data: {
+                initiateFollowId : followId,
+                followingId :body.id
             }
         })
-        if (!user.following.includes(user.id)) {
-            if (!user.following.includes(artist.id)) {
-                await prisma.user.update({
-                    where: {
-                        id: user.id
-                    },
-                    data: {
-                        following: [...following, artist.id]
-                    }
-                })
-                if (!artist.followers.includes(user.id)) {
-                    await prisma.artist.update({
-                        where: {
-                            id: artist.id
-                        },
-                        data: {
-                            followers: [...followers, user.id]
-                        }
-                    })
-                }
-            } else {
-                return NextResponse.json("You already follow this artist", { status: 403 })
-            }
-        }
-        return NextResponse.json("you cannot follow your self",{status:403})
+        const follower = await prisma.followers.create({
+            data: {
+                followerId :followId,
+                followingId:body.id
+           }
+       })
+       if(follow && follower){return NextResponse.json("You now follow this user", { status: 201 })}
+        
         
     } catch (error) {
         return NextResponse.json("internal server error",{status:500})

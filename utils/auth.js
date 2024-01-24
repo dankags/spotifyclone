@@ -5,8 +5,7 @@ import bcrypt from "bcrypt"
 import prisma from "./connect"
 import { getServerSession } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-// import { PrismaClient } from '@prisma/client'
-// const prisma = new PrismaClient()
+
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -17,7 +16,7 @@ export const authOptions = {
       }),
       Credentials({
         // The name to display on the sign in form (e.g. 'Sign in with...')
-        name: 'Credentials',
+        name: 'credentials',
         // The credentials is used to generate a suitable form on the sign in page.
         // You can specify whatever fields you are expecting to be submitted.
         // e.g. domain, username, password, 2FA token, etc.
@@ -25,21 +24,58 @@ export const authOptions = {
         credentials: {},
         async authorize(credentials) {
          try {
-          const user=await prisma.user.findOne({email:credentials.email})
-          if (!user) {return "invalid user credentials"}
+          const user=await prisma.user.findUnique({
+            where:{email:credentials.email},
+            select:{
+              email:true,
+              password:true,
+              name:true,
+              id:true,
+              image:true,
+              admin:true}});
+          if (!user) {throw new Error("invalid user credentials")}
           const correctPassword=await bcrypt.compare(credentials.password,user.password);
-          if (!correctPassword) {return "invalid user credentials"}
+          if (!correctPassword) {throw new Error("invalid user credentials") }
+          console.log(user)
           return user;
          } catch (error) {
           console.log(error)
-          return "something went wrong"
+          throw new Error("failed to login") 
          }
         
       
-        }}
-      )
+        }
+      }
+      )  
     ],
-   
+    session:{
+      strategy:"jwt"
+    },
+   callbacks:{
+    async session({session,token}){
+      if(token){
+       session.user.name=token.name;
+       session.user.image=token.picture;
+       session.user.email=token.email;
+       session.user.admin=token.admin;
+       session.user.id=token.sub;
+     }
+      return session
+   },
+     async jwt({token,user}){
+       if(user){
+         token.name=user.name;
+         token.picture=user.image;
+         token.email=user.email;
+         token.admin=user.admin
+         token.sub=user.id
+         
+        }
+        return token
+      },
+ 
+   },
+   debug:process.env.NODE_ENV === "development"
     
 }
   

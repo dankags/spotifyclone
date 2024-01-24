@@ -42,8 +42,8 @@ model User {
   name          String?
   email         String   @unique
   password      String?
-  phoneNumber   String?  @unique
   birthDate     DateTime?  
+  gender        String?
   emailVerified DateTime?
   image         String?
   admin Boolean @default(false)
@@ -53,6 +53,7 @@ model User {
   sessions      Session[]
   artist        Artist[] 
   following     Following[]
+  followers     Followers[]
   music         Music[]
   playlist      Playlist[]
 }
@@ -62,7 +63,16 @@ model Following{
    initiateFollowId    String @unique
    followingId   String @unique
 
-   FollowerId User @relation(fields: [initiateFollowId],references: [id],onDelete: Cascade) 
+   FollowingId User @relation(fields: [initiateFollowId],references: [id],onDelete: Cascade) 
+   
+}
+
+model Followers{
+   id            String   @id @default(uuid()) @map("_id")
+   followerId    String @unique
+   followingId   String @unique
+
+   FollowersId User @relation(fields: [followerId],references: [id],onDelete: Cascade)
 }
 
 model VerificationToken {

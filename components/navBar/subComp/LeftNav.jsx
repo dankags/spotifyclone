@@ -1,4 +1,5 @@
 "use client"
+import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { IoIosArrowBack, IoIosArrowForward, IoIosPause, IoIosPlay } from "react-icons/io"
@@ -6,6 +7,8 @@ import { IoSearchSharp } from 'react-icons/io5'
 
 
 export const LeftNav = ({children}) => {
+  const {data,status}=useSession()
+  console.log(data?.user,status)
   const router=useRouter();
   const pathName=usePathname();
   const [play,setPlay]=useState(false)

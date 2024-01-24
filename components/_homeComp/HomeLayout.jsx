@@ -10,7 +10,7 @@ const HomeLayOut = ({children}) => {
     const pageScroll=pageRef.current
 
   return (
-    <ScrollArea 
+    <ScrollArea
     ref={pageRef}
     className='relative h-full rounded-md  hover:transition-all hover:duration-700'
     style={{

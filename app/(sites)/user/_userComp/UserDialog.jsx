@@ -60,7 +60,7 @@ const UserDialog = ({children,setImgName}) => {
                             </label>
                         </div>
                         <div className='w-8/12 pl-3 flex flex-col justify-center gap-3'>
-                            <input type="text" placeholder='Danielkagombe' name="name" id="" onChange={handleInputs} className='px-3 py-3 text-base font-medium rounded-md bg-neutral-700  placeholder:text-stone-200  focus:outline-neutral-50 ' />
+                            <input type="text" placeholder={data?.user.name ? data.user.name : "Username"} name="name" id="" onChange={handleInputs} className='px-3 py-3 text-base font-medium rounded-md bg-neutral-700  placeholder:text-stone-200 placeholder:capitalize  focus:outline-neutral-50 ' />
                             <div className='w-full flex items-center justify-end'>
                             <button type="submit" className='w-3/12 py-2 px-3 text-base font-bold rounded-3xl bg-neutral-50 text-neutral-900  hover:scale-105'>Save</button>
                             </div>

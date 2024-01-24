@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import UserDialog from './UserDialog'
 
-const UserLayOut = ({children}) => {
+const UserLayOut = ({children,followings,followers,playlist}) => {
     const {data}=useSession()
     const [imgNameChoosen,setImgNameChoosen]=useState({
       img:'',
@@ -62,13 +62,19 @@ const UserLayOut = ({children}) => {
                   </button>
                   </UserDialog>
                 </div>
-                <div className={`flex items-center pt-7`}>
+                <div className={`flex items-center gap-x-2 pt-7`}>
                   <span className="mr-2 text-sm text-neutral-50 font-semibold drop-shadow-xl">
-                    2 Public Playlist .
+                    { playlist.length } Public Playlist  .
                   </span>
-                  <span className="text-sm text-neutral-50 font-medium drop-shadow-xl">
-                    5 Following
+                  <span className="text-sm text-left text-neutral-50 font-medium  drop-shadow-xl ">
+                  { followings.length } Following
                   </span>
+                  {followers.length > 0  ? <span className="text-sm text-neutral-50 font-medium drop-shadow-xl">
+                    {followers.length} Followers
+                  </span>
+                  :
+                  <></>
+                  }
                 </div>
               </section>
             </div>

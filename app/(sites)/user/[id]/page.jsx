@@ -5,12 +5,32 @@ import { StaticCarosel } from '@/components/StaticCarosel'
 import ArtistCard from '@/components/artistCard/ArtistCard'
 import { LikedList } from '@/components/likedList/LikedList'
 import { Musics, artists } from '../_userComp/data'
+import prisma from '@/utils/connect'
 
 
-const User = () => {
+const User =async (params) => {
+  const following= await prisma.following.findMany({
+    where: {
+        initiateFollowId : params.params.id
+    }
+})
+const followers=await prisma.followers.findMany({
+  where: {
+     followingId:params.params.id
+}
+})
+const playlist=await prisma.playlist.findMany({
+  where:{
+    artistId:params.params.id
+  },
+  select:{
+    id:true,
+  }
+})
+
   return (
     <div className='w-full h-full'>
-      <UserLayOut>
+      <UserLayOut followers={followers} followings={following} playlist={playlist}>
         <div className='p-3 flex flex-col justify-center'>
           <div className='py-3 '>
             <button  className='p-2  rounded-full text-stone-400 hover:text-white transition'>

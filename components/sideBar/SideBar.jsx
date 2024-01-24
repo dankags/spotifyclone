@@ -3,11 +3,11 @@ import { usePathname } from 'next/navigation'
 import React, { useMemo, useState } from 'react'
 import { IoSearchSharp } from "react-icons/io5"
 import {GoHome} from "react-icons/go"
-import { SideBarItem } from './subComp/SideBarItem'
+import { SideBarItem } from './_subComp/SideBarItem'
 
 import { cn } from '@/lib/utils'  
 
-import { SideBarBottom } from './subComp/SideBarBottom'
+import { SideBarBottom } from './_subComp/SideBarBottom'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import RightBar from '../rightBar/RightBar'
