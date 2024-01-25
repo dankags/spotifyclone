@@ -27,7 +27,7 @@ const playlist=await prisma.playlist.findMany({
     id:true,
   }
 })
-
+console.log(playlist)
   return (
     <div className='w-full h-full'>
       <UserLayOut followers={followers} followings={following} playlist={playlist}>

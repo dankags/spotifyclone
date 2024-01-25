@@ -10,6 +10,7 @@ import { MdOutlineEdit } from 'react-icons/md'
 import UserDialog from './UserDialog'
 
 const UserLayOut = ({children,followings,followers,playlist}) => {
+  
     const {data}=useSession()
     const [imgNameChoosen,setImgNameChoosen]=useState({
       img:'',
