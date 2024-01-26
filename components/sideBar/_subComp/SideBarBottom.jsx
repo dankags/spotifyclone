@@ -1,7 +1,7 @@
 "use client"
 import { ArtistPlaylistComp } from '../../ArtistPlaylistComp'
 import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { ArrowRight, PlusIcon, X } from 'lucide-react'
 import React, { useMemo, useState } from 'react'
@@ -84,7 +84,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
   const [activeComp,setActiveComp]=useState(null)
   return (
     <div className={cn('w-full h-full bg-neutral-900 rounded-md pl-3 ', sidebarSpan ? " pr-2 pl-2" : "" )}>
-              <div className='h-1/6 pr-2 flex items-center justify-between'>
+              <div className='h-[16%] pr-2 flex items-center justify-between'>
                 <div className={!sidebarSpan && "w-full flex items-center justify-center "}>
                     <div className={cn('px-3 pt-2 flex text-stone-400 hover:text-white cursor-pointer',!sidebarSpan && "w-full  flex justify-start items-center ")} onClick={()=>setSideBarSpan(!sidebarSpan)}>
                         <div><BiLibrary size={25}/></div>
@@ -101,20 +101,22 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
               }
               </div>
               {sidebarSpan ? 
-              <div className={cn("w-full h-1/6  px-3  pb-2 flex items-center overflow-x-scroll scroll-smooth shadow-lg scrollbar-thin scrollbar-thumb-transparent")}>
+              <ScrollArea  className={cn("w-full h-[13%]  px-3 shadow-lg ")}>
+                <div className='w-max flex items-center space-x-1 '>
                 <button onClick={()=>setSortTypeSelect([])} className={cn("mr-2 p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 block transition-transform duration-300",sortTypeSelected.length===0 && "hidden")}><X size={20}/></button>
                 {sortTypes.map((s,i)=>
                   <div key={i} onClick={()=>setSortTypeSelect(prev=>[...prev,s?.sort])} >
                       <SortComponent sortTypeSelectedIncludes={sortTypeSelected.includes(s.sort)} sort={s}/>
                   </div>
                 )}
-              
-              </div>
+                </div>
+              <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             :
             <></>  
             }
               
-            <ScrollArea className={cn(' w-full h-4/6 pt-2 pr-2 ',!sidebarSpan ? "h-5/6" : "" )}>
+            <ScrollArea className={cn(' w-full h-[71%] pt-2 pr-2 ',!sidebarSpan ? "h-5/6" : "" )}>
             {sidebarSpan ? 
               <div className='flex items-center justify-between'>
                 <div className={cn("group flex p-2 ml-1  items-center justify-center rounded-full hover:bg-neutral-800 transition-all ease-in-out duration-500 overflow-hidden ",showSearchInput ? "w-4/6 gap-x-2 flex items-center bg-neutral-800 rounded-md  " :"w-9")}>

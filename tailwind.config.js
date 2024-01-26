@@ -41,15 +41,16 @@ module.exports = {
   plugins: [
     require("tailwindcss-animate"),
     require('tailwind-scrollbar'),
-    plugin(function ({ matchUtilities, theme }) {
-      matchUtilities(
-        {
-          'text-shadow': (value) => ({
-            textShadow: value,
-          }),
-        },
-        { values: theme('textShadow') }
-      )
-    }),
+    // plugin(function ({ matchUtilities, theme }) {
+    //   matchUtilities(
+    //     {
+    //       'text-shadow': (value) => ({
+    //         textShadow: value,
+    //       }),
+    //     },
+    //     { values: theme('textShadow') }
+    //   )
+    // }),
+
 ],
 }

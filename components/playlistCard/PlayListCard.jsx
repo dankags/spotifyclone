@@ -4,13 +4,14 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 
 const PlayListCard = ({item}) => {
+  const randomNumber = Math.floor(Math.random() * 633)
   return (
     <div className="group w-full  p-3 flex flex-col justify-center rounded-lg bg-neutral-800 hover:bg-neutral-700/80">
     <div>
       <div className={`relative w-full h-48 `}>
         <div className="w-full h-full relative shadow-md shadow-neutral-900">
           <Image
-            src="/ab67616d0000b273726830445abf56cfff430dcf.jpg"
+            src={`https://source.unsplash.com/collection/490175/640x640/?sig=${randomNumber}`}
             alt=""
             fill={true}
             className=" rounded-lg "

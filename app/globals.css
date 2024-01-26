@@ -27,3 +27,6 @@
       )
       rgb(var(--background-start-rgb));
   }
+  .textShadow{
+    text-shadow: 5px 10px 20px rgba(10,10,10,0.4);
+  }

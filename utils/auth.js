@@ -54,10 +54,7 @@ export const authOptions = {
    callbacks:{
     async session({session,token}){
       if(token){
-       session.user.name=token.name;
-       session.user.image=token.picture;
-       session.user.email=token.email;
-       session.user.admin=token.admin;
+       session.user=token
        session.user.id=token.sub;
      }
       return session
