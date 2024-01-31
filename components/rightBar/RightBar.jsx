@@ -34,7 +34,7 @@ const RightBar = ({children}) => {
           <Music musicItem={music}/>
         </section>
         <section className='mt-3'>
-            <ArtistInfoCard/>
+            <ArtistInfoCard artistId={music?.artistIds}/>
         </section>
         <section className='py-3 px-2 rounded-md bg-neutral-800 flex flex-col justify-center gap-4  '>
           <div className='w-full flex items-center justify-between gap-x-3'>

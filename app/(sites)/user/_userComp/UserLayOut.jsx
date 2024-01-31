@@ -5,7 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useDarkVibrantColor, useVibrantColor } from '@/lib/hooks/colorHooks'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import UserDialog from './UserDialog'
 
@@ -14,16 +14,20 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
     const {data}=useSession()
     const randomNumber = Math.floor(Math.random() * 633)
     const [imgNameChoosen,setImgNameChoosen]=useState({
-      img:`https://source.unsplash.com/collection/490175/640x640/?sig=${randomNumber}`,
+      img:'',
       name:''
     })
-    const userImgbgColor= useVibrantColor(imgNameChoosen?.img,1)
+    // let userImgbgColor=null;
+    // useEffect(()=>{
+    //   userImgbgColor=useVibrantColor(imgNameChoosen?.img,1);
+    // },[imgNameChoosen.img])
+    
     // const userBottomSectionColor=useVibrantColor(data?.user.img,0.6)
     // const choosenbottomColor=useVibrantColor(imgNameChoosen?.img,0.4)
-    const choosenImgColor= useVibrantColor(imgNameChoosen?.img,1)
+    const choosenImgColor= useVibrantColor(`${imgNameChoosen.img ? imgNameChoosen.img:data?.user.image }`,1)
     
   return (
-    <div className='w-full h-full rounded-md  top-0' style={{backgroundColor:`${imgNameChoosen ? choosenImgColor : userImgbgColor}`}}>
+    <div className='w-full h-full rounded-md  top-0' style={{backgroundColor:`${imgNameChoosen ? choosenImgColor : ""}`}}>
         <ScrollArea className='w-full h-full rounded-md bg-neutral-900/30'>
           <main className='relative'>
         <div className='sticky z-10 top-0'>
@@ -52,7 +56,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
                 :
                 <div  className={`group relative w-full aspect-square `}>       
                 <Image
-                  src={data?.user.image?data?.user.image:imgNameChoosen.img }
+                  src={data?.user.image?data?.user.image:"" }
                   alt="likedImage"
                   fill
                   className="object-cover shadow-2xl shrink-0 shadow-black rounded-full"
@@ -71,7 +75,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
            { paramsId === data?.user.id ?  
               <UserDialog setImgName={setImgNameChoosen}>
                   <button
-                    className={`w-[90%] cursor-pointer text-left text-8xl py-3 font-extrabold text-neutral-50  truncate capitalize textShadow`}
+                    className={`w-[90%] cursor-pointer text-left text-8xl py-3 font-extrabold text-neutral-50  truncate capitalize `}
                   >
                   {data?.user.name?data?.user.name:imgNameChoosen.name }
                   </button>

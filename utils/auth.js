@@ -53,6 +53,7 @@ export const authOptions = {
     },
    callbacks:{
     async session({session,token}){
+      
       if(token){
       //  session.user=token
        session.user.id=token.sub;
@@ -63,7 +64,31 @@ export const authOptions = {
      }
       return session
    },
-     async jwt({token,user}){
+     async jwt({token,user,session,trigger}){
+      if(trigger === 'update'){
+        if (session?.name) {
+          token.name=session.name
+          await prisma.user.update({
+            where:{
+              id:token.sub
+            },
+            data:{
+              name:token.name
+            }
+          })
+        }
+        if (session?.image) {
+          token.picture=session.image
+        await prisma.user.update({
+            where:{
+              id:token.sub
+            },
+            data:{
+              image:token.picture
+            }
+          })
+        }
+      }
        if(user){
          token.name=user.name;
          token.picture=user.image;

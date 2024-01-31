@@ -3,7 +3,7 @@ export const Musics = [
         id: "3c3cd3a6-e459-434a-b649-ec0f661cfd80",
         musicName: "spectre",
         categoryName: "housemusic",
-        artistIds: "a3f5954c-8702-4766-adde-e952af96306c",
+        artistIds: "0a1d81c1-484c-484b-ba3f-1cb15cde5cb9",
         viewsNumber: "0",
         musicImage: "/spectreAllanWalker.png",
         audioUrl: "https://firebasestorage.googleapis.com/v0/b/spotifyclone-d7d1f.appspot.com/o/Alan%20Walker%20_The%20Spectre%20(Lyrics%20_%20Lyrics%20Video)%20(1).mp3?alt=media&token=a22a55dc-4100-430b-9ea4-109f1d950909",

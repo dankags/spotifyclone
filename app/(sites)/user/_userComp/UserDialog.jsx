@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Dialog,
@@ -16,16 +16,39 @@ import { MdOutlineEdit } from 'react-icons/md'
 import { useSession } from 'next-auth/react'
 
 const UserDialog = ({children,setImgName}) => {
-    const {data}=useSession();
+    const {data,update}=useSession();
     const [personalInfo,setPersonalinfo]=useState({
         img:'',
         name:''
     })
+    const[imageFile,setImgFile]=useState(null)
+
+    useEffect(() => {
+      const upload = async () => {
+        const formData = new FormData()
+      const imageUniqueId = new Date().getTime + imageFile.name
+      formData.append("file", imageFile)
+      formData.append("publicId",imageUniqueId)
+      formData.append("upload_preset","my-uploads")
+      const cloudinaryRes=await fetch("https://api.cloudinary.com/v1_1/dxqbb56ul/image/upload",{
+        method:"POST",
+        body:formData
+      }).then(res => res.json()).catch((error) => {
+        console.log(error)
+        return
+      })
+      update({image:`${cloudinaryRes.url}`})
+    // setImgCloudinaryUrl(`${cloudinaryRes.url}`)
+      }
+      imageFile&&upload()
+    },[imageFile])
+
     const handleInputs=(e)=>{
       const {name,value}=e.target;
       if(name == "file"){
         const file=e.target.files[0];
         if(file){
+        setImgFile(file)  
         const ImgUrl=URL.createObjectURL(file);
         setImgName(prev=>({...prev,img:ImgUrl}))
         setPersonalinfo(prev=>({...prev,img:ImgUrl}))
@@ -35,7 +58,7 @@ const UserDialog = ({children,setImgName}) => {
       setImgName(prev=>({...prev,[name]:value}))
     }
     const handleForm=(e)=>{
-      e.preventDefault()
+      update({name:personalInfo.name})
     }
     return (
         <Dialog>
@@ -46,7 +69,7 @@ const UserDialog = ({children,setImgName}) => {
             <DialogHeader>
               <DialogTitle className="text-xl">profile details</DialogTitle>
             </DialogHeader>
-               <form onSubmit={handleForm} className='flex items-center gap-x-2'>
+               <div onSubmit={handleForm} className='flex items-center gap-x-2'>
                <div className='w-4/12 flex items-center justify-center '>
                             <label htmlFor="image" className='group relative h-44 w-44 cursor-pointer'>
                                 <div className='min-h-44 min-w-44 relative'>
@@ -62,10 +85,10 @@ const UserDialog = ({children,setImgName}) => {
                         <div className='w-8/12 pl-3 flex flex-col justify-center gap-3'>
                             <input type="text" placeholder={data?.user.name ? data.user.name : "Username"} name="name" id="" onChange={handleInputs} className='px-3 py-3 text-base font-medium rounded-md bg-neutral-700  placeholder:text-stone-200 placeholder:capitalize  focus:outline-neutral-50 ' />
                             <div className='w-full flex items-center justify-end'>
-                            <button type="submit" className='w-3/12 py-2 px-3 text-base font-bold rounded-3xl bg-neutral-50 text-neutral-900  hover:scale-105'>Save</button>
+                            <button onClick={handleForm} className='w-3/12 py-2 px-3 text-base font-bold rounded-3xl bg-neutral-50 text-neutral-900  hover:scale-105'>Save</button>
                             </div>
                         </div>
-               </form>
+               </div>
             <DialogFooter>
             <DialogDescription className="w-full flex items-center justify-start text-xs text-white font-bold">
             By proceeding, you agree to give Spotify access to the image you choose to upload. Please make sure you have the right to upload the image.

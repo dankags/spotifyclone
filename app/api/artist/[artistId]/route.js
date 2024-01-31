@@ -9,12 +9,13 @@ export const GET = async (req, { params }) => {
     try {
         const artist = await prisma.artist.findUnique({
             where: {
-               id: artistId
+                userId: artistId
             }
         })
-        return NextResponse.json(artist,{status:200}) 
+        if(!artist){return NextResponse.json("artist not found",{status:404}) }
+        return NextResponse.json({...artist},{status:200}) 
     } catch (error) {
-        return NextResponse.json({ message: "Internal Server Error" },{status:500}) 
+        return NextResponse.json({ message: `${error}` },{status:500}) 
     }
 }
 
