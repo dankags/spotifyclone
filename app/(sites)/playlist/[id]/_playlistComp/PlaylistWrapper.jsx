@@ -9,11 +9,13 @@ const PlaylistWrapper = ({children}) => {
     const bgColor=useVibrantColor("/playlist.jpg",0.8);
   return (
     <ScrollArea className='w-full h-full rounded-md' style={{backgroundColor:`${bgColor}`}}>
-        <div className='sticky z-10 top-0'>
+      <div>
+        <div className='sticky top-0'>
           <NavBar/>
         </div>
         {children}
         <Footer/>
+        </div>  
     </ScrollArea>
   )
 }

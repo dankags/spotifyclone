@@ -11,7 +11,8 @@ const PlayListCard = ({item}) => {
       <div className={`relative w-full h-48 `}>
         <div className="w-full h-full relative shadow-md shadow-neutral-900">
           <Image
-            src={`https://source.unsplash.com/collection/490175/640x640/?sig=${randomNumber}`}
+            // src={`https://source.unsplash.com/collection/490175/640x640/?sig=${randomNumber}`}
+            src={``}
             alt=""
             fill={true}
             className=" rounded-lg "

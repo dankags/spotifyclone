@@ -17,7 +17,7 @@ const ArtistInfoCard = ({artistId,MusicId,userData}) => {
               
         </div>
            <div className='w-full px-3 pb-3 flex flex-col gap-3 '>
-           <div className='flex items-center justify-between text-sm z-20 font-semibold '>
+           <div className='flex items-center justify-between gap-x-1 text-sm z-20 font-semibold '>
             <p>
             971,407 <span className='text-xs font-semibold'>monthly listener</span>
             </p>

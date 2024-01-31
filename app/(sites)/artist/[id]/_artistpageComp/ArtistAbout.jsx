@@ -4,7 +4,7 @@ import React from 'react'
 const ArtistAbout = () => {
   return (
     <div className='w-full h-96 overflow-hidden rounded-sm flex items-center relative'>
-    <Image src='/ab6761670000ecd47145333607578eb5c6caea1f.jpg' alt='' fill={true} className='object-cover w-full h-full rounded-sm ' />
+    <Image src='/ab6761670000ecd47145333607578eb5c6caea1f.jpg' alt='' fill={true} className='object-cover w-full h-full rounded-sm  ' />
     <div className='w-full h-full relative top-0 left-0 bg-gradient-to-t from-neutral-900/75 '></div>
       <div className='w-24 h-24 rounded-full p-2 flex flex-col justify-center items-center bg-blue-600 text-white absolute right-5 top-5 '>
         <span className='text-lg font-semibold'>118 #</span>

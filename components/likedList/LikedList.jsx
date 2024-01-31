@@ -1,4 +1,6 @@
 "use client"
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
+import { setMusicBySelect } from '@/lib/redux/slices/currentMusic'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import React, { useState } from 'react'
@@ -8,6 +10,9 @@ import { MdOutlineFavorite } from 'react-icons/md'
 
 export const LikedList = ({ music,index }) => {
   const [showPlayIcon,setShowplayIcon]=useState(false)
+  const {music:currentMusic}=useAppSelector(state=>state.currentmusic)
+  console.log(currentMusic)
+  const dispatch=useAppDispatch()
   const [currentSong,setCurrentSong]=useState({
     id: "3c3cd3a6-e459-434a-b649-ec0f661cfd87",
     musicName: "ghost",
@@ -20,13 +25,19 @@ export const LikedList = ({ music,index }) => {
     uploaded:  "2023-11-02T07:45:52.027+00:00"  
   })
   return (
-    <div onMouseOver={()=>setShowplayIcon(true)} onMouseOut={()=>setShowplayIcon(false)} className='flex py-2 rounded-md hover:bg-neutral-700/60 group'>
+    <div onMouseOver={()=>setShowplayIcon(true)} onMouseOut={()=>setShowplayIcon(false)} className={cn('flex py-2 rounded-md hover:bg-neutral-700/20 group', currentMusic === music ? "bg-neutral-700/35":"")}>
     <div className='w-6/12 pl-4 flex items-center'>
       <div className='w-1/12 flex items-center overflow-hidden'>
           {showPlayIcon ?
-            <span className='text-xl' onClick={()=>setCurrentSong(music)}> <IoPlay className='' /></span>
+            <span className='text-xl' onClick={()=>dispatch(setMusicBySelect(music))}> <IoPlay className='' /></span>
             :
-            <span className=''>{index}</span>
+            <div>
+              {currentMusic === music ? 
+              <Image src={"/equaliser-animated-green.f5eb96f2.gif"} alt="equilizer" width={20} height={20}/>
+              :
+              <span className=''>{index}</span>
+              }
+            </div>
           }
         </div>
         <div className='w-10/12 flex'>
@@ -34,7 +45,7 @@ export const LikedList = ({ music,index }) => {
         <Image src={music?.musicImage ? music.musicImage :'/ab67616d0000b273726830445abf56cfff430dcf.jpg'} alt='' fill className='rounded-md'/>
       </div>
       <div className='flex flex-col'>
-          <span className='text-base font-semibold capitalize'>
+          <span className={cn('text-base font-semibold capitalize',currentMusic === music ? "text-green-600":"text-white")}>
             {music?.musicName ? music.musicName : "none"}
         </span>
         <span className='text-sm font-medium text-stone-400'>Jim Yosef</span>

@@ -5,7 +5,7 @@ import AlbumTableTitle from '@/components/albumPageComp/AlbumTableTitle'
 import AlbumWrapper from '@/components/albumPageComp/AlbumWrapper'
 import { LikedList } from '@/components/likedList/LikedList'
 import { NavBar } from '@/components/navBar/NavBar'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import Image from 'next/image'
 import Link from 'next/link'
 import Vibrant from 'node-vibrant'
@@ -17,7 +17,7 @@ const getVibrantColor=(img)=>{
   vibrant.getPalette().then((palette) => {
       setDominantColor(`${palette.Vibrant.getRgb()}`)
       }).catch((error)=>{
-          console.log(error);
+         // console.log(error);
       })
 }
 
@@ -37,7 +37,7 @@ const AlbumPage = ({param}) => {
     const bgColor=getVibrantColor(album.musicImage)
     console.log(bgColor)
   return (
-    <ScrollArea className="w-[100%] h-full">
+    <ScrollArea className="w-[100%] h-full rounded-md ">
       <AlbumWrapper album={album} color={bgColor}>
        <div>
        <div
@@ -51,7 +51,7 @@ const AlbumPage = ({param}) => {
                 alt="likedImage"
                 width={ 230}
                 height={ 220}
-                className="shadow-2xl shadow-black rounded-md"
+                className="z-0 shadow-2xl shadow-black rounded-md"
               />
             </div>
             <div
@@ -106,6 +106,7 @@ const AlbumPage = ({param}) => {
             </StaticCarosel>
         </div>
       </AlbumWrapper>
+      <ScrollBar className='z-10'/>
     </ScrollArea>
   )
 }

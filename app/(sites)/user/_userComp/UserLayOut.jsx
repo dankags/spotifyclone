@@ -25,6 +25,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
   return (
     <div className='w-full h-full rounded-md  top-0' style={{backgroundColor:`${imgNameChoosen ? choosenImgColor : userImgbgColor}`}}>
         <ScrollArea className='w-full h-full rounded-md bg-neutral-900/30'>
+          <main className='relative'>
         <div className='sticky z-10 top-0'>
           <NavBar/>
         </div>
@@ -105,6 +106,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
         {children}
         </div>
         <Footer/>
+        </main>
         </ScrollArea>
     </div>
   )

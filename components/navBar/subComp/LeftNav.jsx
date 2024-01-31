@@ -1,4 +1,5 @@
 "use client"
+import { useHistoryState } from '@uidotdev/usehooks'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -11,8 +12,10 @@ export const LeftNav = ({children}) => {
   console.log(data?.user,status)
   const router=useRouter();
   const pathName=usePathname();
+  const history=useHistoryState()
   const [play,setPlay]=useState(false)
   const [currentPlayList,setCurrentPlayingList]=useState(true)
+  // console.log(router.back())
   return (
     <div className='w-full px-3 flex items-center'>
     <div className="w-6/12 flex items-center justify-between gap-x-3 truncate">

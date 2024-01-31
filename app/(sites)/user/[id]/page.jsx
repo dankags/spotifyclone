@@ -4,27 +4,18 @@ import { BsThreeDots } from 'react-icons/bs'
 import { StaticCarosel } from '@/components/StaticCarosel'
 import ArtistCard from '@/components/artistCard/ArtistCard'
 import { LikedList } from '@/components/likedList/LikedList'
-import { Musics, artists } from '../_userComp/data'
 import prisma from '@/utils/connect'
-import { getProviders, getSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
+import { authOptions } from '@/utils/auth'
 
 
 
 const User =async (params) => {
-  const session=await getServerSession();
+  const session=await getServerSession(authOptions);
   console.log(session)
 
-  const user=await prisma.user.findUnique({
-    where:{
-      id:params.params.id
-    },
-    select:{
-      email:true,
-      name:true,
-    },
-  })
+
   const following= await prisma.following.findMany({
     where: {
         initiateFollowId : params.params.id
@@ -53,7 +44,7 @@ const likedList=await prisma.likedSong.findUnique({
   }
 })
 
-if( !user){
+if( session?.user.id !== params.params.id){
   redirect("/not-found")
 }
 

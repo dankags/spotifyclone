@@ -2,12 +2,14 @@
 import React, { useRef, useState } from 'react'
 import { TopSection } from './TopSection'
 import { NavBar } from '@/components/navBar/NavBar'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { ScrollAreaScrollbar } from '@radix-ui/react-scroll-area'
 
 const HomeLayOut = ({children}) => {
     const [containerColor,setContainerColor]=useState("rgba(64,64,64,0.2)")
     const pageRef=useRef();
-    const pageScroll=pageRef.current
+    const pageScroll=pageRef.current?.scrollY
+    console.log(pageScroll)
 
   return (
     <ScrollArea
@@ -21,11 +23,14 @@ const HomeLayOut = ({children}) => {
         
     }}
     >
+      <div>
       <div className='sticky top-0 z-10'>
         <NavBar/>
         </div>  
         <TopSection changeColor={setContainerColor}/>
       {children}
+      </div>
+      <ScrollBar ref={pageRef}/>
     </ScrollArea>
   )
 }

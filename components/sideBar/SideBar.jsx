@@ -1,6 +1,6 @@
 "use client"
 import { usePathname } from 'next/navigation'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { IoSearchSharp } from "react-icons/io5"
 import {GoHome} from "react-icons/go"
 import { SideBarItem } from './_subComp/SideBarItem'
@@ -11,11 +11,15 @@ import { SideBarBottom } from './_subComp/SideBarBottom'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import RightBar from '../rightBar/RightBar'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
+import { setWidth } from '@/lib/redux/slices/pageWidth'
   
 
 const SideBar = ({children}) => {
   const {status}=useSession()
+  const pageRef=useRef(null)
   const pathName=usePathname()
+  const {opened}=useAppSelector(state=>state.rightbar)
     const routes=useMemo(()=>[
       {
         label:"Home",
@@ -31,6 +35,10 @@ const SideBar = ({children}) => {
       }
     ],[pathName])
     const [sidebarSpan,setSideBarSpan]=useState(true)
+    const dispatch=useAppDispatch()
+    dispatch(setWidth(pageRef.current?.clientWidth))
+    
+
 
     if(pathName.includes("/dashboard")){
       return(
@@ -41,7 +49,7 @@ const SideBar = ({children}) => {
     }
   return (
     <div className={cn('w-full flex h-[calc(100vh-80px)] p-2 gap-x-2')}>
-       <div className={cn("",sidebarSpan ? 'w-[370px]' : "w-[85px] overflow-hidden")}>
+       <div className={cn("hidden lg:block",sidebarSpan ? 'w-[370px]' : "w-[85px] overflow-hidden")}>
            { false ?
             <>
               <div className='flex flex-col justify-between w-full h-1/6 py-2 bg-neutral-900 rounded-md'>
@@ -77,11 +85,17 @@ const SideBar = ({children}) => {
            }
             
         </div>
-        <div className={cn('w-full h-full flex items-center justify-between',sidebarSpan ? 'w-[calc(100%-370px)]' : "w-[calc(100%-85px)]")}>
-        <main className={cn('w-full  h-full rounded-md')}>{children}</main>
-        {/* <div className={cn("w-[30%]  h-full overflow-hidden flex justify-start pl-2")}>
+        <div ref={pageRef} className={cn('w-full h-full flex items-center justify-between',sidebarSpan ? 'w-[calc(100%-370px)]' : "w-[calc(100%-85px)]")}>
+        {opened ? 
+        <>
+        <main className={cn('w-[70%]  h-full rounded-md')}>{children}</main>
+        <div className={cn("w-[30%]  h-full overflow-hidden flex justify-start pl-2")}>
           <RightBar/>
-          </div>   */}
+          </div> 
+          </>
+        :
+        <main className={cn('w-full  h-full rounded-md')}>{children}</main>
+          } 
         </div>
     </div>
   )

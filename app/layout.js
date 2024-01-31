@@ -3,6 +3,9 @@ import "./globals.css";
 import AuthProvider from "@/lib/AuthProvider";
 import SideBar from "@/components/sideBar/SideBar";
 import { Player } from "@/components/player/Player";
+import { Provider } from "@radix-ui/react-tooltip";
+import { makeStore } from "@/lib/redux/store";
+import StoreProvider from "@/components/reduxProvider/ReduxProvider";
 
 const figtree = Figtree({ subsets: ["latin"] });
 
@@ -16,12 +19,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={figtree.className}>
       <AuthProvider>
+        <StoreProvider>
         <SideBar>
         {children}
           
         </SideBar>
         
         <Player/>
+        </StoreProvider>
         </AuthProvider>
         </body>
     </html>
