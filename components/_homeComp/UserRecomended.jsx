@@ -49,9 +49,9 @@ export const UserRecomended = ({ pageWidth, data, setContainerColor }) => {
       <div
         onMouseOut={handleMouseOut}
         onMouseOver={handleMouseOver}
-        className={`group max-h-44 w-[32%] cursor-pointer flex items-center rounded-md gap-2 transition-all  ease-in-out  bg-neutral-100/10 hover:duration-300 hover:bg-neutral-500/20 `}
+        className={`group min-h-[64px] w-full cursor-pointer flex items-center rounded-md gap-2 transition-all  ease-in-out  bg-neutral-100/10 hover:duration-300 hover:bg-neutral-500/20 `}
       >
-        <div className="w-3/12 h-16 flex justify-start shrink-0">
+        <div className="w-3/12 h-full flex justify-start shrink-0">
         <div className='min-h-[64px] min-w-[64px] relative'>
           <Image
             src={data.img}
@@ -73,7 +73,7 @@ export const UserRecomended = ({ pageWidth, data, setContainerColor }) => {
           width={20}
         />
         :
-          <button onClick={handleRecomended} className=" p-2 hidden rounded-full shadow-lg shadow-neutral-900 justify-center items-center transition-all ease-in-out bg-green-500 hover:bg-green-400 group-hover:flex ">
+          <button onClick={handleRecomended} className=" p-2 hidden rounded-full shadow-lg shadow-neutral-900 justify-center items-center transition-all ease-in-out bg-green-500 hover:bg-green-400 group-hover:flex max-md:hidden max-md:group-hover:hidden">
             {recommendedPlaying ?
                <IoIosPause className="text-neutral-900 text-2xl" />
               :

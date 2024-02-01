@@ -1,4 +1,7 @@
 "use client"
+import storage from '@/utils/fireBaseConfig'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { IoCreate } from 'react-icons/io5'
@@ -16,6 +19,7 @@ const categories = [
   ]
 
 const MusicForm = () => {
+    const {data}=useSession()
     const [musicName, setMusicName] = useState(null)
     const [categoryOpt,setCategoryOpt]=useState(null)
     const [imgUrl, setImgUrl] = useState(null)
@@ -121,25 +125,24 @@ const MusicForm = () => {
     const handleUploadMusic = async (e) => {
       e.preventDefault();
       //upload image
-      console.log(imgCloudinaryUrl)
-      const data={
+      
+      const musicdata={
         musicName:musicName,
         categoryName:categoryOpt,
-        artistIds:"a3f5954c-8702-4766-adde-e952af96306c",
+        artistId:data.user.id,
         musicImage:imgCloudinaryUrl,
         audioUrl:fireBaseAudioUrl,
         duration:audioDuration
     }
-      console.log(data);
+      
       
       if (fireBaseAudioUrl) {
         try {
         const res = await fetch('/api/music/create', {
         method: 'POST',
-        body:JSON.stringify(data)
+        body:JSON.stringify(musicdata)
         }).then(res=>res.json()).catch(error=>console.log(error))
         
-        console.log(res);
       } catch (error) {
           console.log(error);
       }}
@@ -153,8 +156,8 @@ const MusicForm = () => {
       </div>
         <form onSubmit={handleUploadMusic} className='w-full px-3 flex justify-center relative'>
         <div className='w-5/12 h-full'>
-          <label htmlFor="image" className='group w-full h-full relative flex justify-center'>
-            <Image src={imgUrl?imgUrl:'/apple2.jpg'} alt="" width={320} height={320} />
+          <label htmlFor="image" className='group w-full h-full rounded-md relative flex justify-center'>
+            <Image src={imgUrl?imgUrl:'/apple2.jpg'} alt="" width={320} height={320} className='rounded-md' />
             <div className='w-full h-full gap-y-3 flex flex-col items-center justify-center absolute top-0 left-0 bg-neutral-900/60 opacity-0 cursor-pointer group-hover:opacity-100'>
              <span className=''><IoCreate className='text-5xl'/></span> 
               <span className='text-base font-semibold'>Choose a photo</span>
@@ -195,21 +198,21 @@ const MusicForm = () => {
                 </select>
           </div>
         
-          <div className='w-full flex flex-col gap-2'>
+          <div className=' w-full flex flex-col gap-2 '>
             <span className='text-sm font-medium'>music file</span>
             <div className='flex justify-between'>
               <div className='w-10/12 flex items-center gap-2 '>
                 <Image src="/apple2.jpg" alt="" width={45} height={45} />
                 <span className='text-base font-medium whitespace-nowrap text-ellipsis overflow-hidden'>{audioName?`Choosen file is ${audioName}`:"Enter music file"}</span>
              </div>
-            <label htmlFor="audio" className='w-2/12 text-sm font-medium flex justify-end'>
-             <span className='w-11/12 py-2 px-4 rounded-3xl text-base text-center font-bold dark:text-neutral-900 dark:bg-green-500 cursor-pointer hover:dark:bg-green-400'>file</span>    
+            <label htmlFor="audio" className='w-2/12 text-sm font-medium flex justify-end '>
+             <span className='w-11/12 py-2 px-4 rounded-3xl text-base text-center font-bold text-black bg-green-500 cursor-pointer hover:dark:bg-green-400 capitalize'>file</span>    
              <input onChange={handleAudioFile} type="file" name="" id="audio" accept='audio/*' style={{display:"none"}} required />
         </label>
         </div>
           </div>
         <div className='w-full flex justify-end items-center '>
-        <button className='w-4/12 py-2 rounded-3xl text-base font-bold  dark:text-neutral-900 dark:bg-green-500 hover:dark:bg-green-400'>upload</button>
+        <button className='w-4/12 py-2 rounded-3xl text-base font-bold capitalize text-black  bg-green-500 hover:dark:bg-green-400'>upload</button>
         </div>
 
         </div>

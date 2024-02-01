@@ -26,7 +26,7 @@ const CurrentMusicCard = ({children}) => {
   }
 
   return (
-    <div className="w-full h-[80px] px-2 pb-2 gap-x-2 flex items-center justify-between">
+    <div className="hidden w-full lg:h-[80px] px-2 pb-2 gap-x-2 lg:flex items-center justify-between">
       <div className='w-[27.6%] h-full'>
         {music ?
         <div className='w-full h-full p-2 flex items-center justify-between gap-x-2 '>

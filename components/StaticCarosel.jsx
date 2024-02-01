@@ -12,6 +12,9 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
     if (width >= 1250 ) {
       return 5
     }
+    if(width <= 500){
+      return 2
+    }
     if(width <= 918){
       return 3
     }
@@ -19,13 +22,13 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
     },[width]);
     const visibleItems=childrenArray.slice(0,visibleCount)
     children=displayCol ? childrenArray : visibleItems;
-    
+    console.log(width)
   return (
     <section className='p-3 flex flex-col justify-center gap-y-3'>
         {!showAll && <div className=' flex items-center justify-between'>
-         <p  className={cn("w-full text-2xl font-bold ",childrenArray > visibleCount && "w-8/12")}>{title}</p>
+         <p  className={cn("w-full text-2xl font-bold max-md:text-xl ",childrenArray > visibleCount && "w-8/12")}>{title}</p>
          <div className='w-4/12 px-2 flex justify-end items-center'>
-        {childrenArray.length > visibleCount && <Link href={"/"} className='w-full font-semibold text-sm text-right text-nowrap text-stone-400 hover:text-white hover:underline'>Show all</Link>}
+        {childrenArray.length > visibleCount && <Link href={"/"} className='w-full font-semibold text-sm  text-right text-nowrap text-stone-400 hover:text-white hover:underline'>Show all</Link>}
         </div>
         </div>
       

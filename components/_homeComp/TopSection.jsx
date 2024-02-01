@@ -54,11 +54,11 @@ export const TopSection = ({children,changeColor}) => {
           
         >
           
-          <span className="w-full text-4xl font-bold px-4 ">
+          <span className="w-full  font-bold px-4 text-4xl max-md:text-3xl ">
             Good afternoon
           </span>
           <div
-            className={`w-full px-3 mt-3 flex justify-between flex-grow flex-wrap gap-2 `}
+            className={`w-full px-3 mt-3 grid justify-between flex-grow flex-wrap gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 `}
           >
             {recommended.map((item, i) => (
               <UserRecomended

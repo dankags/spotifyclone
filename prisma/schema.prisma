@@ -109,8 +109,8 @@ model Artist{
 model Music{
   id String @id @default(uuid()) @map("_id") 
   musicName String @unique
-  categoryName String @unique
-  artistId String @unique
+  categoryName String 
+  artistId String 
   otherFeaturedArtist String[] @default([])
   viewsNumber Int @default(0)
   musicImage String

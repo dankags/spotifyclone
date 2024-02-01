@@ -18,16 +18,17 @@ export const LeftNav = ({children}) => {
   // console.log(router.back())
   return (
     <div className='w-full px-3 flex items-center'>
-    <div className="w-6/12 flex items-center justify-between gap-x-3 truncate">
+    <div className="w-2/12 lg:w-6/12 flex items-center justify-between gap-x-3 truncate">
     <div className={`w-2/12 flex items-center gap-2 mr-2`}>
       <button 
       className="p-2 flex items-center justify-center rounded-full bg-neutral-950/80  hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50"
        onClick={()=>router.back()}
+       
        >
         <IoIosArrowBack size={20} className="text-lg" />
       </button>
       <button 
-      className="p-2 flex items-center justify-center rounded-full bg-neutral-950/80 hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50 "
+      className="hidden p-2 lg:flex items-center justify-center rounded-full bg-neutral-950/80 hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50 "
       onClick={()=>router.forward()}
       
         >
@@ -42,7 +43,9 @@ export const LeftNav = ({children}) => {
     }
     </div>
   </div>
+ 
     {children}
+     
   </div>
   )
 }

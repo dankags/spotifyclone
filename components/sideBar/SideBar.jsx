@@ -1,7 +1,7 @@
 "use client"
 import { usePathname } from 'next/navigation'
 import React, { useMemo, useRef, useState } from 'react'
-import { IoSearchSharp } from "react-icons/io5"
+import { IoLibrary, IoSearchSharp } from "react-icons/io5"
 import {GoHome} from "react-icons/go"
 import { SideBarItem } from './_subComp/SideBarItem'
 
@@ -13,6 +13,7 @@ import Link from 'next/link'
 import RightBar from '../rightBar/RightBar'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { setWidth } from '@/lib/redux/slices/pageWidth'
+import { BiSearch } from 'react-icons/bi'
   
 
 const SideBar = ({children}) => {
@@ -48,7 +49,7 @@ const SideBar = ({children}) => {
       )
     }
   return (
-    <div className={cn('w-full flex h-[calc(100vh-80px)] p-2 gap-x-2')}>
+    <div className={cn('w-full h-[100vh] flex lg:h-[calc(100vh-80px)] lg:p-2 gap-x-2')}>
        <div className={cn("hidden lg:block",sidebarSpan ? 'w-[370px]' : "w-[85px] overflow-hidden")}>
            { false ?
             <>
@@ -85,16 +86,40 @@ const SideBar = ({children}) => {
            }
             
         </div>
-        <div ref={pageRef} className={cn('w-full h-full flex items-center justify-between',sidebarSpan ? 'w-[calc(100%-370px)]' : "w-[calc(100%-85px)]")}>
+        <div ref={pageRef} className={cn('w-full h-full  flex items-center justify-between',sidebarSpan ? 'lg:w-[calc(100%-370px)]' : "lg:w-[calc(100%-85px)]")}>
         {opened ? 
         <>
-        <main className={cn('w-[70%]  h-full rounded-md')}>{children}</main>
-        <div className={cn("w-[30%]  h-full overflow-hidden flex justify-start pl-2")}>
+        <main className={cn('lg:w-[70%] relative w-full  h-full rounded-md')}>
+          {children}
+        </main>
+        <div className={cn("hidden   h-full overflow-hidden justify-start pl-2 lg:w-[30%] lg:flex ")}>
           <RightBar/>
           </div> 
           </>
         :
-        <main className={cn('w-full  h-full rounded-md')}>{children}</main>
+        <main className={cn('w-full  h-full rounded-md')}>
+          {children}
+          <div className='w-full h-14 p-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden'>
+         <div>
+          <Link href={"/"} className={cn('flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white',pathName === "/" && "text-white")}>
+            <GoHome size={24}/>
+            <span className='capitalize text-xs font-bold'>home</span>
+          </Link>
+         </div>
+         <div>
+         <Link href={"/search"} className={cn('flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white',pathName === "/search" && "text-white")}>
+            <IoSearchSharp  size={24}/>
+            <span className='capitalize text-xs font-bold'>search</span>
+          </Link>
+         </div>
+         <div>
+         <Link href={"/collection/tracks"} className={cn('flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white',pathName === "/collection/tracks" && "text-white")}>
+            <IoLibrary  size={24}/>
+            <span className='capitalize text-xs font-bold'>library</span>
+          </Link>
+         </div>
+        </div>
+        </main>
           } 
         </div>
     </div>
