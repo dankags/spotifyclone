@@ -1,5 +1,5 @@
 import { NavBar } from '@/components/navBar/NavBar'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import React from 'react'
 
 const ArtistLayout = ({children}) => {
@@ -11,6 +11,7 @@ const ArtistLayout = ({children}) => {
         </div>
       {children}
       </div>
+      <ScrollBar className="z-20"/>
     </ScrollArea>
   )
 }

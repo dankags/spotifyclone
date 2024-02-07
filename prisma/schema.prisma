@@ -56,12 +56,13 @@ model User {
   followers     Followers[]
   music         Music[]
   playlist      Playlist[]
+  likedPlaylist LikedPlaylist[]
 }
 
 model Following{
    id            String   @id @default(uuid()) @map("_id")
-   initiateFollowId    String @unique
-   followingId   String @unique
+   initiateFollowId    String 
+   followingId   String 
 
    FollowingId User @relation(fields: [initiateFollowId],references: [id],onDelete: Cascade) 
    
@@ -69,8 +70,8 @@ model Following{
 
 model Followers{
    id            String   @id @default(uuid()) @map("_id")
-   followerId    String @unique
-   followingId   String @unique
+   followerId    String
+   followingId   String 
 
    FollowersId User @relation(fields: [followerId],references: [id],onDelete: Cascade)
 }
@@ -101,6 +102,7 @@ model Artist{
   profileCoverImage String?
   backImg String?
   artistAbout String?
+  slug String @default("artist")
   
   user   User @relation(fields: [userId],references: [id],onDelete: Cascade)
  
@@ -137,12 +139,22 @@ musics Music[]
 
 model Playlist{
   id String @id @default(uuid()) @map("_id")
-  artistId String @unique
-  playlistName String @unique
-  playlistCoverImg String
-  playlistDesc String ?
+  creatorId String 
+  name String @unique
+  image String
+  Desc String ?
+  listeners Int
+  musiclist String [] @default([])
+  slug String @default("playlist")
 
-  artist User @relation(fields: [artistId],references: [id],onDelete: Cascade)
+  artist User @relation(fields: [creatorId],references: [id],onDelete: Cascade)
   
 }
 
+model LikedPlaylist{
+   id String @id @default(uuid()) @map("_id")
+   userId String @unique
+   playlists String[] @default([])
+
+   user   User @relation(fields: [userId],references: [id],onDelete: Cascade) 
+}

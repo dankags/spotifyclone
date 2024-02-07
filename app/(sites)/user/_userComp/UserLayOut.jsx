@@ -8,8 +8,9 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import UserDialog from './UserDialog'
+import { LuUser2 } from 'react-icons/lu'
 
-const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
+const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColor}) => {
   
     const {data}=useSession()
     const randomNumber = Math.floor(Math.random() * 633)
@@ -27,7 +28,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
     const choosenImgColor= useVibrantColor(`${imgNameChoosen.img ? imgNameChoosen.img:data?.user.image }`,1)
     
   return (
-    <div className='w-full h-full rounded-md  top-0' style={{backgroundColor:`${imgNameChoosen ? choosenImgColor : ""}`}}>
+    <div className='w-full h-full rounded-md  top-0' style={{backgroundColor:`${imgNameChoosen ? choosenImgColor : "rgba(127.5,127.5,127.5,1)"}`}}>
         <ScrollArea className='w-full h-full rounded-md bg-neutral-900/30'>
           <main className='relative'>
         <div className='sticky z-10 top-0'>
@@ -41,12 +42,15 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user}) => {
              {paramsId === data?.user.id ?
               <UserDialog setImgName={setImgNameChoosen} >
               <button  className={`group relative w-full aspect-square cursor-pointer `}>       
-              <Image
+            {data?.user.image ?  <Image
                 src={data?.user.image?data?.user.image:imgNameChoosen.img }
-                alt="likedImage"
+                alt="userImage"
                 fill
                 className="object-cover shadow-2xl shrink-0 shadow-black rounded-full"
-                                />
+                    />
+                      :
+                      <LuUser2  className='m-auto text-7xl text-stone-300'/> 
+                   }
                 <div className='w-full h-full absolute top-0 left-0 rounded-full flex flex-col justify-center items-center gap-2 opacity-0 transition duration-300 text-neutral-50 group-hover:bg-neutral-900/75 group-hover:opacity-100'>
                   <MdOutlineEdit className='text-6xl'/> 
                    <span className='text-lg font-semibold '>Choose photo</span>            

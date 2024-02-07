@@ -8,6 +8,7 @@ import prisma from '@/utils/connect'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/utils/auth'
+import { VibrantColor } from '@/lib/functions/colorFunc'
 
 
 
@@ -28,7 +29,7 @@ const followers=await prisma.followers.findMany({
 })
 const playlist=await prisma.playlist.findMany({
   where:{
-    artistId:params.params.id
+    creatorId:params.params.id
   },
   select:{
     id:true,
@@ -43,11 +44,25 @@ const likedList=await prisma.likedSong.findUnique({
     songs:true
   }
 })
+  const musics = await prisma.music.findMany({
+    where: {
+      id: {
+        in: likedList?.songs
+      },
+    },
+    select: {
+      id: true,
+      musicName: true,
+      musicImage: true,
+      duration: true,
+      
+    }
+})
 
 if( session?.user.id !== params.params.id){
   redirect("/not-found")
 }
-
+  
   return (
     <div className='w-full h-full'>
       <UserLayOut followers={followers} followings={following} playlist={playlist}  paramsId={params.params.id}>
@@ -73,8 +88,8 @@ if( session?.user.id !== params.params.id){
          {likedList?.songs.length > 0 ?
           <div className="mt-10">
               <StaticCarosel title={"Top tracks this month"} displayCol>
-                 { likedList?.songs.map((item,i)=>
-                 <LikedList key={item} index={i+1} music={item} />
+                 { musics.map((item,i)=>
+                 <LikedList key={item} index={i+1} mainArtist={session.user} music={item} />
                  )  }     
                       
               </StaticCarosel>

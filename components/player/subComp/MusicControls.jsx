@@ -13,6 +13,7 @@ import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { toast } from 'sonner'
 
 const MusicControls = () => {
   const [audio,setAudio]=useState(null)
@@ -29,49 +30,92 @@ const MusicControls = () => {
     }
   )
   const pathName=usePathname()
-  const {status}=useSession()
+  const {data}=useSession()
   const [musicProgress,setMusicProgress]=useState(0)
   const [defaultVol,setDefaultVol]=useState(40)
   const [play,setPlay]=useState(false)
   const [mute,setmute]=useState(false)
-  const {music }=useAppSelector(state=>state.currentmusic)
+  const {music, playlist}=useAppSelector(state=>state.currentmusic)
 
 
- 
   useEffect(()=>{
-    setAudio(new Audio(`/Alan Walker _The Spectre (Lyrics _ Lyrics Video) (1).mp3`));
+    setAudio(new Audio());
     if (audio) {
        audio.volume=0.40
     }
-  },[]);
+  }, []);
+  
 
   useEffect(() => {
-    audio?.addEventListener("timeupdate", (e) => {
-      const currentTime = e.target.currentTime;
-      const musicDuration = e.target.duration;
-      const durationInMinute = Math.floor((musicDuration % 3600) / 60);
-      const durationInSecond = Math.floor((musicDuration % 3600) % 60);
-      const currentminute = Math.floor((currentTime % 3600) / 60);
-      const currentSecond = Math.floor((currentTime % 3600) % 60);
-      
+    const fetchMusic = async () => {
+      try {
+        const res = await fetch("/api/music/audio", {
+          method: "POST",
+          body: JSON.stringify({
+            musicId:music.id
+          })
+        })
+        if (res.ok) {
+          const serverResponse = await res.json()
+          console.log(serverResponse.audioUrl)
+          audio.src = `${serverResponse.audioUrl}`
+          audio.play()
+          setPlay(true)
+        }
+        
+      } catch (error) {
+        toast.error(`${error}`)
+      }
+    }
+    if (music) {
+      const durationInMinute = Math.floor((music.duration % 3600) / 60);
+      const durationInSecond = Math.floor((music.duration % 3600) % 60);
+
       setDurationTime({
         min:`${durationInMinute < 10 ? `0${durationInMinute}` : `${durationInMinute}`}`,
         sec:`${durationInSecond < 10 ? `0${durationInSecond}` : `${durationInSecond}`}`
       })
+      setCurrentTime({ min: "00", sec: "00" })
+      setMusicProgress(0);
+      // setPlay(false)
+
+      fetchMusic()
+    }
+    // music&&fetchMusic()
+  },[music])
+ 
+  
+
+    useEffect(() => {
+    audio?.addEventListener("timeupdate", (e) => {
+      const currentTime = e.target.currentTime;
+      const musicDuration = e.target.duration;
+      // const durationInMinute = Math.floor((musicDuration % 3600) / 60);
+      // const durationInSecond = Math.floor((musicDuration % 3600) % 60);
+      const currentminute = Math.floor((currentTime % 3600) / 60);
+      const currentSecond = Math.floor((currentTime % 3600) % 60);
+      
+      // setDurationTime({
+      //   min:`${durationInMinute < 10 ? `0${durationInMinute}` : `${durationInMinute}`}`,
+      //   sec:`${durationInSecond < 10 ? `0${durationInSecond}` : `${durationInSecond}`}`
+      // })
       setMusicProgress((100 * currentTime) / musicDuration);
       // musicSlider.current.style.background = `linear-gradient(to right, ${(100 * currentTime) / musicDuration} ${(100 * currentTime) / musicDuration}%,#3a3a3a ${(100 * currentTime) / musicDuration}%)`;
       setCurrentTime(prev=>({...prev,min:`${currentminute < 10 ? `0${currentminute}` : `${currentminute}`}`}) );
       setCurrentTime(prev=>({...prev,sec:`${currentSecond < 10 ? `0${currentSecond}` : `${currentSecond}`}`}));
       if (currentTime === musicDuration) {
         setMusicProgress(0);
-        setPlay(prev=>!prev)
+        setPlay(false)
         setCurrentTime(prev=>({...prev,min:`${ currentminute < 10 ? `00` : `00`}`}));
         setCurrentTime(prev=>({...prev,sec:`${currentSecond < 10 ? `00` : `00`}`}) );
       }
     });
   }, [audio?.src]);
 
-  if (pathName.includes("/not-found") || pathName.includes("/dashboard") || status === "unauthenticated" ) {
+  if (!data) {
+    return
+  }
+  if (pathName.includes("/not-found") || pathName.includes("/dashboard")   ) {
     if(audio){
       audio.pause()
     setPlay(prev=>!prev)}

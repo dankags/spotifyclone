@@ -1,19 +1,22 @@
 import Footer from '@/components/Footer'
 import { NavBar } from '@/components/navBar/NavBar'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import React from 'react'
 
 function Search() {
   return (
-    <div className='w-full'>
+    <ScrollArea className='w-full'>
       <div>
+        <div>
         <NavBar/>
         search
       </div>
       <section>
         <Footer/>
-        <Footer/>
-      </section>
-    </div>
+        </section>
+      </div>
+      <ScrollBar/>
+    </ScrollArea>
   )
 }
 

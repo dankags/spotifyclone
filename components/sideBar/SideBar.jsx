@@ -14,14 +14,17 @@ import RightBar from '../rightBar/RightBar'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { setWidth } from '@/lib/redux/slices/pageWidth'
 import { BiSearch } from 'react-icons/bi'
+
   
 
 const SideBar = ({children}) => {
-  const {status}=useSession()
+  const {data}=useSession()
   const pageRef=useRef(null)
   const pathName=usePathname()
-  const {opened}=useAppSelector(state=>state.rightbar)
-    const routes=useMemo(()=>[
+  const { opened } = useAppSelector(state => state.rightbar)
+  const [sidebarSpan,setSideBarSpan]=useState(true)
+  const dispatch=useAppDispatch()
+  const routes=useMemo(()=>[
       {
         label:"Home",
         icon:<GoHome size={26}/>,
@@ -35,9 +38,8 @@ const SideBar = ({children}) => {
         active:pathName === "/search"
       }
     ],[pathName])
-    const [sidebarSpan,setSideBarSpan]=useState(true)
-    const dispatch=useAppDispatch()
-    dispatch(setWidth(pageRef.current?.clientWidth))
+    
+    // dispatch(setWidth(pageRef.current?.clientWidth))
     
 
 
@@ -49,15 +51,16 @@ const SideBar = ({children}) => {
       )
     }
   return (
-    <div className={cn('w-full h-[100vh] flex lg:h-[calc(100vh-80px)] lg:p-2 gap-x-2')}>
+    <div className={cn('w-full h-[100vh] flex lg:h-[calc(100vh-80px)] lg:p-2 gap-x-2' ,data ? "lg:h-[calc(100vh-80px)]" :"lg:h-[100vh]")}>
        <div className={cn("hidden lg:block",sidebarSpan ? 'w-[370px]' : "w-[85px] overflow-hidden")}>
-           { false ?
-            <>
-              <div className='flex flex-col justify-between w-full h-1/6 py-2 bg-neutral-900 rounded-md'>
+       <div className='flex flex-col justify-between w-full h-1/6 py-2 bg-neutral-900 rounded-md'>
                 {routes.map((item,i)=>
                     <SideBarItem key={i} item={item} showContent={sidebarSpan}/>
                 )}
             </div>
+           {!data ?
+            <>
+              
             <div className='h-5/6 pt-2 w-full  '>
                <div className='w-full h-full flex flex-col items-center justify-center gap-y-3 bg-neutral-900 rounded-md'>
                   <div>
@@ -73,11 +76,7 @@ const SideBar = ({children}) => {
            </>
            :
            <>
-             <div className='flex flex-col justify-between w-full h-1/6 py-2 bg-neutral-900 rounded-md'>
-                {routes.map((item,i)=>
-                    <SideBarItem key={i} item={item} showContent={sidebarSpan}/>
-                )}
-            </div>
+             
             <div className='h-5/6 pt-2 w-full'>
 
             <SideBarBottom setSideBarSpan={setSideBarSpan} sidebarSpan={sidebarSpan}/>
@@ -98,7 +97,8 @@ const SideBar = ({children}) => {
           </>
         :
         <main className={cn('w-full  h-full rounded-md')}>
-          {children}
+            {children}
+            {/* navbar and footer in small screens */}
           <div className='w-full h-14 p-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden'>
          <div>
           <Link href={"/"} className={cn('flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white',pathName === "/" && "text-white")}>
@@ -122,6 +122,7 @@ const SideBar = ({children}) => {
         </main>
           } 
         </div>
+        
     </div>
   )
 }

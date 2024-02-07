@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req, { params }) => {
     const { musicId } = params;
+    console.log(params)
     try {
         const music = await prisma.Music.findUnique({
             where: {

@@ -6,11 +6,21 @@ import { BottomHomeSection } from '../../components/_homeComp/BottomHomeSection'
 import HomeLayOut from '../../components/_homeComp/HomeLayout'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/utils/auth'
+import prisma from '@/utils/connect'
 
 export default async function Home () {
+  const serverSession=await getServerSession(authOptions)
+  let likedSong=null;
+  if(serverSession?.user){
+     likedSong = await prisma.likedSong.findUnique({
+       where: {
+         userId: serverSession.user.id,
+       },
+     });
+  }
   return (
     <div className="w-full h-full  relative">
-      <HomeLayOut>
+      <HomeLayOut likedSongs={likedSong}>
         <BottomHomeSection/>
            <div className='w-full'>
          <Footer/>

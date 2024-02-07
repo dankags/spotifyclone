@@ -1,9 +1,13 @@
 import prisma from "@/utils/connect"
-import { NextResponse } from "next/server"
+import { NextResponse,NextRequest } from "next/server"
 
-export const POST = async (req) => {
-    const {followId}=await req.query
+export const POST = async (req,{params}) => {
+    const url = new URL(req.url)
+    
+    const followId = url.searchParams.get('followId')
+    
     const body = await req.json()
+    
     try {
         if(followId === body.id){NextResponse.json("you cannot follow your self",{status:403})}
         const followExist = await prisma.following.findUnique({
@@ -12,6 +16,7 @@ export const POST = async (req) => {
                 followingId :body.id
             }
         })
+        console.log(followExist)
         if(followExist){return NextResponse.json("You already follow this artist", { status: 403 })}
         const follow = await prisma.following.create({
              data: {
@@ -25,10 +30,11 @@ export const POST = async (req) => {
                 followingId:body.id
            }
        })
-       if(follow && follower){return NextResponse.json("You now follow this user", { status: 201 })}
+    //    if(follow && follower){return NextResponse.json("You now follow this user", { status: 201 })}
         
         
     } catch (error) {
-        return NextResponse.json("internal server error",{status:500})
+        console.log(error)
+        return NextResponse.json(error,{status:500})
     }
 }

@@ -5,16 +5,18 @@ import { MdVerified } from 'react-icons/md'
 import FollowBtn from './FollowBtn'
 import prisma from '@/utils/connect'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useSession } from 'next-auth/react'
 
 
 const ArtistInfoCard = ({artistId,MusicId,userData}) => {
+
+  const { data }=useSession()
   const [fetching,setFetching]=useState(true)
   const [artist,setArtist]=useState(null)
   useEffect(()=>{
     setFetching(true);
     const fetchArtist=async()=>{
       try {
-        console.log(artistId)
         const res=await fetch(`/api/artist/${artistId}`,{
           method:'GET',
           headers:{
@@ -56,10 +58,12 @@ const ArtistInfoCard = ({artistId,MusicId,userData}) => {
         <Image src={artist.profileCoverImage ? artist.profileCoverImage : "/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"} alt="" fill className='object-cover rounded-t-lg ' />
         <div className='w-full h-full rounded-lg absolute top-0 left-0  bg-gradient-to-b from-neutral-950/40 to-transparent '>
                 {artist.verified &&
-                  <p className='absolute top-3 left-2 z-20 font-light text-sm text-center flex items-center gap-x-1'>
-                  <MdVerified className='text-blue-500' size={20} /> 
+                  <div className='absolute top-3 left-2 z-20 font-light  flex items-center gap-x-1'>
+                   <div className='h-5 w-5 relative flex items-center'>
+                  <Image src={"/verified.png"} alt="" fill className='object-cover'/> 
+                </div> 
                   <span className='text-sm font-medium'> verified</span>
-                </p>
+                </div>
                }
             </div>
               
@@ -69,7 +73,7 @@ const ArtistInfoCard = ({artistId,MusicId,userData}) => {
             <p>
             971,407 <span className='text-xs font-semibold'>monthly listener</span>
             </p>
-            <FollowBtn/>
+            {artistId !== data.user.id && (<FollowBtn/>)}
             </div>
            <p className='text-sm font-medium z-20'>{artist.artistAbout ? artist.artistAbout :"..."}</p> 
            </div>

@@ -4,9 +4,11 @@ import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { ArrowRight, PlusIcon, X } from 'lucide-react'
-import React, { useMemo, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { BiLibrary, BiSearch } from 'react-icons/bi'
 import { FaList } from 'react-icons/fa'
+import { toast } from 'sonner'
 
 
 const dummyData=[
@@ -79,9 +81,38 @@ const sortTypes=[
   }
 ]
 export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
-  const [sortTypeSelected,setSortTypeSelect]=useState([]);
+
+  const {data}=useSession()
+  const [sortTypeSelected, setSortTypeSelect] = useState([]);
   const [showSearchInput,setShowSearchInput]=useState(false)
-  const [activeComp,setActiveComp]=useState(null)
+  const [activeComp, setActiveComp] = useState(null)
+  const [library, setLibrary] = useState(null)
+  
+  useEffect(() => {
+    const fetchlibrary = async () => {
+      if (data.user) {
+        console.log(data.user.id)
+        try {
+          const res = await fetch(`/api/user/library/${data.user.id}`, {
+            method: "GET"
+          })
+          if (res.ok) {
+            const serverResponse = await res.json()
+            console.log(serverResponse.library)
+            setLibrary(serverResponse.library)
+          }
+        } catch (error) {
+          toast.error(error)
+        
+        }
+      }
+    }
+    if (data) {
+      fetchlibrary()
+    }
+  },[])
+  
+
   return (
     <div className={cn('w-full h-full bg-neutral-900 rounded-md pl-3 ', sidebarSpan ? " pr-2 pl-2" : "" )}>
               <div className='h-[16%] pr-2 flex items-center justify-between'>
@@ -137,12 +168,12 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
               <></>
             }
             <ul className={cn('pt-3 px-1 shrink-0',!sidebarSpan ? "px-0" : "")}>
-              {dummyData.map((item)=>
+              {library?.map((item)=>
               <li onClick={()=>setActiveComp(item.id)} 
                key={item.id} 
                className={cn('p-2  rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer',!sidebarSpan && "aspect-square rounded-md flex items-center justify-center",activeComp === item?.id && "bg-neutral-800")}
                >
-                <ArtistPlaylistComp key={item.id} item={item} showContent={sidebarSpan} square={item.type === "playlist"}/>
+                <ArtistPlaylistComp key={item.id} item={item} userData={data} showContent={sidebarSpan} square={item.type === "playlist"}/>
               </li>
               )
 

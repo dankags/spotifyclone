@@ -3,10 +3,38 @@ import PlayFollowBtnContainer from '@/components/PlayFollowBtnCont'
 import { StaticCarosel } from '@/components/StaticCarosel'
 import React from 'react'
 import { MdOutlineAccessTime } from 'react-icons/md'
-import { Musics } from './_trackSubComp/data'
 import { LikedList } from '@/components/likedList/LikedList'
+import prisma from '@/utils/connect'
+import { authOptions } from '@/utils/auth'
+import { getServerSession } from 'next-auth'
 
-const Tracks = () => {
+const Tracks = async () => {
+  const session =await getServerSession(authOptions)
+  const likedList = await prisma.likedSong.findUnique({
+    where: {
+      userId:session.user.id
+    },
+    select: {
+      coverImageUrl: true,
+      songs:true
+
+    }
+  })
+  const musics = await prisma.music.findMany({
+    where:{
+    id: {
+        in:likedList.songs
+      }
+    },
+    select: {
+      id: true,
+      musicName: true,
+      artistId: true,
+      otherFeaturedArtist: true,
+      musicImage: true,
+      duration: true,
+    }
+  })
   return (
     <>
       <div className='relative'>
@@ -28,7 +56,7 @@ const Tracks = () => {
                   </span>
       </div>
         <StaticCarosel displayCol showAll>
-          {Musics.map((item,i)=>
+          {musics.map((item,i)=>
            <LikedList key={item.id} music={item} index={i+1} />
           )}
         </StaticCarosel>
