@@ -1,7 +1,11 @@
 "use client"
+import LikedSongComp from '@/components/likedSong/LikedSongComp'
 import { ArtistPlaylistComp } from '../../ArtistPlaylistComp'
 import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
+import { setLikedSongs } from '@/lib/redux/slices/currentMusic'
+import { setLibrary } from '@/lib/redux/slices/library'
 import { cn } from '@/lib/utils'
 import { ArrowRight, PlusIcon, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
@@ -82,24 +86,41 @@ const sortTypes=[
 ]
 export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
 
-  const {data}=useSession()
+  const { data } = useSession()
+  const { userLibrary } = useAppSelector((state) => state.userLibrary)
+  const dispatch=useAppDispatch()
   const [sortTypeSelected, setSortTypeSelect] = useState([]);
   const [showSearchInput,setShowSearchInput]=useState(false)
   const [activeComp, setActiveComp] = useState(null)
-  const [library, setLibrary] = useState(null)
+  const [likedmusics, setLikedMusics] = useState(null)
   
   useEffect(() => {
+    const fetchLikedSongsPlaylist = async () => {
+      try {
+        const likedSongs = await fetch(`/api/likedSongs/${data.user.id}`, {
+          method: "GET",
+        })
+        if (likedSongs.ok) {
+          const likedSong = await likedSongs.json()
+          setLikedMusics(likedSong)
+          dispatch(setLikedSongs(likedSong))
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
     const fetchlibrary = async () => {
       if (data.user) {
-        console.log(data.user.id)
         try {
           const res = await fetch(`/api/user/library/${data.user.id}`, {
             method: "GET"
           })
+         
           if (res.ok) {
             const serverResponse = await res.json()
             console.log(serverResponse.library)
-            setLibrary(serverResponse.library)
+            dispatch(setLibrary(serverResponse.library))
+            // setLibrary(serverResponse.library)
           }
         } catch (error) {
           toast.error(error)
@@ -109,6 +130,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
     }
     if (data) {
       fetchlibrary()
+      fetchLikedSongsPlaylist()
     }
   },[])
   
@@ -167,8 +189,14 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
               :
               <></>
             }
-            <ul className={cn('pt-3 px-1 shrink-0',!sidebarSpan ? "px-0" : "")}>
-              {library?.map((item)=>
+        <ul className={cn('pt-3 px-1 shrink-0', !sidebarSpan ? "px-0" : "")}>
+        <li onClick={()=>setActiveComp(likedmusics?.id)} 
+               key={likedmusics?.id} 
+               className={cn('p-2  rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer',!sidebarSpan && "aspect-square rounded-md flex items-center justify-center",activeComp === likedmusics?.id && "bg-neutral-800")}
+          >
+          <LikedSongComp showContent={sidebarSpan} />
+          </li>
+              {userLibrary?.map((item)=>
               <li onClick={()=>setActiveComp(item.id)} 
                key={item.id} 
                className={cn('p-2  rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer',!sidebarSpan && "aspect-square rounded-md flex items-center justify-center",activeComp === item?.id && "bg-neutral-800")}

@@ -65,7 +65,7 @@ export const GET = async (req,{params}) => {
             },
 
         })
-        console.log(playLists)
+        
         if (playLists && artists) {
              library = artists.concat(playLists)
             

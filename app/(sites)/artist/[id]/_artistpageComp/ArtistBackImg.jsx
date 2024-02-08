@@ -3,8 +3,9 @@ import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import Image from 'next/image'
 import React from 'react'
 
-const ArtistBackImg = ({ backCoverUrl }) => {
+const ArtistBackImg = ({ artistBackImg }) => {
     const {imgurl}=useAppSelector((state)=>state.artistBackCover)
+   
   return (
       <>
           {imgurl ?
@@ -16,7 +17,7 @@ const ArtistBackImg = ({ backCoverUrl }) => {
           /> 
               :
               <Image
-              src={"/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}
+              src={artistBackImg}
               alt=""
               fill
               className="aspect-square object-cover fixed top-0"

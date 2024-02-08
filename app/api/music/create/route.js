@@ -3,7 +3,6 @@ import prisma from "@/utils/connect";
 
 export const POST = async (req, res) => {
     const body=await req.json()
-    console.log(body)
     try { 
         if(body.musicName){
         const music = await prisma.music.findUnique({

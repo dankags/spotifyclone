@@ -20,7 +20,8 @@ export const GET = async (req, { params }) => {
 }
 
 export const PUT = async (req,{params}) => {
-    const body =await req.json()
+    const body = await req.json()
+    console.log(body)
     const {artistId}=params
     try { 
         const artist = await prisma.artist.update({
@@ -28,9 +29,7 @@ export const PUT = async (req,{params}) => {
                 id:artistId
             },
             data: {
-                artistAbout:body.about ,
-                profileImg: body.profileImg,
-                backImg: body.backImg
+               ...body
             }
         })
         return NextResponse.json(artist,{status:200})

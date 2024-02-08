@@ -9,7 +9,7 @@ const ArtistCard = ({item}) => {
     <div className="group px-3 pt-3 rounded-lg relative bg-neutral-800 flex flex-col items-center hover:bg-neutral-700 transition duration-200">
     <div className={`relative w-44 h-44  py-3 flex items-center justify-center lg:mb-6 md:mb-4 sm:mb-3`}>
       <Image
-        src={item.img ? item.img : "/allan2.jpg"}
+        src={item.image ? item.image : "/allan2.jpg"}
         alt="artist img"
        fill
         className=" object-cover rounded-full shadow-lg shadow-neutral-900"
@@ -18,7 +18,7 @@ const ArtistCard = ({item}) => {
     <div className="w-full flex flex-col items-start justify-center ">
       <Link
         href={item ? `/artist/${item.id}` : "/artist/eiewfj929ds9e"}
-        className="md:text-base lg:text-lg font-semibold hover:underline text-white"
+        className="md:text-base lg:text-lg font-semibold hover:underline text-white capitalize"
       >
         {item? item.name: "Zero Venture"}
       </Link>

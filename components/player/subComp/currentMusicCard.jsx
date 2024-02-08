@@ -21,10 +21,11 @@ const CurrentMusicCard = ({ children }) => {
   const dispath = useAppDispatch();
 
   useEffect(() => {
+    //todo : fix the like issue when liked songs change
     if (likedSongs) {
-      setLike(likedSongs.includes(music?.id));
+      setLike(likedSongs.songs.includes(music?.id));
     }
-  }, [likedSongs, music]);
+  }, [likedSongs?.songs, music]);
 
   const handleLikeSong = async () => {
     if (data.user) {

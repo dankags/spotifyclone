@@ -2,6 +2,7 @@
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import {
   filterLikedSongs,
+  playMusic,
   pushToLikedSongs,
   setLikedSongs,
   setMusicBySelect,
@@ -13,11 +14,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
-import { IoPlay } from "react-icons/io5";
+import { IoPause, IoPlay } from "react-icons/io5";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { toast } from "sonner";
 
-export const LikedList = ({ music, index, mainArtist }) => {
+export const LikedList = ({ music, index, mainArtist,musics }) => {
   const { data } = useSession();
   const pathname = usePathname();
   const [showPlayIcon, setShowplayIcon] = useState(false);
@@ -25,13 +26,15 @@ export const LikedList = ({ music, index, mainArtist }) => {
     min: "00",
     sec: "00",
   });
-  const { music: currentMusic } = useAppSelector((state) => state.currentmusic);
+  const { music: currentMusic,playing } = useAppSelector((state) => state.currentmusic);
   console.log(currentMusic, music);
   const dispatch = useAppDispatch();
   const { likedSongs } = useAppSelector((state) => state.currentmusic);
   const [currentSong, setCurrentSong] = useState(currentMusic);
   const [liked, setLiked] = useState(false);
+  const [play,setPlay]=useState(false)
 
+  //handle likemusic
   const handleLike = async () => {
     if (data.user) {
       try {
@@ -63,10 +66,48 @@ export const LikedList = ({ music, index, mainArtist }) => {
     }
   };
 
+  //handle play by select and also play and pause music
+  const handlePlay = () => {
+    if (data) {
+      if (play) {
+        dispatch(playMusic())
+        setPlay(prev => !prev)
+        return
+      }
+      dispatch(setMusicBySelect(music))
+      dispatch(playMusic())
+      setPlay(prev => !prev)
+    }
+
+  }
+
+  // set play or pause icon and also playing state
   useEffect(() => {
-    setLiked(likedSongs?.includes(`${music?.id}`));
+    if (currentMusic) {
+      if (currentMusic.id===music.id) {
+        playing ? setPlay(true) :setPlay(false)
+      }
+    }
+  },[playing])
+
+  //check if current song isliked
+  useEffect(() => {
+    setLiked(likedSongs?.songs.includes(`${music?.id}`));
+    console.log(likedSongs?.songs)
   }, [likedSongs]);
 
+  //set current music play icon whenever it changes
+  useEffect(() => {
+   if (currentMusic) {
+     if (currentMusic.id === music.id) {
+       setPlay(true)
+       return
+     }
+     setPlay(false)
+   }
+},[currentMusic])
+
+//calculate the duration of the given music
   useEffect(() => {
     const durationInMinute = Math.floor((music.duration % 3600) / 60);
     const durationInSecond = Math.floor((music.duration % 3600) % 60);
@@ -94,11 +135,11 @@ export const LikedList = ({ music, index, mainArtist }) => {
         <div className="hidden lg:w-1/12 lg:flex items-center  overflow-hidden">
           {showPlayIcon ? (
             <span
-              className="text-xl"
-              onClick={() => dispatch(setMusicBySelect(music))}
+              className="text-xl text-white"
+              onClick={handlePlay}
             >
               {" "}
-              <IoPlay className="" />
+              {play ? <IoPause/> : <IoPlay className="" />}
             </span>
           ) : (
             <div>

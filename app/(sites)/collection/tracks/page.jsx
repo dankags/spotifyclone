@@ -7,6 +7,7 @@ import { LikedList } from '@/components/likedList/LikedList'
 import prisma from '@/utils/connect'
 import { authOptions } from '@/utils/auth'
 import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 
 const Tracks = async () => {
   const session =await getServerSession(authOptions)
@@ -35,6 +36,9 @@ const Tracks = async () => {
       duration: true,
     }
   })
+  if(!session){
+    redirect("/dashboard/login")
+  }
   return (
     <>
       <div className='relative'>

@@ -8,13 +8,19 @@ import { LikedList } from '@/components/likedList/LikedList'
 import { NavBar } from '@/components/navBar/NavBar'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { VibrantColor } from '@/lib/functions/colorFunc'
+import { authOptions } from '@/utils/auth'
+import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 export const revalidate = 60 
 const AlbumPage = async(param) => {
-    
+  const session=await getServerSession(authOptions)
+  if (!session) {
+    redirect("/dashboard/login")
+  }
   const album = await prisma.music.findUnique({
     where: {
         id:param.params.id
@@ -39,7 +45,8 @@ const AlbumPage = async(param) => {
       id:true,
     }
   })
-    const bgColor=await VibrantColor(`${album.musicImage}`,1)
+  const bgColor = await VibrantColor(`${album.musicImage}`, 1)
+ 
   return (
     <ScrollArea className="w-[100%] h-full rounded-md ">
       <AlbumWrapper album={album} color={bgColor}>

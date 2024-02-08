@@ -9,11 +9,12 @@ import { HiOutlineQueueList } from "react-icons/hi2";
 import {SlLoop} from "react-icons/sl"
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md'
 import { TbMicrophone2 } from "react-icons/tb";
-import { useAppSelector } from '@/lib/hooks/reduxHooks'
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
+import { playMusic, setMusicByPlaylist } from '@/lib/redux/slices/currentMusic'
 
 const MusicControls = () => {
   const [audio,setAudio]=useState(null)
@@ -30,14 +31,15 @@ const MusicControls = () => {
     }
   )
   const pathName=usePathname()
-  const {data}=useSession()
+  const {data,status}=useSession()
   const [musicProgress,setMusicProgress]=useState(0)
   const [defaultVol,setDefaultVol]=useState(40)
   const [play,setPlay]=useState(false)
-  const [mute,setmute]=useState(false)
-  const {music, playlist}=useAppSelector(state=>state.currentmusic)
+  const [mute, setmute] = useState(false)
+  const dispatch=useAppDispatch()
+  const {music, playlist,playing,musicIndex}=useAppSelector(state=>state.currentmusic)
 
-
+  //initialize audio
   useEffect(()=>{
     setAudio(new Audio());
     if (audio) {
@@ -45,7 +47,11 @@ const MusicControls = () => {
     }
   }, []);
   
+  useEffect(() => {
+  console.log(musicIndex)
+},[musicIndex])
 
+ //fetch music audio
   useEffect(() => {
     const fetchMusic = async () => {
       try {
@@ -57,7 +63,6 @@ const MusicControls = () => {
         })
         if (res.ok) {
           const serverResponse = await res.json()
-          console.log(serverResponse.audioUrl)
           audio.src = `${serverResponse.audioUrl}`
           audio.play()
           setPlay(true)
@@ -84,8 +89,22 @@ const MusicControls = () => {
     // music&&fetchMusic()
   },[music])
  
-  
+  //pause or play music whenever the redux playing state changes
+  useEffect(() => {
+    if (music) {
+      if (playing) {
+        // if (playlist) {
+          audio.play()
+          setPlay(true)
+        // }
+        return
+      }
+      audio.pause()
+      setPlay(false)
+    }
+  },[playing])
 
+  //calulate current time whenever the audio sourcechanges or is playing 
     useEffect(() => {
     audio?.addEventListener("timeupdate", (e) => {
       const currentTime = e.target.currentTime;
@@ -104,6 +123,8 @@ const MusicControls = () => {
       setCurrentTime(prev=>({...prev,min:`${currentminute < 10 ? `0${currentminute}` : `${currentminute}`}`}) );
       setCurrentTime(prev=>({...prev,sec:`${currentSecond < 10 ? `0${currentSecond}` : `${currentSecond}`}`}));
       if (currentTime === musicDuration) {
+        dispatch(playMusic())
+       if(playlist){ dispatch(setMusicByPlaylist())}
         setMusicProgress(0);
         setPlay(false)
         setCurrentTime(prev=>({...prev,min:`${ currentminute < 10 ? `00` : `00`}`}));
@@ -112,9 +133,12 @@ const MusicControls = () => {
     });
   }, [audio?.src]);
 
-  if (!data) {
+  //if not autheticated do not render the audio controls
+  if (status === "unauthenticated" || !data) {
     return
   }
+
+  //pause the audio if user is on this pages
   if (pathName.includes("/not-found") || pathName.includes("/dashboard")   ) {
     if(audio){
       audio.pause()
@@ -126,10 +150,12 @@ const MusicControls = () => {
       
       if (!play) {
         audio.play()
-        setPlay(prev=>!prev)
+        setPlay(prev => !prev)
+        dispatch(playMusic())
         return
       }
       audio.pause()
+      dispatch(playMusic())
       setPlay(prev=>!prev)
     }
   }

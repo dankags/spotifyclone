@@ -16,15 +16,18 @@ import {  } from 'next-auth/react'
 import { authOptions } from '@/utils/auth'
 import { getServerSession } from 'next-auth'
 import { darkVibrantColor } from '@/lib/functions/colorFunc'
+import { redirect } from 'next/navigation'
 
 const ArtistPage = async (params) => {
   const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/dashboard/login")
+  }
   const artist = await prisma.artist.findUnique({
     where: {
       userId: params.params.id,
     },
   });
-  console.log(artist.userId,session.user.id)
   const bgColor = await darkVibrantColor(`${artist.backImg ? artist.backImg : "public/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}`, 0.9);
   const user=await prisma.user.findUnique({
     where:{
@@ -53,18 +56,19 @@ const ArtistPage = async (params) => {
       initiateFollowId: session?.user.id
     }
   })
-  
+ 
   return (
     <div className="relative w-full h-full overflow-hidden rounded-md">
       <div className="absolute left-0 w-full h-[95%]  rounded-md overflow-hidden ">
-       <ArtistBackImg/>
+        <ArtistBackImg artistBackImg={artist.backImg} />
       </div>
       <ArtistLayout>
         <div className={`h-64 flex flex-col justify-center relative pl-4 `}>
           <ChangeCoverImg
-            artistImg={"/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}
+            artistImg={artist.backImg ? artist.backImg:"/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}
             isArtist={session?.user.id === artist.userId}
-          />
+            artistId={artist?.id}
+            />
 
           <div className="h-[15%] flex items-end gap-2">
             {artist.verified ?
@@ -99,6 +103,7 @@ const ArtistPage = async (params) => {
           followings={followings}
           artistId={artist?.id}
           artist={artist}
+          musics={musics}
         >
           <div className=" pt-3">
             <span className="mb-3 pl-3 text-xl font-semibold">Popular</span>
@@ -110,6 +115,7 @@ const ArtistPage = async (params) => {
                     index={i + 1}
                     music={song}
                     mainArtist={user}
+                    musics={musics}
                   />
                 ))}
               </StaticCarosel>

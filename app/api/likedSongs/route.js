@@ -94,3 +94,4 @@ export const DELETE = async (req,res) => {
         return NextResponse.json({ message: "Internal Server Error" },{status:500}) 
     }
 }
+

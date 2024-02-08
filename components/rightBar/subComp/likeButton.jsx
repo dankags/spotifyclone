@@ -16,7 +16,7 @@ const LikeButton = ({ music }) => {
   
   useEffect(() => {
     if (likedSongs) {
-      setLike(likedSongs.includes(music.id))
+      setLike(likedSongs?.songs.includes(music.id))
     }
   },[music,likedSongs])
 

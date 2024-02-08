@@ -2,22 +2,26 @@
 import { useDarkVibrantColor } from '@/lib/hooks/colorHooks'
 import React, { useEffect, useRef, useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs'
-import { IoIosPlay } from 'react-icons/io'
+import { IoIosPause, IoIosPlay } from 'react-icons/io'
 import DropDown from './DropDown'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { darkVibrantColor } from '@/lib/functions/colorFunc'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
+import { playMusic,  setMusicByPlaylist,  setPlaylist } from '@/lib/redux/slices/currentMusic'
 
-const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId}) => {
+const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId,musics}) => {
   
-  const {data}=useSession()
+  const { data } = useSession()
+  const dispatch = useAppDispatch()
+  const {music,playing,playlist}=useAppSelector((state)=>state.currentmusic)
   const [followState, setFollowState] = useState(false)
+  const [play,setPlay]=useState(false)
   const [currentFileColor,setCurrentFileColor] = useState(null);
   const [following,setFollowing]=useState(null)
   const { imgurl } = useAppSelector((state) => state.artistBackCover)
   
-
+  //sets the following button state if is following or not
   useEffect(() => {
     if (followings) {
       setFollowing(followings)
@@ -25,6 +29,7 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId}) =
    }
 },[])
 
+ //change the top color of the component gradient whenever the imageurl changes
   useEffect(() => {
   console.log(imgurl)
     const getBgColor = async () => {
@@ -33,6 +38,23 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId}) =
     getBgColor();
   
   }, [imgurl]);
+
+  //checks if the current playing music exists in musics playlist
+  //and playing state is true so as to set the icon
+  useEffect(() => {
+    if (music) {
+      if (musics) {
+        musics.includes(music) ? setPlay(true) : setPlay(false)
+      }
+    }
+    
+    }, [music,musics]);
+
+  useEffect(() => {
+    if (music) {
+      playing ? setPlay(true) : setPlay(false)
+    }
+  },[playing])
 
   const handleFollow = async() => {
     if (followState) {
@@ -70,8 +92,21 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId}) =
     }
         setFollowState(prev=>!prev)
   }
+
+  //dispatches the musics playlist and sets the current music to the fist one in the list
   const handlePlay = () => {
-    //todo:set the current artist music as playlist
+    if (data) {
+      setPlay(true)
+      if (play) {
+        !playlist && dispatch(setPlaylist(musics))
+        !music && dispatch(setMusicByPlaylist())  
+        dispatch(playMusic())
+        setPlay(false)
+        return
+      }
+      dispatch(playMusic())
+      setPlay(true)
+    }
   }
 
   return (
@@ -90,7 +125,7 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId}) =
           className="w-14 h-14 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:bg-green-400 cursor-pointer"
           role="play button"
         >
-          <IoIosPlay className="text-neutral-900 text-4xl" />
+          {play ? <IoIosPause className="text-neutral-900 text-4xl"/>:<IoIosPlay className="text-neutral-900 text-4xl" />}
         </button>
         {artist?.userId !== data?.user.id && (
           <button

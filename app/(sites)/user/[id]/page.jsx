@@ -14,14 +14,24 @@ import { VibrantColor } from '@/lib/functions/colorFunc'
 
 const User =async (params) => {
   const session=await getServerSession(authOptions);
-  console.log(session)
 
 
   const following= await prisma.following.findMany({
     where: {
         initiateFollowId : params.params.id
+    },
+    select: {
+      followingId :true
     }
-})
+  })
+  const followingIds=following?.map((u)=>u.followingId)
+  const followingProfiles = await prisma.user.findMany({
+    where: {
+      id: {
+        in:followingIds
+      }
+    }
+  })
 const followers=await prisma.followers.findMany({
   where: {
      followingId:params.params.id
@@ -59,6 +69,10 @@ const likedList=await prisma.likedSong.findUnique({
     }
 })
 
+  if (!session) {
+  redirect("/dashboard/login")
+}
+  
 if( session?.user.id !== params.params.id){
   redirect("/not-found")
 }
@@ -75,7 +89,7 @@ if( session?.user.id !== params.params.id){
         {following.length > 0 ?
          <div>
           <StaticCarosel title={"Top artists this month"} >
-            {following.map((item,i)=>
+            {followingProfiles?.map((item,i)=>
                 < ArtistCard key={i} item={item}/>
             )}
           </StaticCarosel>

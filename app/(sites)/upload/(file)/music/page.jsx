@@ -2,9 +2,15 @@ import { NavBar } from '@/components/navbar/NavBar'
 import MusicForm from './_subComp/MusicForm'
 import Footer from '@/components/Footer'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/utils/auth'
+import { redirect } from 'next/navigation'
 
-const Music = () => {
-
+const Music = async() => {
+  const session=await getServerSession(authOptions)
+  if (!session) {
+    redirect("/dashboard/login")
+  }
  
   return (
     <ScrollArea className={` w-full h-full rounded-md`} >

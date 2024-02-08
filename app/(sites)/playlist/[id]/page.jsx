@@ -7,9 +7,15 @@ import MusicTitles from './_playlistComp/MusicTitles'
 import { StaticCarosel } from '@/components/StaticCarosel'
 import { Musics } from '../../collection/tracks/_trackSubComp/data'
 import { LikedList } from '@/components/likedList/LikedList'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/utils/auth'
+import { redirect } from 'next/navigation'
 
-const PlayList = ({params}) => {
-    console.log(params)
+const PlayList = async({params}) => {
+   const session=await getServerSession(authOptions)
+  if (!session) {
+    redirect("/dashboard/login")
+  }
   return (
     <div className='w-full h-full'>
         <PlaylistWrapper>

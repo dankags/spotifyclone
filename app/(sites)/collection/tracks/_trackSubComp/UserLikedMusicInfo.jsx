@@ -1,15 +1,26 @@
 "use client"
+import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { LuUser2 } from 'react-icons/lu'
 
 const UserLikedMusicInfo = () => {
-    const{data}=useSession()
+  const { data } = useSession()
+  const {likedSongs}=useAppSelector((state)=>state.currentmusic)
+  const [noOfMusics, setNoOfMusics] = useState(null)
+  
+  useEffect(() => {
+  if (likedSongs) {
+    setNoOfMusics(likedSongs.songs.length >0 ?setNoOfMusics(likedSongs.songs.length):null)
+  }
+},[likedSongs?.songs])
+
   return (
     <div className="flex items-center mt-7">
                   <div className="h-6 w-6 mr-2">
-                   {data?.user.image ? <Image
+        {data?.user.image ?
+          <Image
                       src={ data.user.image }
                       alt="userProfile"
                       width={250}
@@ -25,7 +36,7 @@ const UserLikedMusicInfo = () => {
                     {data?.user.name ? data.user.name : "User" } .
                   </span>
                   <span className="text-sm text-neutral-50 font-medium">
-                    12 songs
+                    {noOfMusics < 10 ?`0${noOfMusics} Songs`:`${noOfMusics} Songs`}
                   </span>
                 </div>
   )

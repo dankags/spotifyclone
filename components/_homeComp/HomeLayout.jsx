@@ -17,11 +17,9 @@ const HomeLayOut = ({ children, likedSongs }) => {
   const pageRef = useRef();
   const pageScroll = pageRef.current;
   console.log(pageScroll);
-  const dispatch = useAppDispatch();
+ 
 
-  if(data?.user){
-    dispatch(setLikedSongs(likedSongs?.songs));
-  }
+ 
 
 
   return (
