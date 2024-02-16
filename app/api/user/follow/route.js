@@ -13,7 +13,7 @@ export const POST = async (req,{params}) => {
         const followExist = await prisma.following.findUnique({
             where: {
                 initiateFollowId : followId,
-                followingId :body.id
+                // followingId :body.id
             }
         })
         console.log(followExist)

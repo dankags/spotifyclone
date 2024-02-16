@@ -2,27 +2,42 @@
 import { useAppSelector } from '@/lib/hooks/reduxHooks';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import React, { Children, useMemo,  } from 'react'
+import { usePathname } from 'next/navigation';
+import React, { Children, useEffect, useMemo, useState,  } from 'react'
 
 export const StaticCarosel = ({children,title,displayCol,showAll}) => {
-    
-  const {width}=useAppSelector(state=>state.pagewidth)
-    const childrenArray = Children.toArray(children).flat();
-    const visibleCount=useMemo(()=>{
+  const { width } = useAppSelector(state => state.pagewidth)
+  const {componentId}=useAppSelector((state)=>state.filterComponent)
+  const pathName=usePathname()
+    const [childrenArray,setChildrenArray] =useState( Children.toArray(children).flat());
+    const [visibleCount,setVisibleCount]=useState(4);
+  const visibleItems = useMemo(()=>{return childrenArray.slice(0, visibleCount) } ,[visibleCount,childrenArray])
+    children=displayCol ? childrenArray : visibleItems;
+
+
+  //filters the list according to the unliked music
+  //but will filter if its in the liked musics page or user profile page
+  useEffect(() => {
+    if (pathName.includes("user") || pathName === "/collection/tracks") {
+      setChildrenArray(prev => prev.filter((item) => item.key.split(".$")[1] !== componentId))
+    }
+  }, [pathName, componentId])
+  
+  
+  //sets number of playlist or artist card  to be shown according to page width
+  useEffect(() => {
     if (width >= 1250 ) {
-      return 5
+      setVisibleCount(5)
     }
     if(width <= 500){
-      return 2
+      setVisibleCount(2)
     }
     if(width <= 918){
-      return 3
+      setVisibleCount(3)
     }
-       return 4
-    },[width]);
-    const visibleItems=childrenArray.slice(0,visibleCount)
-    children=displayCol ? childrenArray : visibleItems;
-    console.log(width)
+    setVisibleCount(4)
+  }, [width])
+  
   return (
     <section className='p-3 flex flex-col justify-center gap-y-3'>
         {!showAll && <div className=' flex items-center justify-between'>
@@ -35,11 +50,11 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
       }
        {displayCol ? 
         <div className='flex flex-col justify-center'>
-          {children}
+          {visibleItems.map((item)=>item)}
         </div>
         :
         <div className='flex items-center justify-between gap-x-2 '>
-          {children}
+          {visibleItems.map((item)=>item)}
         </div>
     }
     </section>

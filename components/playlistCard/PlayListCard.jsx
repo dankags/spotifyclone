@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import PlayPlaylistBtn from './subComponents/PlayPlaylistBtn'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import { Skeleton } from '../ui/skeleton'
 
 const PlayListCard = ({item}) => {
   const randomNumber = Math.floor(Math.random() * 633)
   return (
+    <Suspense fallback={!item && <Loading/>}>
     <div className="group w-full  p-3 flex flex-col justify-center rounded-lg bg-neutral-800 hover:bg-neutral-700/80">
     <div>
       <div className={`relative w-full h-48 `}>
@@ -32,7 +34,26 @@ const PlayListCard = ({item}) => {
         consectetur adipisicing elit.{" "}
       </p>
     </div>
-  </div>
+      </div>
+     </Suspense> 
+  )
+}
+
+const Loading = () => {
+  return (
+    <div className=' w-full  p-3 flex flex-col justify-center rounded-lg bg-neutral-800 '>
+      <div className='w-full h-48'>
+        <Skeleton className={"w-full h-full"}/>
+      </div>
+      <div className="flex flex-col gap-3 justify-between pt-3">
+        <div className='w-10'>
+          <Skeleton className={"w-full h-2 "}/>
+        </div>
+        <div className='w-full h-14'>
+          <Skeleton className={'w-full h-full'}/>
+        </div>
+      </div>
+    </div>
   )
 }
 

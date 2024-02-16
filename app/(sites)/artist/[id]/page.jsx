@@ -111,7 +111,7 @@ const ArtistPage = async (params) => {
               <StaticCarosel displayCol>
                 {musics.map((song, i) => (
                   <LikedList
-                    key={i}
+                    key={song.id}
                     index={i + 1}
                     music={song}
                     mainArtist={user}

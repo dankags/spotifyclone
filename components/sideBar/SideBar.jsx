@@ -1,6 +1,6 @@
 "use client"
 import { usePathname } from 'next/navigation'
-import React, { useMemo, useRef, useState } from 'react'
+import React, { Suspense, useMemo, useRef, useState } from 'react'
 import { IoLibrary, IoSearchSharp } from "react-icons/io5"
 import {GoHome} from "react-icons/go"
 import { SideBarItem } from './_subComp/SideBarItem'
@@ -14,11 +14,12 @@ import RightBar from '../rightBar/RightBar'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { setWidth } from '@/lib/redux/slices/pageWidth'
 import { BiSearch } from 'react-icons/bi'
+import { Skeleton } from '../ui/skeleton'
 
   
 
 const SideBar = ({children}) => {
-  const {data}=useSession()
+  const {data,status}=useSession()
   const pageRef=useRef(null)
   const pathName=usePathname()
   const { opened } = useAppSelector(state => state.rightbar)
@@ -57,8 +58,10 @@ const SideBar = ({children}) => {
                 {routes.map((item,i)=>
                     <SideBarItem key={i} item={item} showContent={sidebarSpan}/>
                 )}
-            </div>
-           {!data ?
+        </div>
+        {status !== "loading" ? 
+          <>
+            {!data ?
             <>
               
             <div className='h-5/6 pt-2 w-full  '>
@@ -83,7 +86,10 @@ const SideBar = ({children}) => {
             </div>
            </>
            }
-            
+          </>
+        :
+        <Loading/>
+           }
         </div>
         <div ref={pageRef} className={cn('w-full h-full  flex items-center justify-between',sidebarSpan ? 'lg:w-[calc(100%-370px)]' : "lg:w-[calc(100%-85px)]")}>
         {opened ? 
@@ -123,6 +129,14 @@ const SideBar = ({children}) => {
           } 
         </div>
         
+    </div>
+  )
+}
+
+const Loading = () => {
+  return (
+    <div className='h-5/6 w-full pt-2 '>
+      <Skeleton className={"h-full w-full rounded-md "}/>
     </div>
   )
 }

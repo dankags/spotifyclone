@@ -1,14 +1,16 @@
 "use client"
-import React from 'react'
+import React, { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { Skeleton } from './ui/skeleton'
 
 
 export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
   
   return (
-    <Link
+    <Suspense fallback={!item === <Loading/>}>
+      <Link
       href={
         item?.slug === "playlist"
           ? `/playlist/${item.id}`
@@ -54,5 +56,20 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
         </div>
       )}
     </Link>
+    </Suspense>  
   );
+}
+
+const Loading = () => {
+  return (
+    <div className='bg-neutral-700'>
+      <div className='h-12 w-12 flex items-center justify-center relative'>
+        <Skeleton className={"w-full h-full rounded-full bg-neutral-600"}/>
+      </div>
+      <div className="flex flex-col shrink-0 justify-center pl-3">
+        <Skeleton className={"h-2 w-8  bg-neutral-600"} />
+        <Skeleton className={"h-2 w-8  bg-neutral-600"}/>
+      </div>
+    </div>
+  )
 }

@@ -38,7 +38,8 @@ console.log(currentFileColor)
         console.log(error)
         return
       })
-      const cloudunaryUrl = cloudinaryRes.url
+      console.log(cloudinaryRes);
+      const cloudunaryUrl = cloudinaryRes.secure_url
       if (cloudunaryUrl) {
         const updateBackImage = await fetch(`/api/artist/${artistId}`, {
         method:"PUT",

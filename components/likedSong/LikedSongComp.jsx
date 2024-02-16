@@ -4,20 +4,14 @@ import { cn } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 const LikedSongComp = ({showContent}) => {
   const {data} =useSession()
-  const { likedSongs } = useAppSelector((state) => state.currentmusic)
-  const [numberOfSongs,setNumberOfSongs]=useState(null)
+  const { likedSongs, noOfLikedSongs } = useAppSelector((state) => state.currentmusic)
+  const numberOfSongs=useMemo(()=>noOfLikedSongs < 10 ? `0${noOfLikedSongs}`:`${noOfLikedSongs}`,[noOfLikedSongs])
 
-  useEffect(() => {
-    if (data) {
-        if(likedSongs){
-         setNumberOfSongs(likedSongs?.songs.length < 10 ? `0${likedSongs?.songs.length}`:likedSongs?.songs.length)
-        }
-     } 
-  }, [likedSongs])
+  console.log(noOfLikedSongs)
   
   if (!likedSongs) {
   return

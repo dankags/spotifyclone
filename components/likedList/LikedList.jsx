@@ -1,5 +1,6 @@
 "use client"
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
+import { setComponentId } from '@/lib/redux/slices/FilterMusic';
 import {
   filterLikedSongs,
   playMusic,
@@ -27,7 +28,6 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
     sec: "00",
   });
   const { music: currentMusic,playing } = useAppSelector((state) => state.currentmusic);
-  console.log(currentMusic, music);
   const dispatch = useAppDispatch();
   const { likedSongs } = useAppSelector((state) => state.currentmusic);
   const [currentSong, setCurrentSong] = useState(currentMusic);
@@ -56,6 +56,7 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
         if (response === "unliked the song") {
           setLiked(false);
           dispatch(filterLikedSongs(music.id));
+          dispatch(setComponentId(music.id))
           toast(`unliked this music`, {});
           return;
         }

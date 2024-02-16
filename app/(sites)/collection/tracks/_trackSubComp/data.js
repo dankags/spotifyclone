@@ -97,4 +97,4 @@ export const Musics = [
         uploaded:  "2023-11-02T07:45:52.027+00:00"  
       },
 ]
-let url=https://res.cloudinary.com/dxqbb56ul/image/upload/v1707397805/my-uploads/dg1ank6et7ffyvrvpffg.jpg
+let url='https://res.cloudinary.com/dxqbb56ul/image/upload/v1707397805/my-uploads/dg1ank6et7ffyvrvpffg.jpg'

@@ -38,7 +38,7 @@ const Music = ({musicItem}) => {
                      <Link href={`/album/sdft34wef34fcceg4gv5`} className='w-full capitalize mb-1 truncate cursor-pointer hover:underline'>{music?.musicName}</Link>
                     </div>
                     <div className='flex items-center overflow-hidden text-stone-400 truncate'>
-                      <Link href={"/artist/dfgtr56ujj8k8k6h5h"} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>ava max</Link>
+                      <Link href={"/artist/dfgtr56ujj8k8k6h5h"} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{music?.musicName}</Link>
                     </div>
                     
                 </div>
