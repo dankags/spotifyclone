@@ -46,8 +46,10 @@ const Music =({musicItem}) => {
       }
     }
     if (music) {
+      if(!music.artist){
       fetchMainArtist()
       fetchFeaturedArtists()
+    }
     }
   },[music])
   return (
@@ -66,8 +68,8 @@ const Music =({musicItem}) => {
             {music.artists ?
            <>
            <Link key={music.artists[0].id} href={`/artist/${music.artists[0].id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{music.artists[0].name}</Link>
-         {music.artists?.map((artist,index) =>
-                {index !== 0 && <Link key={artist.id} href={`/artist/${artist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>, {artist.name}</Link>}  
+         {music.artists?.slice(1).map((artist,index) =>
+                 <Link key={artist.id} href={`/artist/${artist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>, {artist.name}</Link>
            )}
               </>
               :

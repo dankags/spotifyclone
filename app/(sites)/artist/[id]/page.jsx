@@ -29,9 +29,18 @@ const ArtistPage = async (params) => {
   const bgColor = await darkVibrantColor(`${artist.backImg ? artist.backImg : "public/pexels-ahmed-adly-1270184.jpg"}`, 0.9);
   
   const musics = await prisma.music.findMany({
-    where: {
-      artistId: artist.userId,
-    },
+      where: {
+        OR: [
+          {
+            artistId: params.params.id,
+          },
+          {
+            otherFeaturedArtist: {
+              has: params.params.id,
+            },
+          },
+        ],
+      },
     select: {
       id: true,
       artistId:true,
@@ -114,7 +123,6 @@ const ArtistPage = async (params) => {
                     key={song.id}
                     index={i + 1}
                     music={song}
-                    mainArtist={mainArtist}
                     musics={musics}
                   />
                 ))}

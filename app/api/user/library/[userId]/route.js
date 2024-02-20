@@ -6,12 +6,36 @@ import { NextResponse } from "next/server";
 
 export const GET = async (req,{params}) => {
     const { userId } =params
+    const user =await getServerSession(authOptions)
     try {
-        const user =await getServerSession(authOptions)
         console.log(user)
         // if(user.id !== userId){return NextResponse.json("cannot fetch others Library", { status: 403 })}
         let library = null;
         let artists = null;
+        let artist=null
+        const isArtist = await prisma.artist.findUnique({
+            where: {
+                userId:userId
+            },
+            select: {
+                slug: true,
+                userId:true
+            }
+        })
+        if (isArtist) {
+            const artistInfo = await prisma.user.findUnique({
+                where: {
+                    id:isArtist.userId
+                },
+                select: {
+                    image: true,
+                    name: true,
+                    id:true
+                }
+
+            })
+            artist={slug:isArtist.slug,...artistInfo}
+        }
         const followings = await prisma.following.findMany({
             where: {
                 initiateFollowId : userId
@@ -72,24 +96,38 @@ export const GET = async (req,{params}) => {
         })
         
         if (playLists && artists) {
-             library = artists.concat(playLists)
+            library = artists.concat(playLists)
+            if (artist) {
+                library.push(artist)
+            }
             
             return NextResponse.json({library:library}, { status: 200 })
             
         }
         if (playLists && !artists) {
             library = playLists
+            if (artist) {
+                library.push(artist)
+            }
             return NextResponse.json({library:library}, { status: 200 })
         }
         if (!playLists && artists) {
             library = artists
+            if (artist) {
+                library.push(artist)
+            }
             return NextResponse.json({library:library}, { status: 200 })
         }
         if (!playLists && !artists) {
             library = "no library found"
+            if (artist) {
+                library = [artist]
+                return NextResponse.json({ library: library }, { status: 200 })
+            }
             return NextResponse.json({library:library}, { status: 404 })
         }
     } catch (error) {
+        console.log(error)
         return NextResponse.json(error,{status:500})
     }
     

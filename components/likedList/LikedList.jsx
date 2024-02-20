@@ -9,6 +9,7 @@ import {
   setMusicBySelect,
 } from "@/lib/redux/slices/currentMusic";
 import { filterLikedMusics, pushToLikedMusics } from '@/lib/redux/slices/likedSongs';
+import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex';
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -20,17 +21,19 @@ import { IoPause, IoPlay } from "react-icons/io5";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { toast } from "sonner";
 
-export const LikedList = ({ music, index, mainArtist,musics }) => {
+export const LikedList = ({ music, index,musics }) => {
   const { data } = useSession();
   const pathname = usePathname();
   const [showPlayIcon, setShowplayIcon] = useState(false);
   const [duration, setDuration] = useState({ min: "00",sec: "00",});
   const { music: currentMusic,playing } = useAppSelector((state) => state.currentmusic);
-  const {likedMusics}=useAppSelector((state)=>state.likedMusics)
+  const { likedMusics } = useAppSelector((state) => state.likedMusics)
+  const {playlistLength}=useAppSelector((state)=>state.musicIndex)
   const dispatch = useAppDispatch();
   const [currentSong, setCurrentSong] = useState(currentMusic);
   const [liked, setLiked] = useState(false);
   const [play, setPlay] = useState(false)
+  const [mainArtist,setMainArtist]=useState(null)
   const [featuredArtists,setFeaturedArtists]=useState(null)
 
   //handle likemusic
@@ -67,10 +70,12 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
 
   //handle play by select and also play and pause music
   const handlePlay = () => {
-    const artists=mainArtist.concat(featuredArtists)
-    const musicDetails={...music,artists:artists}
+    const artist = [mainArtist].concat(featuredArtists)
+    const musicDetails={...music,artists:artist}
     if (data) {
       if (play) {
+        playlistLength === 0 && dispatch(setPlaylistLength(musics.length))
+        dispatch(setIndexBySelect((index-1)))
         dispatch(playMusic())
         setPlay(prev => !prev)
         return
@@ -84,11 +89,27 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
 
   //fetch featured Artists
   useEffect(() => {
+    const controller=new AbortController()
+    const fetchMainArtist = async () => {
+      try {
+        const res = await fetch(`/api/artist/profile/${music?.artistId}`, {
+          method: "GET",
+          signal:controller.signal
+        })
+        if (res.ok) {
+          const artist = await res.json()
+          setMainArtist(artist)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
     const fetchFeaturedArtists = async () => {
       try {
         const res = await fetch("/api/artist/profile", {
           method: "POST",
-          body:JSON.stringify(music?.otherFeaturedArtist)
+          body: JSON.stringify(music?.otherFeaturedArtist),
+          signal:controller.signal
         })
         if (res.ok) {
           const artists = await res.json()
@@ -98,7 +119,9 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
         console.log(error)
       }
     }
+    fetchMainArtist()
     fetchFeaturedArtists()
+    return ()=>controller.abort()
   },[music])
 
   // set play or pause icon and also playing state
@@ -120,6 +143,9 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
   useEffect(() => {
     if (currentMusic) {
       if (currentMusic.id === music.id) {
+        const musicIndex = musics.indexOf(currentMusic.id)
+        console.log(musicIndex)
+        dispatch(setIndexBySelect(musicIndex))
         setPlay(true)
         return
       }
@@ -205,7 +231,7 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
                 href={`/artist/${
                   mainArtist?.id ? mainArtist.id : "uuew948ewn894en89"
                 }`}
-                className="text-sm font-medium hover:underline"
+                className="text-sm font-medium capitalize hover:underline"
               >
                 {mainArtist?.name ? mainArtist.name : "Jim Yosef"}
               </Link>
@@ -216,7 +242,7 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
                href={`/artist/${
                  artist?.id ? artist.id : "uuew948ewn894en89"
                }`}
-               className="text-sm font-medium hover:underline"
+               className="text-sm font-medium capitalize hover:underline"
              >
                   {artist?.name ? `, ${artist.name}` : "Jim Yosef"}
              </Link>

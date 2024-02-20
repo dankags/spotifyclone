@@ -57,7 +57,7 @@ const CurrentMusicCard = ({ children }) => {
       }
     }
     if (music) {
-      music.artists && fetchArtists()
+      !music.artists && fetchArtists()
     }
     return ()=>controller.abort()
  },[music])
@@ -160,11 +160,15 @@ const CurrentMusicCard = ({ children }) => {
             {music.artists[0]?.name}
               </Link>
               
-            {music.artists?.map((artist,index)=>
-           {index !== 0 && <Link key={artist.id} href={`/artist/${artist.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
-            {`, ${artist.name}`}
-          </Link>}
-            ) }
+                    {music.artists?.slice(1).map((artist) => {
+                    return (
+                        
+                        <Link key={artist.id} href={`/artist/${artist.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
+                        {`, ${artist.name}`}
+                        </Link>
+                        
+                      ) 
+                    }) }
                   </>
               :  
                   <>

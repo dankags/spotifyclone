@@ -43,9 +43,9 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
           </div>
           <div className="text-sm font-medium text-stone-400 capitalize">
             <p className="font-semibold">
-              {item.slug === "playlist"
+              {item.slug 
                 ? item.slug
-                : item.artist.map((i) => i.slug)}
+                : item.artist?.map((i) => i.slug)}
               <span>
                 {item.numberOfMusics
                   ? ` .${item.numberOfMusics} songs`
