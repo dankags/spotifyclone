@@ -31,7 +31,6 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId,mus
 
  //change the top color of the component gradient whenever the imageurl changes
   useEffect(() => {
-  console.log(imgurl)
     const getBgColor = async () => {
       setCurrentFileColor(await darkVibrantColor(`${imgurl}`,0.9)) 
     }

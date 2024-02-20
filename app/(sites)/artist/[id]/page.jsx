@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
 import ArtistLayout from './_artistpageComp/ArtistLayout'
-
-import { MdVerified} from 'react-icons/md'
 import ArtistBottom from './_artistpageComp/ArtistBottom'
 import Footer from '@/components/Footer'
 import { LikedList } from '@/components/likedList/LikedList'
@@ -12,7 +10,6 @@ import ArtistPick from './_artistpageComp/ArtistPick'
 import ChangeCoverImg from './_artistpageComp/ChangeCoverImg'
 import prisma from '@/utils/connect'
 import ArtistBackImg from './_artistpageComp/ArtistBackImg'
-import {  } from 'next-auth/react'
 import { authOptions } from '@/utils/auth'
 import { getServerSession } from 'next-auth'
 import { darkVibrantColor } from '@/lib/functions/colorFunc'
@@ -28,8 +25,23 @@ const ArtistPage = async (params) => {
       userId: params.params.id,
     },
   });
-  const bgColor = await darkVibrantColor(`${artist.backImg ? artist.backImg : "public/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}`, 0.9);
-  const user=await prisma.user.findUnique({
+  
+  const bgColor = await darkVibrantColor(`${artist.backImg ? artist.backImg : "public/pexels-ahmed-adly-1270184.jpg"}`, 0.9);
+  
+  const musics = await prisma.music.findMany({
+    where: {
+      artistId: artist.userId,
+    },
+    select: {
+      id: true,
+      artistId:true,
+      musicName:true,
+      duration:true,
+      musicImage:true,
+      otherFeaturedArtist:true,
+    },
+  });
+  const mainArtist=await prisma.user.findUnique({
     where:{
       id:artist.userId
     },
@@ -38,19 +50,7 @@ const ArtistPage = async (params) => {
       id:true
     }
   })
-    const musics = await prisma.music.findMany({
-      where: {
-        artistId: artist.userId,
-      },
-      select: {
-        id: true,
-        artistId:true,
-        musicName:true,
-        duration:true,
-        musicImage:true,
-        otherFeaturedArtist:true,
-      },
-    });
+ 
   const followings = await prisma.following.findMany({
     where: {
       initiateFollowId: session?.user.id
@@ -88,7 +88,7 @@ const ArtistPage = async (params) => {
             <span
               className={`py-2 sm:text-6xl md:text-7xl lg:text-8xl text-white font-bold truncate capitalize`}
             >
-              {user?.name ? user.name : "ava max"}
+              {mainArtist?.name ? mainArtist.name : "ava max"}
             </span>
           </div>
           <div className="h-[15%] flex flex-col justify-center">
@@ -109,12 +109,12 @@ const ArtistPage = async (params) => {
             <span className="mb-3 pl-3 text-xl font-semibold">Popular</span>
             <div className="w-full pt-2">
               <StaticCarosel displayCol>
-                {musics.map((song, i) => (
+                {musics?.map((song, i) => (
                   <LikedList
                     key={song.id}
                     index={i + 1}
                     music={song}
-                    mainArtist={user}
+                    mainArtist={mainArtist}
                     musics={musics}
                   />
                 ))}

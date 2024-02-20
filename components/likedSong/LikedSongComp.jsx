@@ -9,8 +9,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 const LikedSongComp = ({showContent}) => {
   const {data} =useSession()
   const { likedSongs } = useAppSelector((state) => state.currentmusic)
-  const { likedMusicsLength } = useAppSelector((state) => state.likedMusics)
-  const numberOfSongs=useMemo(()=>likedMusicsLength < 10 ? `0${likedMusicsLength}`:`${likedMusicsLength}`,[likedMusicsLength])
+  const { likedMusicsLength,likedMusics } = useAppSelector((state) => state.likedMusics)
+  const numberOfSongs=useMemo(()=>likedMusicsLength < 10 ? `0${likedMusicsLength}`:`${likedMusicsLength}`,[likedMusics])
   
   if (!likedSongs) {
   return

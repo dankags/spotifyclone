@@ -9,7 +9,6 @@ import { IoSearchSharp } from 'react-icons/io5'
 
 export const LeftNav = ({children}) => {
   const {data,status}=useSession()
-  console.log(data?.user,status)
   const router=useRouter();
   const pathName=usePathname();
   const history=useHistoryState()

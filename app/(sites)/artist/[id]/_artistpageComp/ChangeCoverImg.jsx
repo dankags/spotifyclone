@@ -20,8 +20,6 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
   });
   const bgColor = useDarkVibrantColor(`${imgFile.url}`, 1);
   
-  
-console.log(currentFileColor)
   const handleChangeCoverImg = async (e) => {
     const file = e.target.files[0];
     if (file) {

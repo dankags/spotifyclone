@@ -48,18 +48,20 @@ const MusicControls = () => {
   }, []);
   
   useEffect(() => {
-  console.log(musicIndex)
+ 
 },[musicIndex])
 
  //fetch music audio
   useEffect(() => {
+    const controller=new AbortController();
     const fetchMusic = async () => {
       try {
         const res = await fetch("/api/music/audio", {
           method: "POST",
           body: JSON.stringify({
             musicId:music.id
-          })
+          }),
+          signal:controller.signal
         })
         if (res.ok) {
           const serverResponse = await res.json()
@@ -69,7 +71,7 @@ const MusicControls = () => {
         }
         
       } catch (error) {
-        toast.error(`${error}`)
+        // toast.error(`${error}`)
       }
     }
     if (music) {
@@ -86,7 +88,7 @@ const MusicControls = () => {
 
       fetchMusic()
     }
-    // music&&fetchMusic()
+    return ()=>controller.abort()
   },[music])
  
   //pause or play music whenever the redux playing state changes

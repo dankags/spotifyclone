@@ -50,6 +50,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
   const [showSearchInput,setShowSearchInput]=useState(false)
   const [activeComp, setActiveComp] = useState(null)
   const [likedmusics, setLikedmusics] = useState(null)
+  const [showLibraryShadow,setShowLibraryShadow]=useState(false)
   
   useEffect(() => {
     const fetchLikedSongsPlaylist = async () => {
@@ -91,7 +92,14 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
       fetchLikedSongsPlaylist()
     }
   },[])
-  
+   
+  const handleLibraryScroll = (e) => {
+    if (e.target.scrollHeight > 10) {
+      setShowLibraryShadow(true)
+      return
+    }
+    setShowLibraryShadow(false)
+  }
 
   return (
     <div className={cn('w-full h-full bg-neutral-900 rounded-md pl-3 ', sidebarSpan ? " pr-2 pl-2" : "" )}>
@@ -112,7 +120,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
               }
               </div>
               {sidebarSpan ? 
-              <ScrollArea  className={cn("w-full h-[13%]  px-3 shadow-lg ")}>
+              <ScrollArea  className={cn("w-full h-[13%]  px-3 ")}>
                 <div className='w-max flex items-center space-x-1 '>
                 <button onClick={()=>setSortTypeSelect([])} className={cn("mr-2 p-2 rounded-full bg-neutral-800 hover:bg-neutral-700 block transition-transform duration-300",sortTypeSelected.length===0 && "hidden")}><X size={20}/></button>
                 {sortTypes.map((s,i)=>
@@ -127,7 +135,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
             <></>  
             }
               
-            <ScrollArea className={cn(' w-full h-[71%] pt-2 pr-2 ',!sidebarSpan ? "h-5/6" : "" )}>
+            <ScrollArea onScrollCapture={handleLibraryScroll} className={cn(` w-full h-[71%] pt-2 pr-2 ${showLibraryShadow ? 'shadow-[rgba(10,10,10)inset_0px_15px_10px_-10px]':''}`,!sidebarSpan ? "h-5/6" : "" )}>
             {sidebarSpan ? 
               <div className='flex items-center justify-between'>
                 <div className={cn("group flex p-2 ml-1  items-center justify-center rounded-full hover:bg-neutral-800 transition-all ease-in-out duration-500 overflow-hidden ",showSearchInput ? "w-4/6 gap-x-2 flex items-center bg-neutral-800 rounded-md  " :"w-9")}>

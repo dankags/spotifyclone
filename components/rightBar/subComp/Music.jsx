@@ -39,7 +39,6 @@ const Music =({musicItem}) => {
         })
         if (res.ok) {
           const artists=await res.json()
-          console.log(artists)
           setFeaturedArtists(artists)
         }
       } catch (error) {
@@ -51,7 +50,6 @@ const Music =({musicItem}) => {
       fetchFeaturedArtists()
     }
   },[music])
-    console.log(music)
   return (
     <div className='w-full flex flex-col justify-center'>
           <div className=' relative aspect-square '>
@@ -64,10 +62,21 @@ const Music =({musicItem}) => {
                      <Link href={`/album/${music?.id}`} className='w-full capitalize mb-1 truncate cursor-pointer hover:underline'>{music?.musicName}</Link>
                     </div>
                     <div className='flex items-center overflow-hidden text-stone-400 truncate'>
-                      <Link href={`/artist/${mainArtist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{mainArtist?.name}</Link>
+            {music.artists ?
+           <>
+           <Link key={music.artists[0].id} href={`/artist/${music.artists[0].id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{music.artists[0].name}</Link>
+         {music.artists?.map((artist,index) =>
+                {index !== 0 && <Link key={artist.id} href={`/artist/${artist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>, {artist.name}</Link>}  
+           )}
+              </>
+              :
+              <>
+              <Link href={`/artist/${mainArtist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{mainArtist?.name}</Link>
             {featuredArtists?.map((artist) =>
                     <Link key={artist.id} href={`/artist/${artist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>, {artist.name}</Link>  
-                      )}
+              )}
+            </>
+              }
                     </div>
                     
                 </div>

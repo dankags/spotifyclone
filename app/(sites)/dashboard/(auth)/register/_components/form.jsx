@@ -27,31 +27,36 @@ export const Form = () => {
     name:"",
     gender:null
   })
-  const [dateInput,setDateInput]=useState({
-    day:null,
-    month:null,
-    year:null
-  })
-  const handleRegister=async(e)=>{
+  const [dateInput, setDateInput] = useState({
+    day: null,
+    month: "00",
+    year: null,
+  });
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const birthDate=new Date(`${dateInput.day}-${dateInput.month}-${dateInput.year}`).toISOString()
-    const formData={...inputValue,birthDate}
+    const birthDate = new Date(
+      parseInt(dateInput.year),
+      parseInt(dateInput.month),
+      parseInt(dateInput.day)
+    ).toISOString();
+    const formData = { ...inputValue, birthDate };
     try {
-      const res=await fetch("/api/register",{
-        method:'POST',
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify(formData)
-      })
-      if (res.ok) {
-        route.replace("/dashboard/login")
+      if (birthDate) {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        if (res.ok) {
+          route.replace("/dashboard/login");
+        }
       }
-      
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <form onSubmit={handleRegister} className="w-10/12 flex flex-col items-center">
     <div className="w-full flex flex-col items-start gap-3">

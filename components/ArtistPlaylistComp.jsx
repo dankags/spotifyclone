@@ -9,7 +9,7 @@ import { Skeleton } from './ui/skeleton'
 export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
   
   return (
-    <Suspense fallback={!item === <Loading/>}>
+    <Suspense fallback={<Loading/>}>
       <Link
       href={
         item?.slug === "playlist"

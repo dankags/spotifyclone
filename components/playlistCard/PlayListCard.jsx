@@ -7,7 +7,7 @@ import { Skeleton } from '../ui/skeleton'
 const PlayListCard = ({item}) => {
   const randomNumber = Math.floor(Math.random() * 633)
   return (
-    <Suspense fallback={!item && <Loading/>}>
+    <Suspense fallback={ <Loading/>}>
     <div className="group w-full  p-3 flex flex-col justify-center rounded-lg bg-neutral-800 hover:bg-neutral-700/80">
     <div>
       <div className={`relative w-full h-48 `}>
@@ -22,7 +22,8 @@ const PlayListCard = ({item}) => {
         </div>
         {/* <div className="w-full h-full absolute rounded-lg top-0 left-0 bg-gradient-to-bl from-pink-600/40 to-blue-700/40"></div> */}
         <span className="w-14  absolute left-2 bottom-2 text-xs font-bold text-white ">
-          Discover weekly{" "}
+          {/* todo: show if its users playlist */}
+          {/* Discover weekly{" "} */}
         </span>
         <PlayPlaylistBtn/>
       </div>

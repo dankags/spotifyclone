@@ -17,7 +17,7 @@ const ArtistBackImg = ({ artistBackImg }) => {
           /> 
               :
               <Image
-              src={artistBackImg}
+              src={artistBackImg ? artistBackImg : '/pexels-ahmed-adly-1270184.jpg'}
               alt=""
               fill
               className="aspect-square object-cover fixed top-0"

@@ -30,7 +30,8 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
   const dispatch = useAppDispatch();
   const [currentSong, setCurrentSong] = useState(currentMusic);
   const [liked, setLiked] = useState(false);
-  const [play,setPlay]=useState(false)
+  const [play, setPlay] = useState(false)
+  const [featuredArtists,setFeaturedArtists]=useState(null)
 
   //handle likemusic
   const handleLike = async () => {
@@ -66,18 +67,39 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
 
   //handle play by select and also play and pause music
   const handlePlay = () => {
+    const artists=mainArtist.concat(featuredArtists)
+    const musicDetails={...music,artists:artists}
     if (data) {
       if (play) {
         dispatch(playMusic())
         setPlay(prev => !prev)
         return
       }
-      dispatch(setMusicBySelect(music))
+      dispatch(setMusicBySelect(musicDetails))
       dispatch(playMusic())
       setPlay(prev => !prev)
     }
 
   }
+
+  //fetch featured Artists
+  useEffect(() => {
+    const fetchFeaturedArtists = async () => {
+      try {
+        const res = await fetch("/api/artist/profile", {
+          method: "POST",
+          body:JSON.stringify(music?.otherFeaturedArtist)
+        })
+        if (res.ok) {
+          const artists = await res.json()
+          setFeaturedArtists(artists)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchFeaturedArtists()
+  },[music])
 
   // set play or pause icon and also playing state
   useEffect(() => {
@@ -88,7 +110,7 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
     }
   },[playing])
 
-  console.log(likedMusics)
+  
   //check if current song isliked
   useEffect(() => {
     setLiked(likedMusics?.includes(`${music?.id}`));
@@ -187,7 +209,19 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
               >
                 {mainArtist?.name ? mainArtist.name : "Jim Yosef"}
               </Link>
-              ,
+
+              {featuredArtists?.map((artist) =>
+                <Link
+                  key={artist.id}
+               href={`/artist/${
+                 artist?.id ? artist.id : "uuew948ewn894en89"
+               }`}
+               className="text-sm font-medium hover:underline"
+             >
+                  {artist?.name ? `, ${artist.name}` : "Jim Yosef"}
+             </Link>
+              )}
+
             </p>
           </div>
         </div>

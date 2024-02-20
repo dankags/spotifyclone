@@ -1,6 +1,6 @@
 "use client"
 import { usePathname } from 'next/navigation'
-import React, { Suspense, useMemo, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { IoLibrary, IoSearchSharp } from "react-icons/io5"
 import {GoHome} from "react-icons/go"
 import { SideBarItem } from './_subComp/SideBarItem'
@@ -20,7 +20,8 @@ import { Skeleton } from '../ui/skeleton'
 
 const SideBar = ({children}) => {
   const {data,status}=useSession()
-  const pageRef=useRef(null)
+  const pageRef = useRef(null)
+  const pageWidth=pageRef.current?.clientWidth
   const pathName=usePathname()
   const { opened } = useAppSelector(state => state.rightbar)
   const [sidebarSpan,setSideBarSpan]=useState(true)
@@ -39,8 +40,12 @@ const SideBar = ({children}) => {
         active:pathName === "/search"
       }
     ],[pathName])
+   useEffect(() => {
+    if (pageWidth) {
+      dispatch(setWidth(pageWidth))
+     }
+    },[pageWidth])
     
-    // dispatch(setWidth(pageRef.current?.clientWidth))
     
 
 

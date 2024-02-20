@@ -5,6 +5,7 @@ import { closeRightbar, openRightbar } from '@/lib/redux/slices/rightbar'
 import { cn } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
@@ -19,15 +20,49 @@ const CurrentMusicCard = ({ children }) => {
   const {likedMusics}=useAppSelector((state)=>state.likedMusics)
   const { music } = useAppSelector((state) => state.currentmusic);
   const [like, setLike] = useState(false);
+  const [mainArtist,setMainArtist]=useState(null)
+  const [artists,setArtists]=useState(null)
   const dispath = useAppDispatch();
 
+  //checks if the music playing is contained in the liked musics
   useEffect(() => {
-    //todo : fix the like issue when liked songs change
     if (likedMusics) {
       setLike(likedMusics?.includes(music?.id));
     }
   }, [likedMusics, music]);
 
+//fetch main artist and featured artists if currentmusic doesnot have
+  useEffect(() => {
+    const controller=new AbortController()
+    const fetchArtists = async () => {
+      try {
+        const artist = await fetch(`/api/artist/profile/${music.artistId}`, { method: "GET",signal:controller.signal })
+        if (artist.ok) {
+          const mainArtists = await artist.json()
+          setMainArtist(mainArtists)
+          const featuredArtist = await fetch("/api/artist/profile", {
+              method: "POST",
+              body: JSON.stringify(music.otherFeaturedArtist),
+              signal: controller?.signal,
+          });
+          if (featuredArtist.ok) {
+            const artists=await featuredArtist.json()
+            setArtists(artists)
+            return
+          }
+          
+        }
+      } catch (error) {
+       console.log(error) 
+      }
+    }
+    if (music) {
+      music.artists && fetchArtists()
+    }
+    return ()=>controller.abort()
+ },[music])
+
+  //handle liking a song
   const handleLikeSong = async () => {
     if (data.user) {
       try {
@@ -66,6 +101,7 @@ const CurrentMusicCard = ({ children }) => {
     toast.error("not autheticated")
   }
   
+  //handle showing righBar
     const handleShowRightBar = () => {
       if (opened) {
         dispath(closeRightbar());
@@ -110,12 +146,41 @@ const CurrentMusicCard = ({ children }) => {
               </div>
             </div>
             <div className="w-8/12 pl-3 flex flex-col justify-center gap-y-1 capitalize ">
-              <span className="text-base font-medium truncate text-white cursor-pointer hover:underline">
+              {/* display musicname and link */}
+              <Link key={music.id} href={`/album/${music.id}`} className="text-base font-medium truncate text-white cursor-pointer hover:underline">
                 {music.musicName}
-              </span>
-              <span className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
-                ava max
-              </span>
+              </Link>
+
+
+              {/* display artists names and links*/}
+              <div className='flex items-center'>
+                {music.artists ? 
+                  <>
+                     <Link key={music.artists[0]?.id} href={`/artist/${music.artists[0]?.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
+            {music.artists[0]?.name}
+              </Link>
+              
+            {music.artists?.map((artist,index)=>
+           {index !== 0 && <Link key={artist.id} href={`/artist/${artist.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
+            {`, ${artist.name}`}
+          </Link>}
+            ) }
+                  </>
+              :  
+                  <>
+                    <Link key={mainArtist?.id} href={`/artist/${mainArtist?.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
+            {mainArtist?.name}
+              </Link>
+              
+            {artists?.map((artist)=>
+            <Link key={artist.id} href={`/artist/${artist.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
+            {`, ${artist.name}`}
+          </Link>
+            ) }
+                  </>
+              }
+              
+            </div>
             </div>
             <div className="w-2/12 flex justify-between items-center">
               <button onClick={handleLikeSong}>

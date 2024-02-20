@@ -18,18 +18,17 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
   //filters the list according to the unliked music
   //but will filter if its in the liked musics page or user profile page
   useEffect(() => {
-    console.log(pathName)
+    
     if (pathName.includes("user") || pathName === "/collection/tracks") {
       setChildrenArray(prev => prev.filter((item) => item.key.split(".$")[1] !== componentId))
     }
     if (pathName.includes("/artist/")) {
-      console.log(childrenArray.length)
+      
       setVisibleCounts(childrenArray.length)
     }
   }, [pathName, componentId])
   
   useEffect(() => {
-    console.log(visibleCounts)
     setVisibleItems(childrenArray.slice(0, visibleCounts))
  },[visibleCounts, childrenArray])
 

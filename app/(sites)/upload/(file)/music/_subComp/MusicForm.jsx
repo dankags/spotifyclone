@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { IoCreate } from "react-icons/io5";
+import { toast } from "sonner";
 
 const categories = [
   "hiphop",
@@ -139,7 +140,7 @@ const MusicForm = () => {
           method: "POST",
           body: JSON.stringify(musicdata),
         })
-          .then((res) => res.json())
+          .then((res) => toast.success(res.json()) )
           .catch((error) => console.log(error));
       } catch (error) {
         console.log(error);
