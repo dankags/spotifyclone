@@ -2,21 +2,23 @@ import Footer from '@/components/Footer'
 import { NavBar } from '@/components/navBar/NavBar'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import React from 'react'
+import SearchBody from './_searchComponents/SearchBody'
+import prisma from '@/utils/connect'
 
-function Search() {
+async function Search() {
+  const categories=await prisma.category.findMany()
+
   return (
-    <ScrollArea className='w-full'>
+
       <div>
         <div>
-        <NavBar/>
-        search
+        <SearchBody categories={ categories} />
       </div>
       <section>
         <Footer/>
         </section>
       </div>
-      <ScrollBar/>
-    </ScrollArea>
+     
   )
 }
 

@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CgClose } from 'react-icons/cg'
 import { ScrollArea } from '../ui/scroll-area'
 import { cn } from '@/lib/utils'
@@ -9,19 +9,15 @@ import UpComingMusic from './subComp/NextQueueMusic'
 import { useAppDispatch, useAppSelector, useAppStore } from '@/lib/hooks/reduxHooks'
 import { closeRightbar } from '@/lib/redux/slices/rightbar'
 import Music from './subComp/Music'
+import { toast } from 'sonner'
+import { artists } from '@/app/(sites)/user/_userComp/data'
 
 
 const RightBar = ({children}) => {
-    const [like,setLike]=useState(false)
-    const handleLike=()=>{
-      setLike(prev=>!prev)
-    }
     const {opened}=useAppSelector(state=>state.rightbar)
     const {music}=useAppSelector(state=>state.currentmusic)
     const dispath=useAppDispatch()
-   
-    console.log(music)
-    console.log(opened,music)
+
 
   return (
    <div className={cn('w-full h-full',opened ? "block" :"hidden")}>
@@ -32,7 +28,7 @@ const RightBar = ({children}) => {
             <button onClick={()=>dispath(closeRightbar())} className='w-7 h-7 flex items-center justify-center rounded-full hover:bg-stone-700'><CgClose size={20}/></button>
         </section>
         <section className='w-full flex flex-col justify-center gap-y-2'>
-          <Music musicItem={music}/>
+            <Music musicItem={music}/>
         </section>
         <section className='mt-3'>
             <ArtistInfoCard artistId={music?.artistId}/>

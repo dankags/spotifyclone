@@ -1,10 +1,15 @@
+import { authOptions } from "@/utils/auth";
 import prisma from "@/utils/connect";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 
 export const GET = async (req,{params}) => {
     const { userId } =params
     try {
+        const user =await getServerSession(authOptions)
+        console.log(user)
+        // if(user.id !== userId){return NextResponse.json("cannot fetch others Library", { status: 403 })}
         let library = null;
         let artists = null;
         const followings = await prisma.following.findMany({
@@ -85,7 +90,6 @@ export const GET = async (req,{params}) => {
             return NextResponse.json({library:library}, { status: 404 })
         }
     } catch (error) {
-        console.log(error)
         return NextResponse.json(error,{status:500})
     }
     

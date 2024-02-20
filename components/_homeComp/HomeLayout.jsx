@@ -8,23 +8,31 @@ import { useSession } from 'next-auth/react'
 import { setLikedSongs } from '@/lib/redux/slices/currentMusic'
 import { useAppDispatch } from '@/lib/hooks/reduxHooks'
 import { useLocalStorage } from '@uidotdev/usehooks'
+import { useNavBarDarkVibrant, useNavBarVibrant } from '@/lib/hooks/colorHooks'
 
 
 const HomeLayOut = ({ children, likedSongs }) => {
   const { data } = useSession()
   // const [likedList,saveLikedList]=useLocalStorage('likedSongs',likedSongs)
   const [containerColor, setContainerColor] = useState("rgba(64,64,64,0.2)");
-  const pageRef = useRef();
-  const pageScroll = pageRef.current;
-  console.log(pageScroll);
+  const [navColor, setNavcolor] = useState(false)
+  const navBgColor=useNavBarDarkVibrant("https://res.cloudinary.com/dxqbb56ul/image/upload/v1707399980/likedSongs_sgfefa.png")
  
-
+  const handleScroll = (e) => {
+    const totalScrollHeight=e.target.scrollHeight
+    const percentScrolled = (e.target.scrollTop / totalScrollHeight) * 100
+    if (percentScrolled > 13) {
+      setNavcolor(true)
+      return
+    }
+    setNavcolor(false)
+  };
  
 
 
   return (
     <ScrollArea
-      ref={pageRef}
+      onScrollCapture={handleScroll}
       className="relative h-full rounded-md  hover:transition-all hover:duration-700"
       style={{
         backgroundImage: `linear-gradient(to top,rgb(23,23,23)  40%,${containerColor} 100%)`,
@@ -33,14 +41,14 @@ const HomeLayOut = ({ children, likedSongs }) => {
         // transitionTimingFunction:"ease-in-out"
       }}
     >
-      <div>
+      <div  className='relative'  >
         <div className="sticky top-0 z-10">
-          <NavBar />
+          <NavBar bgColor={navColor ? `${navBgColor}` : ""}/>
         </div>
         <TopSection changeColor={setContainerColor} />
         {children}
       </div>
-      <ScrollBar ref={pageRef} />
+      <ScrollBar className={"z-20"} />
     </ScrollArea>
   );
 };

@@ -62,7 +62,7 @@ const ArtistPage = async (params) => {
       <div className="absolute left-0 w-full h-[95%]  rounded-md overflow-hidden ">
         <ArtistBackImg artistBackImg={artist.backImg} />
       </div>
-      <ArtistLayout>
+      <ArtistLayout imageUrl={artist.backImg}>
         <div className={`h-64 flex flex-col justify-center relative pl-4 `}>
           <ChangeCoverImg
             artistImg={artist.backImg ? artist.backImg:"/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}

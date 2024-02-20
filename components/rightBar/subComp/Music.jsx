@@ -1,30 +1,56 @@
-import prisma from '@/utils/connect'
+"use client"
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs'
 import LikeButton from './likeButton'
+import { toast } from 'sonner'
 
-const fetchmusic=async(musicId)=>{
-  const music=await prisma.music.findUnique({ 
-    where:{
-        id:musicItem,
-    }
-})
-return music 
-}
-
-const Music = ({musicItem}) => {
+const Music =({musicItem}) => {
   let music=null;
   if(!musicItem.musicImage){
-    music=async()=>{
-        const fetchedMusic=await fetchmusic(musicItem);
-        return fetchedMusic;
-   }
+    music=fetchmusic(musicItem);
   }
+
   if(musicItem.musicImage){
   music=musicItem;
-}
+  }
+  const [mainArtist, setMainArtist] = useState(null)
+  const [featuredArtists,setFeaturedArtists]=useState(null)
+  useEffect(() => {
+    const fetchMainArtist = async () => {
+      try {
+        const res = await fetch(`/api/artist/profile/${music.artistId}`, {
+          method:"GET"
+        })
+        if (res.ok) {
+          const artist = await res.json()
+          setMainArtist(artist)
+        }
+      } catch (error) {
+        toast.error(error)
+      }
+    }
+    const fetchFeaturedArtists =async () => {
+      try {
+        const res = await fetch(`/api/artist/profile`, {
+          method: "POST",
+          body:JSON.stringify(music?.otherFeaturedArtist)
+        })
+        if (res.ok) {
+          const artists=await res.json()
+          console.log(artists)
+          setFeaturedArtists(artists)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (music) {
+      fetchMainArtist()
+      fetchFeaturedArtists()
+    }
+  },[music])
     console.log(music)
   return (
     <div className='w-full flex flex-col justify-center'>
@@ -35,10 +61,13 @@ const Music = ({musicItem}) => {
                 <div className='w-[75%]'>
                    
                     <div className='w-full flex items-center justify-start font-bold  text-3xl '>
-                     <Link href={`/album/sdft34wef34fcceg4gv5`} className='w-full capitalize mb-1 truncate cursor-pointer hover:underline'>{music?.musicName}</Link>
+                     <Link href={`/album/${music?.id}`} className='w-full capitalize mb-1 truncate cursor-pointer hover:underline'>{music?.musicName}</Link>
                     </div>
                     <div className='flex items-center overflow-hidden text-stone-400 truncate'>
-                      <Link href={"/artist/dfgtr56ujj8k8k6h5h"} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{music?.musicName}</Link>
+                      <Link href={`/artist/${mainArtist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{mainArtist?.name}</Link>
+            {featuredArtists?.map((artist) =>
+                    <Link key={artist.id} href={`/artist/${artist?.id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>, {artist.name}</Link>  
+                      )}
                     </div>
                     
                 </div>

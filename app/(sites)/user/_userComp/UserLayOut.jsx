@@ -2,10 +2,10 @@
 import Footer from '@/components/Footer'
 import { NavBar } from '@/components/navBar/NavBar'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useDarkVibrantColor, useVibrantColor } from '@/lib/hooks/colorHooks'
+import {  useNavBarDarkVibrant, useVibrantColor } from '@/lib/hooks/colorHooks'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import UserDialog from './UserDialog'
 import { LuUser2 } from 'react-icons/lu'
@@ -18,21 +18,25 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
       img:'',
       name:''
     })
-    // let userImgbgColor=null;
-    // useEffect(()=>{
-    //   userImgbgColor=useVibrantColor(imgNameChoosen?.img,1);
-    // },[imgNameChoosen.img])
-    
-    // const userBottomSectionColor=useVibrantColor(data?.user.img,0.6)
-    // const choosenbottomColor=useVibrantColor(imgNameChoosen?.img,0.4)
     const choosenImgColor= useVibrantColor(`${imgNameChoosen.img ? imgNameChoosen.img:data?.user.image }`,1)
-    
+    const [navColor, setNavcolor] = useState(false)
+    const navBgColor=useNavBarDarkVibrant(user?.image)
+    const handleScroll = (e) => {
+      const totalScrollHeight=e.target.scrollHeight
+      const percentScrolled = (e.target.scrollTop / totalScrollHeight) * 100
+      if (percentScrolled > 13) {
+        setNavcolor(true)
+        return
+      }
+      setNavcolor(false)
+  };
+  
   return (
     <div className='w-full h-full rounded-md  top-0' style={{backgroundColor:`${imgNameChoosen ? choosenImgColor : "rgba(127.5,127.5,127.5,1)"}`}}>
-        <ScrollArea className='w-full h-full rounded-md bg-neutral-900/30'>
+        <ScrollArea onScrollCapture={handleScroll} className='w-full h-full rounded-md bg-neutral-900/30'>
           <main className='relative'>
         <div className='sticky z-10 top-0'>
-          <NavBar/>
+          <NavBar bgColor={navColor ? `${navBgColor}`:""}/>
         </div>
         <section className={` w-full flex items-end gap-3 pl-4 pb-4 relative `}>
              

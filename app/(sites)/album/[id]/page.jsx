@@ -31,6 +31,7 @@ const AlbumPage = async(param) => {
       artistId: true,
       musicImage: true,
       duration: true,
+      otherFeaturedArtist:true,
       uploaded:true,
     }
   })
@@ -48,7 +49,7 @@ const AlbumPage = async(param) => {
   const bgColor = await VibrantColor(`${album.musicImage}`, 1)
  
   return (
-    <ScrollArea className="w-[100%] h-full rounded-md ">
+    <div className="w-[100%] h-full rounded-md ">
       <AlbumWrapper album={album} color={bgColor}>
        <div>
        <div
@@ -116,8 +117,7 @@ const AlbumPage = async(param) => {
             </StaticCarosel>
         </div>
       </AlbumWrapper>
-      <ScrollBar className='z-10'/>
-    </ScrollArea>
+    </div>
   )
 }
 

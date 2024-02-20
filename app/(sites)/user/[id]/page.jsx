@@ -79,7 +79,7 @@ if( session?.user.id !== params.params.id){
   
   return (
     <div className='w-full h-full'>
-      <UserLayOut followers={followers} followings={following} playlist={playlist}  paramsId={params.params.id}>
+      <UserLayOut followers={followers} followings={following} playlist={playlist}  paramsId={params.params.id} user={session?.user}>
         <div className='p-3 flex flex-col justify-center'>
           <div className='py-3 '>
             <button  className='p-2  rounded-full text-stone-400 hover:text-white transition'>

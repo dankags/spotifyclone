@@ -6,6 +6,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { setLikedSongs } from '@/lib/redux/slices/currentMusic'
 import { setLibrary } from '@/lib/redux/slices/library'
+import { setLikedMusics } from '@/lib/redux/slices/likedSongs'
 import { cn } from '@/lib/utils'
 import { ArrowRight, PlusIcon, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
@@ -14,51 +15,6 @@ import { BiLibrary, BiSearch } from 'react-icons/bi'
 import { FaList } from 'react-icons/fa'
 import { toast } from 'sonner'
 import { Skeleton } from '@/components/ui/skeleton'
-
-
-const dummyData=[
-  {
-    id:"hifhi38843f8",
-    name:"allan walker",
-    image:"/allan2.jpg",
-    type:"artist"
-  },
-  {
-    id:"dyuy27827378",
-    name:"liked songs",
-    href:"/collection/tracks",
-    image:"/likedSongs.png",
-    numberOfMusics:44,
-    type:"playlist"
-  },
-   {
-    id:"dyuy27827379",
-    name:"DanKags",
-    href:"/playlist/tyghi98k-90u9h6g6g766y87",
-    image:"/playlist.jpg",
-    type:"playlist",
-    userPlayList:"DanielKagombe"
-  },
-  {
-    id:"hifhi38843f98",
-    name:"k-391",
-    image:"/ab6761610000e5ebb6f3a82acf4aa61603b353de.jpg",
-    type:"artist"
-  },
-  {
-    id:"hifhi38843f92",
-    name:"the chainsmokers",
-    image:"/ab6761610000e5ebdb68d678df6d89bf8a55d052.jpg",
-    type:"artist"
-  },
-  {
-    id:"hifhi38843f93",
-    name:"marshmello",
-    image:"/ab6761610000e5eb41e4a3b8c1d45a9e49b6de21.jpg",
-    type:"artist"
-  }
-
-]
 
 const sortTypes=[
   {
@@ -93,7 +49,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
   const [sortTypeSelected, setSortTypeSelect] = useState([]);
   const [showSearchInput,setShowSearchInput]=useState(false)
   const [activeComp, setActiveComp] = useState(null)
-  const [likedmusics, setLikedMusics] = useState(null)
+  const [likedmusics, setLikedmusics] = useState(null)
   
   useEffect(() => {
     const fetchLikedSongsPlaylist = async () => {
@@ -103,7 +59,8 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
         })
         if (likedSongs.ok) {
           const likedSong = await likedSongs.json()
-          setLikedMusics(likedSong)
+          setLikedmusics(likedSong)
+          dispatch(setLikedMusics(likedSong.songs))
           dispatch(setLikedSongs(likedSong))
         }
       } catch (error) {

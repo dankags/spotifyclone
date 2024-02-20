@@ -1,6 +1,7 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/reduxHooks";
 import { filterLikedSongs, pushToLikedSongs } from "@/lib/redux/slices/currentMusic";
+import { filterLikedMusics, pushToLikedMusics } from "@/lib/redux/slices/likedSongs";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
@@ -12,13 +13,13 @@ const LikeButton = ({ music }) => {
   const { data } = useSession()
   const dispatch=useAppDispatch()
   const [like, setLike] = useState(false);
-  const { likedSongs } = useAppSelector((state) => state.currentmusic)
+  const {likedMusics}=useAppSelector((state)=>state.likedMusics)
   
   useEffect(() => {
-    if (likedSongs) {
-      setLike(likedSongs?.songs.includes(music.id))
+    if (likedMusics) {
+      setLike(likedMusics?.includes(music.id))
     }
-  },[music,likedSongs])
+  },[music,likedMusics])
 
   const handleLike =async () => {
     if (data.user) {
@@ -36,13 +37,13 @@ const LikeButton = ({ music }) => {
         console.log(response)
         if (response === "added to liked songs") {
           setLike(true);
-          dispatch(pushToLikedSongs(music.id))
+          dispatch(pushToLikedMusics(music.id))
           toast("added to liked songs", {});
           return;
         }
         if (response === 'unliked the song') {
           setLike(false);
-         dispatch(filterLikedSongs(music.id))
+         dispatch(filterLikedMusics(music.id))
           toast(
             `unliked this music`,
             {}

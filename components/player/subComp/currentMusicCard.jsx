@@ -1,6 +1,6 @@
 "use client"
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
-import { filterLikedSongs, pushToLikedSongs } from '@/lib/redux/slices/currentMusic'
+import { filterLikedMusics, pushToLikedMusics } from '@/lib/redux/slices/likedSongs'
 import { closeRightbar, openRightbar } from '@/lib/redux/slices/rightbar'
 import { cn } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
@@ -16,16 +16,17 @@ const CurrentMusicCard = ({ children }) => {
   const { data } = useSession();
   const dispatch=useAppDispatch()
   const { opened } = useAppSelector((state) => state.rightbar);
-  const { music, likedSongs } = useAppSelector((state) => state.currentmusic);
+  const {likedMusics}=useAppSelector((state)=>state.likedMusics)
+  const { music } = useAppSelector((state) => state.currentmusic);
   const [like, setLike] = useState(false);
   const dispath = useAppDispatch();
 
   useEffect(() => {
     //todo : fix the like issue when liked songs change
-    if (likedSongs) {
-      setLike(likedSongs.songs.includes(music?.id));
+    if (likedMusics) {
+      setLike(likedMusics?.includes(music?.id));
     }
-  }, [likedSongs?.songs, music]);
+  }, [likedMusics, music]);
 
   const handleLikeSong = async () => {
     if (data.user) {
@@ -43,13 +44,13 @@ const CurrentMusicCard = ({ children }) => {
         console.log(response)
         if (response === "added to liked songs") {
           setLike(true);
-          dispatch(pushToLikedSongs(music.id))
+          dispatch(pushToLikedMusics(music.id))
           toast("added to liked songs", {});
           return;
         }
         if (response === 'unliked the song') {
           setLike(false);
-         dispatch(filterLikedSongs(music.id))
+         dispatch(filterLikedMusics(music.id))
           toast(
             `unliked this music`,
             {}

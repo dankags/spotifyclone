@@ -35,7 +35,7 @@ export const LeftNav = ({children}) => {
         <IoIosArrowForward size={20} className="text-lg" />
       </button>
     </div>
-    <div className={`w-10/12 flex items-center justify-start truncate`}>
+    <div className={`w-10/12 h-full flex items-center justify-start truncate`}>
       { !pathName.includes("search") ?
         <ActiveMusicPlaying currentPlayList={currentPlayList} setPlay={setPlay}/>
       :
@@ -52,7 +52,7 @@ export const LeftNav = ({children}) => {
 
 const SearchInput=(setSearchValue)=>{
   return(
-    <div className="pl-2 w-full flex items-center bg-gray-500/20 justify-between gap-1 p-2 rounded-3xl  ring-2 ring-neutral-50 searchContainer">
+    <div className="p-2 w-full flex items-center border-2 bg-gray-500/20 justify-between gap-1 rounded-3xl   ">
     <IoSearchSharp size={20}/>
     <input type="search" name="" id="" placeholder='What do you want to listen to?' className={`w-11/12 text-base placeholder:text-base font-normal text-white focus:outline-none bg-transparent`} />
 </div>

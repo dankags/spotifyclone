@@ -8,6 +8,7 @@ import {
   setLikedSongs,
   setMusicBySelect,
 } from "@/lib/redux/slices/currentMusic";
+import { filterLikedMusics, pushToLikedMusics } from '@/lib/redux/slices/likedSongs';
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -23,13 +24,10 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
   const { data } = useSession();
   const pathname = usePathname();
   const [showPlayIcon, setShowplayIcon] = useState(false);
-  const [duration, setDuration] = useState({
-    min: "00",
-    sec: "00",
-  });
+  const [duration, setDuration] = useState({ min: "00",sec: "00",});
   const { music: currentMusic,playing } = useAppSelector((state) => state.currentmusic);
+  const {likedMusics}=useAppSelector((state)=>state.likedMusics)
   const dispatch = useAppDispatch();
-  const { likedSongs } = useAppSelector((state) => state.currentmusic);
   const [currentSong, setCurrentSong] = useState(currentMusic);
   const [liked, setLiked] = useState(false);
   const [play,setPlay]=useState(false)
@@ -46,16 +44,15 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
           }),
         });
         const response = await res.json();
-        console.log(response);
         if (response === "added to liked songs") {
           setLiked(true);
-          dispatch(pushToLikedSongs(music.id));
+          dispatch(pushToLikedMusics(music.id));
           toast("added to liked songs", {});
           return;
         }
         if (response === "unliked the song") {
           setLiked(false);
-          dispatch(filterLikedSongs(music.id));
+          dispatch(filterLikedMusics(music.id));
           dispatch(setComponentId(music.id))
           toast(`unliked this music`, {});
           return;
@@ -91,21 +88,21 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
     }
   },[playing])
 
+  console.log(likedMusics)
   //check if current song isliked
   useEffect(() => {
-    setLiked(likedSongs?.songs.includes(`${music?.id}`));
-    console.log(likedSongs?.songs)
-  }, [likedSongs]);
+    setLiked(likedMusics?.includes(`${music?.id}`));
+  }, [likedMusics]);
 
   //set current music play icon whenever it changes
   useEffect(() => {
-   if (currentMusic) {
-     if (currentMusic.id === music.id) {
-       setPlay(true)
-       return
-     }
-     setPlay(false)
-   }
+    if (currentMusic) {
+      if (currentMusic.id === music.id) {
+        setPlay(true)
+        return
+      }
+      setPlay(false)
+    }
 },[currentMusic])
 
 //calculate the duration of the given music
@@ -121,6 +118,7 @@ export const LikedList = ({ music, index, mainArtist,musics }) => {
         durationInSecond < 10 ? `0${durationInSecond}` : `${durationInSecond}`
       }`,
     });
+    
   }, [music]);
 
   return (
