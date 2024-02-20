@@ -61,7 +61,8 @@ const Music =({musicItem}) => {
                     <div className='w-full flex items-center justify-start font-bold  text-3xl '>
                      <Link href={`/album/${music?.id}`} className='w-full capitalize mb-1 truncate cursor-pointer hover:underline'>{music?.musicName}</Link>
                     </div>
-                    <div className='flex items-center overflow-hidden text-stone-400 truncate'>
+          <div className='flex items-center overflow-hidden text-stone-400 truncate'>
+            {/* display artists name and their link */}
             {music.artists ?
            <>
            <Link key={music.artists[0].id} href={`/artist/${music.artists[0].id}`} className='capitalize text-base font-normal truncate hover:text-white hover:underline'>{music.artists[0].name}</Link>
