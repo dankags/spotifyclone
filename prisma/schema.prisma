@@ -52,29 +52,24 @@ model User {
   accounts      Account[]
   sessions      Session[]
   artist        Artist[] 
-  following     Following[]
-  followers     Followers[]
+  following     Follow[] @relation("following")
+  followers     Follow[] @relation("followers")
   music         Music[]
   playlist      Playlist[]
   likedPlaylist LikedPlaylist[]
 }
 
-model Following{
+model Follow{
    id            String   @id @default(uuid()) @map("_id")
-   initiateFollowId    String 
+   followerId    String 
    followingId   String 
 
-   FollowingId User @relation(fields: [initiateFollowId],references: [id],onDelete: Cascade) 
+   follower User @relation("followers",fields: [followerId],references: [id],onDelete:Cascade)
+   following User @relation("following",fields: [followingId],references: [id],onDelete:Cascade)
+
    
 }
 
-model Followers{
-   id            String   @id @default(uuid()) @map("_id")
-   followerId    String
-   followingId   String 
-
-   FollowersId User @relation(fields: [followerId],references: [id],onDelete: Cascade)
-}
 
 model VerificationToken {
   identifier String  @id @default(auto()) @map("_id") @db.ObjectId

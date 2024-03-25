@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
+    "./pages/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}",
+    "./app/**/*.{js,jsx}",
+    "./src/**/*.{js,jsx}",
   ],
   prefix: "",
   theme: {
@@ -18,6 +18,10 @@ module.exports = {
     },
     extend: {
       keyframes: {
+        scale: {
+          "0%,100%": { transform: "scale(1.5)" },
+          "50%": { transform: "none" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -28,19 +32,20 @@ module.exports = {
         },
       },
       animation: {
+        scale: "scale 1s ease-in-out infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       textShadow: {
-        sm: '0 1px 2px var(--tw-shadow-color)',
-        DEFAULT: '0 2px 4px var(--tw-shadow-color)',
-        lg: '0 8px 16px var(--tw-shadow-color)',
+        sm: "0 1px 2px var(--tw-shadow-color)",
+        DEFAULT: "0 2px 4px var(--tw-shadow-color)",
+        lg: "0 8px 16px var(--tw-shadow-color)",
       },
     },
   },
   plugins: [
     require("tailwindcss-animate"),
-    require('tailwind-scrollbar'),
+    require("tailwind-scrollbar"),
     // plugin(function ({ matchUtilities, theme }) {
     //   matchUtilities(
     //     {
@@ -51,6 +56,5 @@ module.exports = {
     //     { values: theme('textShadow') }
     //   )
     // }),
-
-],
-}
+  ],
+};

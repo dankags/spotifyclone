@@ -9,28 +9,25 @@ export const POST = async (req,{params}) => {
     const body = await req.json()
     
     try {
+        if(!followId && !body?.id){return NextResponse.json("you content provided",{status:403})}
         if(followId === body.id){NextResponse.json("you cannot follow your self",{status:403})}
-        const followExist = await prisma.following.findUnique({
+        console.log(body.id,followId)
+        const followExist = await prisma.follow.findMany({
             where: {
-                initiateFollowId : followId,
-                // followingId :body.id
+                followerId: followId,
+                followingId:body.id
             }
-        })
+          })
         console.log(followExist)
-        if(followExist){return NextResponse.json("You already follow this artist", { status: 403 })}
-        const follow = await prisma.following.create({
-             data: {
-                initiateFollowId : followId,
-                followingId :body.id
-            }
-        })
-        const follower = await prisma.followers.create({
+        if(followExist.length > 0){return NextResponse.json("You already follow this artist", { status: 403 })}
+        
+        const follower = await prisma.follow.create({
             data: {
                 followerId :followId,
                 followingId:body.id
            }
        })
-    //    if(follow && follower){return NextResponse.json("You now follow this user", { status: 201 })}
+       if(follower){return NextResponse.json("You now follow this user", { status: 201 })}
         
         
     } catch (error) {

@@ -7,6 +7,7 @@ import {
   pushToLikedSongs,
   setLikedSongs,
   setMusicBySelect,
+  setPlaylist,
 } from "@/lib/redux/slices/currentMusic";
 import { filterLikedMusics, pushToLikedMusics } from '@/lib/redux/slices/likedSongs';
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex';
@@ -26,7 +27,11 @@ export const LikedList = ({ music, index,musics }) => {
   const pathname = usePathname();
   const [showPlayIcon, setShowplayIcon] = useState(false);
   const [duration, setDuration] = useState({ min: "00",sec: "00",});
-  const { music: currentMusic,playing } = useAppSelector((state) => state.currentmusic);
+  const {
+    music: currentMusic,
+    playing,
+    playlist,
+  } = useAppSelector((state) => state.currentmusic);
   const { likedMusics } = useAppSelector((state) => state.likedMusics)
   const {playlistLength}=useAppSelector((state)=>state.musicIndex)
   const dispatch = useAppDispatch();
@@ -75,11 +80,15 @@ export const LikedList = ({ music, index,musics }) => {
     if (data) {
       if (play) {
         playlistLength === 0 && dispatch(setPlaylistLength(musics.length))
+        !playlist && dispatch(setPlaylist(musics))
+        
         dispatch(setIndexBySelect((index-1)))
         dispatch(playMusic())
         setPlay(prev => !prev)
         return
       }
+      !playlist && dispatch(setPlaylist(musics));
+       dispatch(setIndexBySelect(index - 1));
       dispatch(setMusicBySelect(musicDetails))
       dispatch(playMusic())
       setPlay(prev => !prev)

@@ -15,6 +15,7 @@ import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import { playMusic, setMusicByPlaylist } from '@/lib/redux/slices/currentMusic'
+import { addMusicIndex, setIndexBySelect } from '@/lib/redux/slices/playlistMusicIndex'
 
 const MusicControls = () => {
   const [audio,setAudio]=useState(null)
@@ -37,8 +38,11 @@ const MusicControls = () => {
   const [play,setPlay]=useState(false)
   const [mute, setmute] = useState(false)
   const dispatch=useAppDispatch()
-  const {music, playlist,playing,musicIndex}=useAppSelector(state=>state.currentmusic)
-
+  const { music, playlist, playing } = useAppSelector(state => state.currentmusic)
+  const { musicIndex } = useAppSelector((state) => state.musicIndex)
+  const [hasMusicEnded,setHasMusicEnded]=useState(false)
+  console.log(musicIndex)
+ console.log(music)
   //initialize audio
   useEffect(()=>{
     setAudio(new Audio());
@@ -47,10 +51,6 @@ const MusicControls = () => {
     }
   }, []);
   
-  useEffect(() => {
- 
-},[musicIndex])
-
  //fetch music audio
   useEffect(() => {
     const controller=new AbortController();
@@ -107,33 +107,59 @@ const MusicControls = () => {
   },[playing])
 
   //calulate current time whenever the audio sourcechanges or is playing 
-    useEffect(() => {
-    audio?.addEventListener("timeupdate", (e) => {
-      const currentTime = e.target.currentTime;
-      const musicDuration = e.target.duration;
-      // const durationInMinute = Math.floor((musicDuration % 3600) / 60);
-      // const durationInSecond = Math.floor((musicDuration % 3600) % 60);
-      const currentminute = Math.floor((currentTime % 3600) / 60);
-      const currentSecond = Math.floor((currentTime % 3600) % 60);
+  useEffect(() => {
+    if (audio?.src) {
+      audio?.addEventListener("timeupdate", (e) => {
+        const currentTime = e.target.currentTime;
+        const musicDuration = e.target.duration;
+        // const durationInMinute = Math.floor((musicDuration % 3600) / 60);
+        // const durationInSecond = Math.floor((musicDuration % 3600) % 60);
+        const currentminute = Math.floor((currentTime % 3600) / 60);
+        const currentSecond = Math.floor((currentTime % 3600) % 60);
       
-      // setDurationTime({
-      //   min:`${durationInMinute < 10 ? `0${durationInMinute}` : `${durationInMinute}`}`,
-      //   sec:`${durationInSecond < 10 ? `0${durationInSecond}` : `${durationInSecond}`}`
-      // })
-      setMusicProgress((100 * currentTime) / musicDuration);
-      // musicSlider.current.style.background = `linear-gradient(to right, ${(100 * currentTime) / musicDuration} ${(100 * currentTime) / musicDuration}%,#3a3a3a ${(100 * currentTime) / musicDuration}%)`;
-      setCurrentTime(prev=>({...prev,min:`${currentminute < 10 ? `0${currentminute}` : `${currentminute}`}`}) );
-      setCurrentTime(prev=>({...prev,sec:`${currentSecond < 10 ? `0${currentSecond}` : `${currentSecond}`}`}));
-      if (currentTime === musicDuration) {
-        dispatch(playMusic())
-       if(playlist){ dispatch(setMusicByPlaylist())}
-        setMusicProgress(0);
-        setPlay(false)
-        setCurrentTime(prev=>({...prev,min:`${ currentminute < 10 ? `00` : `00`}`}));
-        setCurrentTime(prev=>({...prev,sec:`${currentSecond < 10 ? `00` : `00`}`}) );
-      }
-    });
+        // setDurationTime({
+        //   min:`${durationInMinute < 10 ? `0${durationInMinute}` : `${durationInMinute}`}`,
+        //   sec:`${durationInSecond < 10 ? `0${durationInSecond}` : `${durationInSecond}`}`
+        // })
+        setMusicProgress((100 * currentTime) / musicDuration);
+        // musicSlider.current.style.background = `linear-gradient(to right, ${(100 * currentTime) / musicDuration} ${(100 * currentTime) / musicDuration}%,#3a3a3a ${(100 * currentTime) / musicDuration}%)`;
+        setCurrentTime(prev => ({ ...prev, min: `${currentminute < 10 ? `0${currentminute}` : `${currentminute}`}` }));
+        setCurrentTime(prev => ({ ...prev, sec: `${currentSecond < 10 ? `0${currentSecond}` : `${currentSecond}`}` }));
+
+        if (currentTime === parseFloat(music?.duration)) {
+          setHasMusicEnded(true)
+          if (playlist) {
+            console.log(playlist);
+            dispatch(addMusicIndex());
+          }
+          setMusicProgress(0);
+          setPlay(false)
+          setCurrentTime(prev => ({ ...prev, min: `${currentminute < 10 ? `00` : `00`}` }));
+          setCurrentTime(prev => ({ ...prev, sec: `${currentSecond < 10 ? `00` : `00`}` }));
+        }
+      });
+    }
   }, [audio?.src]);
+
+  //every time the musicend this useEffect is fired
+  useEffect(() => {
+      const dispatchActions = () => {
+        dispatch(playMusic())
+        console.log(playlist)
+        console.log(musicIndex)
+  
+        if (playlist) {
+          console.log(musicIndex);
+          dispatch(setMusicByPlaylist(musicIndex))
+          
+        }
+      }
+      // if music has ended it will dispatch this actions
+      if (hasMusicEnded) {
+        dispatchActions()
+        setHasMusicEnded(false)
+      }
+    },[hasMusicEnded])
 
   //if not autheticated do not render the audio controls
   if (status === "unauthenticated" || !data) {

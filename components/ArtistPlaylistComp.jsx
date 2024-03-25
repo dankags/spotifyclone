@@ -7,7 +7,8 @@ import { Skeleton } from './ui/skeleton'
 
 
 export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
-  
+   console.log(item);
+   
   return (
     <Suspense fallback={<Loading/>}>
       <Link

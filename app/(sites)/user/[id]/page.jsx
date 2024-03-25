@@ -16,9 +16,9 @@ const User =async (params) => {
   const session=await getServerSession(authOptions);
 
 
-  const following= await prisma.following.findMany({
+  const following= await prisma.follow.findMany({
     where: {
-        initiateFollowId : params.params.id
+        followerId : params.params.id
     },
     select: {
       followingId :true
@@ -32,7 +32,7 @@ const User =async (params) => {
       }
     }
   })
-const followers=await prisma.followers.findMany({
+const followers=await prisma.follow.findMany({
   where: {
      followingId:params.params.id
 }

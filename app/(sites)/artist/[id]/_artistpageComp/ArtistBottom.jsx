@@ -9,25 +9,36 @@ import { darkVibrantColor } from '@/lib/functions/colorFunc'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import { playMusic,  setMusicByPlaylist,  setPlaylist } from '@/lib/redux/slices/currentMusic'
+import { setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
+import { filterLibrary, pushToLibrary } from '@/lib/redux/slices/library'
+import { usePathname } from 'next/navigation'
 
-const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId,musics}) => {
+const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,musics,userId}) => {
   
   const { data } = useSession()
+  const pathName = usePathname()
+  const [prevPathName,setPrevPathName]=useState(null)
   const dispatch = useAppDispatch()
   const {music,playing,playlist}=useAppSelector((state)=>state.currentmusic)
-  const [followState, setFollowState] = useState(false)
+  const [followState, setFollowState] = useState(false);
   const [play,setPlay]=useState(false)
   const [currentFileColor,setCurrentFileColor] = useState(null);
   const [following,setFollowing]=useState(null)
   const { imgurl } = useAppSelector((state) => state.artistBackCover)
+  const { musicIndex } = useAppSelector((state) => state.musicIndex);
   
   //sets the following button state if is following or not
   useEffect(() => {
-    if (followings) {
+    if (artist) {
       setFollowing(followings)
-     followings.includes(data?.user.id)&& setFollowState(prev=>!prev)
+     followings.some((item)=>item.followingId === artist.userId)? setFollowState(true) : setFollowState(false)
    }
-},[])
+  }, [])
+  
+  //when the pathname changes the play button is set to default
+  useEffect(() => {
+    setPlay(false)
+  },[pathName])
 
  //change the top color of the component gradient whenever the imageurl changes
   useEffect(() => {
@@ -53,10 +64,16 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId,mus
     if (music) {
       playing ? setPlay(true) : setPlay(false)
     }
-  },[playing])
+  }, [playing])
+  
+  useEffect(() => {
+    if (playlist) {
+      dispatch(setPlaylistLength(playlist.length))
+    }
+  },[playlist])
 
   const handleFollow = async() => {
-    if (followState) {
+    if (!followState) {
         //handle following
         try {
           const res = await fetch(`/api/user/follow/?followId=${data?.user.id}`, {
@@ -66,10 +83,14 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId,mus
             })
           })
           if (res.ok) {
-            setFollowState(prev=>!prev)
+            const resMessage = await res.json()
+            dispatch(pushToLibrary(mainArtist))
+            setFollowState(true)
+            setFollowing(prev=>[...prev,artistId])
+            toast.success(`${resMessage}`)
           }
         } catch (error) {
-          setFollowState(prev=>!prev)
+          setFollowState(false)
           toast.error(`${error}`)
         }
         return
@@ -83,29 +104,37 @@ const ArtistBottom = ({children,artistImg,artist,bgColor,followings,artistId,mus
         })
       })
       if (res.ok) {
-        setFollowState(prev=>!prev)
+        const resMessage = await res.json()
+        dispatch(filterLibrary(mainArtist))
+        setFollowState(prev => !prev)
+        setFollowing(followings.filter((item)=>item !== artistId))
+        toast.success(`${resMessage}`)
       }
     } catch (error) {
-      setFollowState(prev=>!prev)
+      setFollowState(true)
+      console.log(error)
       toast.error(`${error}`)
     }
-        setFollowState(prev=>!prev)
   }
 
   //dispatches the musics playlist and sets the current music to the fist one in the list
   const handlePlay = () => {
-    if (data) {
-      setPlay(true)
-      if (play) {
-        !playlist && dispatch(setPlaylist(musics))
-        !music && dispatch(setMusicByPlaylist())  
+    if (!data) { return }
+      if (!play) {
+        if (playlist === null) {
+          dispatch(setPlaylist(musics))
+          dispatch(setPlaylistLength(musics.length));
+        }
+        pathName !== prevPathName && dispatch(setPlaylist(musics));
+        !music && dispatch(setMusicByPlaylist(musicIndex))  
         dispatch(playMusic())
-        setPlay(false)
+        setPlay(true)
+        setPrevPathName(pathName)
         return
       }
       dispatch(playMusic())
-      setPlay(true)
-    }
+      setPlay(false)
+    
   }
 
   return (

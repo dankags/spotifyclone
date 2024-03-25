@@ -56,13 +56,22 @@ const ArtistPage = async (params) => {
     },
     select:{
       name:true,
-      id:true
+      id: true,
+      image: true,
+      artist: {
+        select: {
+         slug:true   
+        }
+    },
     }
   })
  
-  const followings = await prisma.following.findMany({
+  const followings = await prisma.follow.findMany({
     where: {
-      initiateFollowId: session?.user.id
+      followerId: session?.user.id
+    },
+    select: {
+      followingId:true
     }
   })
  
@@ -107,12 +116,15 @@ const ArtistPage = async (params) => {
           </div>
         </div>
         <ArtistBottom
-          artistImg={"/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}
+          key={params.params.id}
+          // artistImg={"/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"}
           bgColor={bgColor}
+          mainArtist={mainArtist}
           followings={followings}
-          artistId={artist?.id}
+          artistId={artist?.userId}
           artist={artist}
           musics={musics}
+          userId={session?.user.id}
         >
           <div className=" pt-3">
             <span className="mb-3 pl-3 text-xl font-semibold">Popular</span>

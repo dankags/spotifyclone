@@ -6,12 +6,12 @@ export const GET = async (req) => {
     const userId=await req.params
     //update followings
     try {
-        const followings = await prisma.following.findUnique({
+        const followings = await prisma.follow.findMany({
             where: {
-                initiateFollowId : userId
+                followerId : userId
             }
         })
-        const followers = await prisma.followers.findUnique({
+        const followers = await prisma.follow.findMany({
             where: {
                followingId:userId
           }

@@ -1,49 +1,32 @@
 import prisma from "@/utils/connect"
 import { NextResponse } from "next/server"
 
-export const PUT = async (req) => {
-    const {userName}=req.query
+export const DELETE = async (req) => {
+    const url = new URL(req.url)
+    const unfollowId=url.searchParams.get('unfollowId')
     const body = await req.json()
+    //update followings
     try {
-        const artist = await prisma.artist.findUnique({
+        if(!unfollowId && !body?.id){return NextResponse.json("you content provided",{status:403})}
+        if(unfollowId === body.id){return NextResponse.json("you cannot unfollow your self",{status:403})}
+        const followExist = await prisma.follow.findMany({
             where: {
-                id: body.artistId,
-                name:body.artistName
+                    followerId: body.id,
+                    followingId: unfollowId   
             }
         })
-        const user = await prisma.user.findUnique({
-            where: {
-                name: userName,
-               email:body.userEmail 
+        if(followExist.length < 1){return NextResponse.json("You cannot unfollow unexisting follow", { status: 403 })}
+        const Follow = await prisma.follow.deleteMany({
+              where:{
+                followerId: body.id,
+                followingId: unfollowId 
             }
-        })
-        if (!user.following.includes(user.id)) {
-            if (user.following.includes(artist.id)) {
-                await prisma.user.update({
-                    where: {
-                        id: user.id
-                    },
-                    data: {
-                        following: following.filter((follow)=>follow===artist.id)
-                    }
-                })
-                if (artist.followers.includes(user.id)) {
-                    await prisma.artist.update({
-                        where: {
-                            id: artist.id
-                        },
-                        data: {
-                            followers:followers.filter((follower)=>follower===user.id) 
-                        }
-                    })
-                }
-            } else {
-                return NextResponse.json("You already unfollowed this artist", { status: 403 })
-            }
-        }
-        return NextResponse.json("you cannot unfollow yourSelf",{status:403})
+          });
+       
+       return NextResponse.json("You unfollowed this user", { status: 201 })
         
     } catch (error) {
         return NextResponse.json("internal server error",{status:500})
     }
+    
 }

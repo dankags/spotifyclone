@@ -36,9 +36,9 @@ export const GET = async (req,{params}) => {
             })
             artist={slug:isArtist.slug,...artistInfo}
         }
-        const followings = await prisma.following.findMany({
+        const followings = await prisma.follow.findMany({
             where: {
-                initiateFollowId : userId
+                followerId : userId
             },
             select: {
                 followingId: true,
