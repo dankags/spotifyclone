@@ -104,7 +104,7 @@ const ArtistPage = async (params) => {
           </div>
           <div className="h-[70%] flex flex-col justify-center">
             <span
-              className={`py-2 sm:text-6xl md:text-7xl lg:text-8xl text-white font-bold truncate capitalize`}
+              className={`py-2 sm:text-6xl md:text-7xl lg:text-8xl text-white font-bold truncate capitalize cursor-default`}
             >
               {mainArtist?.name ? mainArtist.name : "ava max"}
             </span>
