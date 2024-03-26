@@ -89,7 +89,7 @@ export const LikedList = ({ music, index,musics }) => {
       }
       !playlist && dispatch(setPlaylist(musics));
        dispatch(setIndexBySelect(index - 1));
-      dispatch(setMusicBySelect(musicDetails))
+      currentMusic?.id !== music.id && dispatch(setMusicBySelect(musicDetails));
       dispatch(playMusic())
       setPlay(prev => !prev)
     }

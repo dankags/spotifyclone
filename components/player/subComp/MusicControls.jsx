@@ -15,7 +15,7 @@ import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import { playMusic, setMusicByPlaylist } from '@/lib/redux/slices/currentMusic'
-import { addMusicIndex, setIndexBySelect } from '@/lib/redux/slices/playlistMusicIndex'
+import { addMusicIndex, reduceMusicIndex, setIndexBySelect } from '@/lib/redux/slices/playlistMusicIndex'
 
 const MusicControls = () => {
   const [audio,setAudio]=useState(null)
@@ -32,23 +32,24 @@ const MusicControls = () => {
     }
   )
   const pathName=usePathname()
-  const {data,status}=useSession()
+  const { data, status } = useSession()
+  const [trackAudioSrc,setTrackAudioSrc]=useState(null)
   const [musicProgress,setMusicProgress]=useState(0)
-  const [defaultVol,setDefaultVol]=useState(40)
+  const [defaultVol,setDefaultVol]=useState(20)
   const [play,setPlay]=useState(false)
-  const [mute, setmute] = useState(false)
+  const [mute, setMute] = useState(false)
   const dispatch=useAppDispatch()
   const { music, playlist, playing } = useAppSelector(state => state.currentmusic)
-  const { musicIndex } = useAppSelector((state) => state.musicIndex)
+  const { musicIndex, playlistLength } = useAppSelector(
+    (state) => state.musicIndex
+  );
   const [hasMusicEnded,setHasMusicEnded]=useState(false)
   console.log(musicIndex)
- console.log(music)
   //initialize audio
   useEffect(()=>{
-    setAudio(new Audio());
-    if (audio) {
-       audio.volume=0.40
-    }
+      const newAudio = new Audio();
+      newAudio.volume = 0.2;
+      setAudio(newAudio);
   }, []);
   
  //fetch music audio
@@ -66,6 +67,7 @@ const MusicControls = () => {
         if (res.ok) {
           const serverResponse = await res.json()
           audio.src = `${serverResponse.audioUrl}`
+          setTrackAudioSrc(`${serverResponse.audioUrl}`);
           audio.play()
           setPlay(true)
         }
@@ -108,48 +110,46 @@ const MusicControls = () => {
 
   //calulate current time whenever the audio sourcechanges or is playing 
   useEffect(() => {
-    if (audio?.src) {
-      audio?.addEventListener("timeupdate", (e) => {
-        const currentTime = e.target.currentTime;
-        const musicDuration = e.target.duration;
-        // const durationInMinute = Math.floor((musicDuration % 3600) / 60);
-        // const durationInSecond = Math.floor((musicDuration % 3600) % 60);
-        const currentminute = Math.floor((currentTime % 3600) / 60);
-        const currentSecond = Math.floor((currentTime % 3600) % 60);
+    const handleTimeUpdate = (e) => {
+       const currentTime = e.target.currentTime;
+       const musicDuration = e.target.duration;
+       const currentminute = Math.floor((currentTime % 3600) / 60);
+      const currentSecond = Math.floor((currentTime % 3600) % 60);
       
-        // setDurationTime({
-        //   min:`${durationInMinute < 10 ? `0${durationInMinute}` : `${durationInMinute}`}`,
-        //   sec:`${durationInSecond < 10 ? `0${durationInSecond}` : `${durationInSecond}`}`
-        // })
-        setMusicProgress((100 * currentTime) / musicDuration);
-        // musicSlider.current.style.background = `linear-gradient(to right, ${(100 * currentTime) / musicDuration} ${(100 * currentTime) / musicDuration}%,#3a3a3a ${(100 * currentTime) / musicDuration}%)`;
-        setCurrentTime(prev => ({ ...prev, min: `${currentminute < 10 ? `0${currentminute}` : `${currentminute}`}` }));
-        setCurrentTime(prev => ({ ...prev, sec: `${currentSecond < 10 ? `0${currentSecond}` : `${currentSecond}`}` }));
+      setMusicProgress((100 * currentTime) / musicDuration);
+       setCurrentTime((prev) => ({ ...prev,min: `${currentminute < 10 ? `0${currentminute}` : `${currentminute}`}`,}));
+       setCurrentTime((prev) => ({...prev,sec: `${currentSecond < 10 ? `0${currentSecond}` : `${currentSecond}`}`,}));
 
-        if (currentTime === parseFloat(music?.duration)) {
-          setHasMusicEnded(true)
-          if (playlist) {
-            console.log(playlist);
-            dispatch(addMusicIndex());
-          }
-          setMusicProgress(0);
-          setPlay(false)
-          setCurrentTime(prev => ({ ...prev, min: `${currentminute < 10 ? `00` : `00`}` }));
-          setCurrentTime(prev => ({ ...prev, sec: `${currentSecond < 10 ? `00` : `00`}` }));
-        }
-      });
+       if (currentTime === parseFloat(music?.duration)) {
+         setHasMusicEnded(true);
+         if (playlist) {
+           console.log(playlist);
+           dispatch(addMusicIndex());
+         }
+         setMusicProgress(0);
+         setPlay(false);
+       setCurrentTime({ min: "00", sec: "00",});
+       }
     }
-  }, [audio?.src]);
+    if (audio?.src) {
+      audio.addEventListener("timeupdate", handleTimeUpdate);
+    }
+    return () => {
+        if (audio?.src) {
+          audio.removeEventListener("timeupdate", handleTimeUpdate);
+        }
+      };
+  }, [trackAudioSrc]);
+        // const durationInMinute = Math.floor((musicDuration % 3600) / 60);
 
   //every time the musicend this useEffect is fired
   useEffect(() => {
       const dispatchActions = () => {
         dispatch(playMusic())
-        console.log(playlist)
-        console.log(musicIndex)
+        
   
         if (playlist) {
-          console.log(musicIndex);
+         
           dispatch(setMusicByPlaylist(musicIndex))
           
         }
@@ -170,6 +170,7 @@ const MusicControls = () => {
   if (pathName.includes("/not-found") || pathName.includes("/dashboard")   ) {
     if(audio){
       audio.pause()
+      setAudio(null)
     setPlay(prev=>!prev)}
   }
 
@@ -187,42 +188,77 @@ const MusicControls = () => {
       setPlay(prev=>!prev)
     }
   }
+  console.log(musicIndex);
+  //TODO:fix the music index problem
+   const handleNext=()=>{
+   if (!audio || playlist === null) {
+     return;
+     }
+       const nextIndex = musicIndex + 1;
+    dispatch(setMusicByPlaylist(nextIndex));
+    dispatch(setIndexBySelect(nextIndex));
+  }
+  const handlePrev = () => {
+     
+     if (!audio || playlist === null) {
+       return;
+     }
+     if (audio.currentTime > (music?.duration * 0.1)&&music?.duration !== null) {
+       audio.currentTime = 0;
+        setMusicProgress(0);
+        return;
+    }
+     const prevMusicIndex = (musicIndex - 1 + playlistLength) % playlistLength;
+     dispatch(setMusicByPlaylist(prevMusicIndex));
+     dispatch(reduceMusicIndex())
+   };
   const handleVolume=(e)=>{
-    if (audio) {
-      if (e == 0) {
-       setmute(true)
-       audio.volume=0
-       return
-      }
-      setmute(false)
-      audio.volume=e/100
+   if (!audio) {
+     return;
    }
+   console.log(e[0]);
+   
+   if (e[0] === 0) {
+     audio.muted = true;
+     setDefaultVol(e[0]);
+     setMute(true);
+   } else {
+     audio.muted = false;
+     setMute(false);
+     setDefaultVol(e[0])
+     audio.volume = e[0] / 100;
+   }
+   
   }
   const handleMute=()=>{
-    if(audio){
-      if (!mute) {
-        audio.muted=true;
-        setmute(prev=>!prev)
-        return
-      }
-      setmute(prev=>!prev)
-      audio.muted=false
+    if (!audio) {
+      return;
     }
+
+    if (audio.muted && defaultVol === 0) {
+      audio.volume = 0.2
+      setDefaultVol(20)
+    }
+    audio.muted = !mute;
+    setMute((prev) => !prev);
   }
-  const musicInputProgresshandler=(e)=>{
-    const songDuration = audio?.duration;
-    const tempSliderValue = (e / 100) * 100;
-    setMusicProgress(tempSliderValue);
-    audio.currentTime = (tempSliderValue * songDuration) / 100;
+  const musicInputProgresshandler = (e) => {
+     if (!audio || isNaN(audio?.duration)) {
+       return;
+     }
+
+     const tempSliderValue = e[0];
+     setMusicProgress(tempSliderValue);
+     audio.currentTime = (tempSliderValue * audio.duration) / 100;
   }
   return (
     <div className='flex items-center justify-between'>
         <div className='w-8/12 flex flex-col justify-center gap-y-2'>
             <div className='w-full flex items-center justify-center gap-x-3'>
                 <button disabled={music ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><LuShuffle size={18}/></button>
-                <button disabled={music ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><MdSkipPrevious size={30}/></button>
+                <button onClick={handlePrev} disabled={playlist ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><MdSkipPrevious size={30}/></button>
                 <button onClick={handleplay} disabled={music ? false : true} className='h-9 w-9 text-black flex justify-center items-center bg-white rounded-full disabled:cursor-not-allowed disabled:bg-neutral-700'>{play ? <IoIosPause size={25}/> : <IoIosPlay size={25}/>}</button>
-                <button disabled={music ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><MdSkipNext size={30}/></button>
+                <button onClick={handleNext} disabled={playlist ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><MdSkipNext size={30}/></button>
                 <button disabled={music ? false : true} className='text-stone-400  hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><SlLoop className='rounded-md' size={18} strokeWidth={30}/></button>
             </div>
             <div className='flex items-center justify-center gap-x-2'>
@@ -245,8 +281,8 @@ const MusicControls = () => {
           <button className='text-stone-400 hover:text-white'><TbMicrophone2 size={20}/></button>
           <button className='text-stone-400 hover:text-white'><HiOutlineQueueList size={20}/></button>
           <button className='text-stone-400 hover:text-white'><LuMonitorSpeaker size={20}/></button>
-          <button onClick={handleMute} className='text-stone-400 hover:text-white'>{mute ? <PiSpeakerSimpleXFill size={20}/> : <IoMdVolumeHigh size={20}/>} </button>
-          <div className='w-[34%]'><Slider defaultValue={[defaultVol]} max={100} onValueChange={handleVolume}/></div>
+          <button onClick={handleMute} title={mute ? "unmute" : "mute"} className='text-stone-400 hover:text-white'>{mute ? <PiSpeakerSimpleXFill size={20}/> : <IoMdVolumeHigh size={20}/>} </button>
+          <div className='w-[34%]'><Slider defaultValue={[defaultVol]} value={[defaultVol]} max={100} onValueChange={handleVolume}/></div>
           <button className='text-stone-400 hover:text-white'><CgMiniPlayer size={20}/></button>
         </div>
     </div>
