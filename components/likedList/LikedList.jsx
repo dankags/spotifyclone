@@ -110,7 +110,7 @@ export const LikedList = ({ music, index,musics }) => {
           setMainArtist(artist)
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
     const fetchFeaturedArtists = async () => {
@@ -125,7 +125,7 @@ export const LikedList = ({ music, index,musics }) => {
           setFeaturedArtists(artists)
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
     fetchMainArtist()
@@ -137,7 +137,8 @@ export const LikedList = ({ music, index,musics }) => {
   useEffect(() => {
     if (currentMusic) {
       if (currentMusic.id===music.id) {
-        playing ? setPlay(true) :setPlay(false)
+        playing ? setPlay(true) : setPlay(false)
+       
       }
     }
   },[playing])
@@ -154,7 +155,7 @@ export const LikedList = ({ music, index,musics }) => {
       if (currentMusic.id === music.id) {
         const musicIndex = musics.indexOf(currentMusic.id)
         console.log(musicIndex)
-        dispatch(setIndexBySelect(musicIndex))
+        dispatch(setIndexBySelect(index-1))
         setPlay(true)
         return
       }

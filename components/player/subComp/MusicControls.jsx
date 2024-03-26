@@ -43,8 +43,8 @@ const MusicControls = () => {
   const { musicIndex, playlistLength } = useAppSelector(
     (state) => state.musicIndex
   );
-  const [hasMusicEnded,setHasMusicEnded]=useState(false)
-  console.log(musicIndex)
+  const [hasMusicEnded, setHasMusicEnded] = useState(false)
+  
   //initialize audio
   useEffect(()=>{
       const newAudio = new Audio();
@@ -125,6 +125,7 @@ const MusicControls = () => {
          if (playlist) {
            console.log(playlist);
            dispatch(addMusicIndex());
+           console.log(musicIndex);
          }
          setMusicProgress(0);
          setPlay(false);
@@ -146,7 +147,7 @@ const MusicControls = () => {
   useEffect(() => {
       const dispatchActions = () => {
         dispatch(playMusic())
-        
+        dispatch(addMusicIndex());
   
         if (playlist) {
          
@@ -188,15 +189,15 @@ const MusicControls = () => {
       setPlay(prev=>!prev)
     }
   }
-  console.log(musicIndex);
+  
   //TODO:fix the music index problem
    const handleNext=()=>{
    if (!audio || playlist === null) {
      return;
      }
-       const nextIndex = musicIndex + 1;
+     const nextIndex = (musicIndex + 1) >= playlistLength ? 0 : musicIndex + 1;
     dispatch(setMusicByPlaylist(nextIndex));
-    dispatch(setIndexBySelect(nextIndex));
+    dispatch(addMusicIndex());
   }
   const handlePrev = () => {
      

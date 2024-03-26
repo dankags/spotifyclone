@@ -9,7 +9,7 @@ import { darkVibrantColor } from '@/lib/functions/colorFunc'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import { playMusic,  setMusicByPlaylist,  setPlaylist } from '@/lib/redux/slices/currentMusic'
-import { setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
+import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
 import { filterLibrary, pushToLibrary } from '@/lib/redux/slices/library'
 import { usePathname } from 'next/navigation'
 
@@ -123,6 +123,7 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
       if (!play) {
         if (playlist === null) {
           dispatch(setPlaylist(musics))
+          // dispatch(setIndexBySelect(0))
           dispatch(setPlaylistLength(musics.length));
         }
         pathName !== prevPathName && dispatch(setPlaylist(musics));
