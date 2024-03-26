@@ -1,8 +1,17 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const FollowBtn = ({artistId}) => {
-    const [followState,setFollowState]=useState(false)
+const FollowBtn = ({artistId,followings}) => {
+  const [followState, setFollowState] = useState(false)
+  
+  useEffect(() => {
+    if (followings) {
+      followings.some((item) => item.followingId === artistId)
+        ? setFollowState(true)
+        : setFollowState(false);
+    }
+  },[followings])
+
     const handleFollow=()=>{
         setFollowState(prev=>!prev)
     }

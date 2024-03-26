@@ -11,13 +11,36 @@ import { closeRightbar } from '@/lib/redux/slices/rightbar'
 import Music from './subComp/Music'
 import { toast } from 'sonner'
 import { artists } from '@/app/(sites)/user/_userComp/data'
+import { useSession } from 'next-auth/react'
 
 
 const RightBar = ({children}) => {
-    const {opened}=useAppSelector(state=>state.rightbar)
+  const { opened } = useAppSelector(state => state.rightbar)
+  const {data}=useSession()
     const { music, playlist } = useAppSelector((state) => state.currentmusic);
-    const dispath=useAppDispatch()
+  const dispath = useAppDispatch()
+  const [userFollowings,setUserFollowings]=useState(null)
+  
+  useEffect(() => {
+    const fetchUserFollowings = async () => {
+      try {
+        const res = await fetch(`/api/user/userFollowings/${data.user.id}`, { method: "GET" })
+        if (res.ok) {
+          const followings = await res.json()
+          setUserFollowings(followings.followings)
+        }
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+    if (data) {
+      fetchUserFollowings()
+    }
+  },[])
 
+  
+  
 
   return (
     <div className={cn("w-full h-full", opened ? "block" : "hidden")}>
@@ -40,7 +63,7 @@ const RightBar = ({children}) => {
             <Music musicItem={music} />
           </section>
           <section className="mt-3">
-            <ArtistInfoCard artistId={music?.artistId} />
+            <ArtistInfoCard artistId={music?.artistId} followings={userFollowings} />
           </section>
           {playlist && (
             <section className="py-3 px-2 rounded-md bg-neutral-800 flex flex-col justify-center gap-4  ">
