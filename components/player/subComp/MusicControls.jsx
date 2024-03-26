@@ -123,9 +123,7 @@ const MusicControls = () => {
        if (currentTime === parseFloat(music?.duration)) {
          setHasMusicEnded(true);
          if (playlist) {
-           console.log(playlist);
            dispatch(addMusicIndex());
-           console.log(musicIndex);
          }
          setMusicProgress(0);
          setPlay(false);
@@ -147,8 +145,6 @@ const MusicControls = () => {
   useEffect(() => {
       const dispatchActions = () => {
         dispatch(playMusic())
-        dispatch(addMusicIndex());
-  
         if (playlist) {
          
           dispatch(setMusicByPlaylist(musicIndex))

@@ -32,7 +32,7 @@ const UpComingMusic = () => {
     if (playlist) {
       handleNextMusic()
     }
-  }, [music, playlist])
+  }, [music,musicIndex, playlist])
   
   useEffect(() => {
      const controller = new AbortController();
@@ -104,7 +104,6 @@ const UpComingMusic = () => {
       <div className="w-3/6 flex flex-col justify-between gap-1 pl-2">
         <Link
           href={`/album/${nextMusic?.id}`}
-          onClick={() => setNewUrl("/playlist/eiu923if3fi3993")}
           className="font-medium text-base capitalize hover:underline truncate"
         >
           {nextMusic?.musicName}
