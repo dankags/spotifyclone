@@ -5,6 +5,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/utils/auth'
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
+import LoadingSkeleton from '@/components/LoadingSkeleton'
 
 const Music = async() => {
   const session=await getServerSession(authOptions)
@@ -13,16 +15,17 @@ const Music = async() => {
   }
  
   return (
-    <ScrollArea className={` w-full h-full rounded-md`} >
-    <div className={`h-full rounded-md relative bg-neutral-900`}>
-      <div className='sticky top-0'>
-      <NavBar/>
-      </div>
-      <MusicForm/>
-      <Footer/>
-      </div>
+    <Suspense fallback={<LoadingSkeleton />}>
+      <ScrollArea className={` w-full h-full rounded-md`}>
+        <div className={`h-full rounded-md relative bg-neutral-900`}>
+          <div className="sticky top-0">
+            <NavBar />
+          </div>
+          <MusicForm />
+          <Footer />
+        </div>
       </ScrollArea>
-    
-  )
+    </Suspense>
+  );
 }
 export default Music

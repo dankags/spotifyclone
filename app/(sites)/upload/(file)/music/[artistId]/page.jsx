@@ -1,7 +1,10 @@
-import React from 'react'
+import LoadingSkeleton from '@/components/LoadingSkeleton';
+import React, { Suspense } from 'react'
 
 export default function uploadMusic() {
   return (
-    <div>uploadMusic</div>
-  )
+    <Suspense fallback={<LoadingSkeleton />}>
+      <div>uploadMusic</div>
+    </Suspense>
+  );
 }

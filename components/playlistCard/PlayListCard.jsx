@@ -7,7 +7,7 @@ import { Skeleton } from '../ui/skeleton'
 const PlayListCard = ({item}) => {
   const randomNumber = Math.floor(Math.random() * 633)
   return (
-    <Suspense fallback={ <Loading/>}>
+    <Suspense fallback={ <LoadingPlaylistSkeleton/>}>
     <div className="group w-full  p-3 flex flex-col justify-center rounded-lg bg-neutral-800 hover:bg-neutral-700/80">
     <div>
       <div className={`relative w-full h-48 `}>
@@ -40,22 +40,22 @@ const PlayListCard = ({item}) => {
   )
 }
 
-const Loading = () => {
+export const LoadingPlaylistSkeleton = () => {
   return (
-    <div className=' w-full  p-3 flex flex-col justify-center rounded-lg bg-neutral-800 '>
-      <div className='w-full h-48'>
-        <Skeleton className={"w-full h-full"}/>
+    <div className=" w-full  p-3 flex flex-col justify-center rounded-lg bg-neutral-800 shadow-[0_0px_40px_5px] shadow-neutral-950/60">
+      <div className="w-full h-48">
+        <Skeleton className={"w-full h-full"} />
       </div>
       <div className="flex flex-col gap-3 justify-between pt-3">
-        <div className='w-10'>
-          <Skeleton className={"w-full h-2 "}/>
+        <div className="w-6/12">
+          <Skeleton className={"w-full h-6 rounded-2xl"} />
         </div>
-        <div className='w-full h-14'>
-          <Skeleton className={'w-full h-full'}/>
+        <div className="w-full h-14">
+          <Skeleton className={"w-full h-full"} />
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default PlayListCard

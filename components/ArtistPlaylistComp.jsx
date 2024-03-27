@@ -1,5 +1,5 @@
 "use client"
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
@@ -11,8 +11,19 @@ import { HiOutlineSpeakerWave } from 'react-icons/hi2'
 
 export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
    const pathName=usePathname()
-   const { playingUrl } = useAppSelector((state) => state.urlPlaying);
+  const { playingUrl } = useAppSelector((state) => state.urlPlaying);
+  const [loading,setLoading]=useState(true)
    const {playing}=useAppSelector((state)=>state.currentmusic)  
+  
+  useEffect(() => {
+    if (item) {
+      setLoading(false);
+    }
+  }, [item]);
+  
+  if (loading) {
+    return(<Loading/>)
+  }
   
   return (
     <Suspense fallback={<Loading />}>
@@ -22,7 +33,7 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
             ? `/playlist/${item.id}`
             : `/artist/${item.id}`
         }
-        className="flex shrink-0 items-center"
+        className="p-2 flex shrink-0 items-center"
       >
         <div>
           <div
@@ -89,14 +100,21 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
 
 const Loading = () => {
   return (
-    <div className='bg-neutral-700'>
-      <div className='h-12 w-12 flex items-center justify-center relative'>
-        <Skeleton className={"w-full h-full rounded-full bg-neutral-600"}/>
+    <div className="p-2 bg-neutral-800 flex items-center gap-3 rounded-md mb-2">
+      <div className="h-12 w-12 flex items-center justify-center relative">
+        <Skeleton
+          className={
+            "w-full h-full rounded-full bg-neutral-600  shadow-[0_0px_40px_5px] shadow-neutral-950/60"
+          }
+        />
       </div>
-      <div className="flex flex-col shrink-0 justify-center pl-3">
-        <Skeleton className={"h-2 w-8  bg-neutral-600"} />
-        <Skeleton className={"h-2 w-8  bg-neutral-600"}/>
+      <div className="w-8/12 flex flex-col shrink-0 justify-center pl-3">
+        <Skeleton
+          className={
+            "h-6 w-8/12 rounded-2xl shadow-[0_0px_40px_5px] shadow-neutral-950/60"
+          }
+        />
       </div>
     </div>
-  )
+  );
 }

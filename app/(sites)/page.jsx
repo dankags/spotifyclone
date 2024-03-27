@@ -7,6 +7,8 @@ import HomeLayOut from '../../components/_homeComp/HomeLayout'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/utils/auth'
 import prisma from '@/utils/connect'
+import LoadingSkeleton from '@/components/LoadingSkeleton'
+import { Suspense } from 'react'
 
 export default async function Home () {
   const serverSession=await getServerSession(authOptions)
@@ -19,6 +21,7 @@ export default async function Home () {
      });
   }
   return (
+    <Suspense fallback={<LoadingSkeleton />}>
     <div className="w-full h-full  relative">
       <HomeLayOut likedSongs={likedSong}>
         <BottomHomeSection/>
@@ -28,5 +31,6 @@ export default async function Home () {
       </HomeLayOut>
     
     </div>
+    </Suspense>
   )
 }

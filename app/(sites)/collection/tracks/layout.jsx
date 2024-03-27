@@ -1,9 +1,10 @@
 "use client"
 import { NavBar } from '@/components/navBar/NavBar';
-import React, { useRef, useState } from 'react'
+import React, { Suspense, useRef, useState } from 'react'
 import TopTrackSection from './_trackSubComp/TopTrackSection';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { useNavBarDarkVibrant } from '@/lib/hooks/colorHooks';
+import LoadingSkeleton from '@/components/LoadingSkeleton';
 
 const Layout = ({children}) => {
     const [containerColor,setContainerColor]=useState("rgba(64,64,64,0.2)");
@@ -19,6 +20,7 @@ const Layout = ({children}) => {
       setNavcolor(false)
   };
   return (
+    <Suspense fallback={<LoadingSkeleton />}>
     <ScrollArea 
     onScrollCapture={handleScroll}
     className= 'relative w-full h-full rounded-md'
@@ -36,7 +38,9 @@ const Layout = ({children}) => {
       </div>
       </div>
       <ScrollBar className="z-20"/>
-    </ScrollArea>
+      </ScrollArea>
+      
+      </Suspense>
   )
 }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import UserLayOut from '../_userComp/UserLayOut'
 import { BsThreeDots } from 'react-icons/bs'
 import { StaticCarosel } from '@/components/StaticCarosel'
@@ -9,6 +9,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/utils/auth'
 import { VibrantColor } from '@/lib/functions/colorFunc'
+import LoadingSkeleton from '@/components/LoadingSkeleton'
 
 
 
@@ -78,45 +79,57 @@ if( session?.user.id !== params.params.id){
 }
   
   return (
-    <div className='w-full h-full'>
-      <UserLayOut followers={followers} followings={following} playlist={playlist}  paramsId={params.params.id} user={session?.user}>
-        <div className='p-3 flex flex-col justify-center'>
-          <div className='py-3 '>
-            <button  className='p-2  rounded-full text-stone-400 hover:text-white transition'>
-              <BsThreeDots  size={35}/>
-           </button>
-          </div>
-        {following.length > 0 ?
-         <div>
-          <StaticCarosel title={"Top artists this month"} >
-            {followingProfiles?.map((item,i)=>
-                < ArtistCard key={i} item={item}/>
+    <Suspense fallback={<LoadingSkeleton />}>
+      <div className="w-full h-full">
+        <UserLayOut
+          followers={followers}
+          followings={following}
+          playlist={playlist}
+          paramsId={params.params.id}
+          user={session?.user}
+        >
+          <div className="p-3 flex flex-col justify-center">
+            <div className="py-3 ">
+              <button className="p-2  rounded-full text-stone-400 hover:text-white transition">
+                <BsThreeDots size={35} />
+              </button>
+            </div>
+            {following.length > 0 ? (
+              <div>
+                <StaticCarosel title={"Top artists this month"}>
+                  {followingProfiles?.map((item, i) => (
+                    <ArtistCard key={i} item={item} />
+                  ))}
+                </StaticCarosel>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center font-bold text-3xl text-white first-letter:capitalize">
+                Not following any artist
+              </div>
             )}
-          </StaticCarosel>
-        </div>
-        :
-        <div className='flex items-center justify-center font-bold text-3xl text-white first-letter:capitalize'>
-          Not following any artist
-        </div>
-        }
-         {likedList?.songs.length > 0 ?
-          <div className="mt-10">
-              <StaticCarosel title={"Top tracks this month"} displayCol>
-                 { musics.map((item,i)=>
-                 <LikedList key={item} index={i+1} mainArtist={session.user} music={item} />
-                 )  }     
-                      
-              </StaticCarosel>
-             </div>
-            :
-            <div className='mt-4 flex items-center justify-center font-bold text-3xl text-white first-letter:capitalize'>
-            No music liked
+            {likedList?.songs.length > 0 ? (
+              <div className="mt-10">
+                <StaticCarosel title={"Top tracks this month"} displayCol>
+                  {musics.map((item, i) => (
+                    <LikedList
+                      key={item}
+                      index={i + 1}
+                      mainArtist={session.user}
+                      music={item}
+                    />
+                  ))}
+                </StaticCarosel>
+              </div>
+            ) : (
+              <div className="mt-4 flex items-center justify-center font-bold text-3xl text-white first-letter:capitalize">
+                No music liked
+              </div>
+            )}
           </div>
-            }
-        </div>
-      </UserLayOut>
-    </div>
-  )
+        </UserLayOut>
+      </div>
+    </Suspense>
+  );
 }
 
 export default User

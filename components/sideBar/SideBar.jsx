@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { setWidth } from '@/lib/redux/slices/pageWidth'
 import { BiSearch } from 'react-icons/bi'
 import { Skeleton } from '../ui/skeleton'
+import LoadingSkeleton from '../LoadingSkeleton'
 
   
 
@@ -85,7 +86,7 @@ const SideBar = ({children}) => {
            :
            <>
              
-            <div className='h-5/6 pt-2 w-full'>
+            <div className='h-5/6 pt-2 w-full rounded-md'>
 
             <SideBarBottom setSideBarSpan={setSideBarSpan} sidebarSpan={sidebarSpan}/>
             </div>
@@ -93,7 +94,9 @@ const SideBar = ({children}) => {
            }
           </>
         :
-        <Loading/>
+        <div className='h-5/6 pt-2 w-full  '>
+        <LoadingSkeleton/>
+            </div>
            }
         </div>
         <div ref={pageRef} className={cn('w-full h-full  flex items-center justify-between',sidebarSpan ? 'lg:w-[calc(100%-370px)]' : "lg:w-[calc(100%-85px)]")}>

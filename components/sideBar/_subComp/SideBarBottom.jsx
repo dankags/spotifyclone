@@ -216,23 +216,21 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
         )}
         <ul className={cn("pt-3 px-1 shrink-0", !sidebarSpan ? "px-0" : "")}>
           <li
-            onClick={() => setActiveComp(likedmusics?.id)}
             key={likedmusics?.id}
             className={cn(
-              "p-2  rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
+              "rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
               !sidebarSpan &&
                 "aspect-square rounded-md flex items-center justify-center",
               playingUrl === `/collection/tracks` && "bg-neutral-800"
             )}
           >
-            <LikedSongComp showContent={sidebarSpan} />
+            <LikedSongComp library={userLibrary && true } showContent={sidebarSpan} />
           </li>
           {userLibrary?.map((item) => (
             <li
-              onClick={() => setActiveComp(item.id)}
               key={item.id}
               className={cn(
-                "p-2  rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
+                "rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
                 !sidebarSpan &&
                   "aspect-square rounded-md flex items-center justify-center",
                 playingUrl === `/playlist/${item.id}` ||
