@@ -42,7 +42,7 @@ const Tracks = async () => {
   return (
     <>
       <div className='relative'>
-        <PlayFollowBtnContainer/>
+        <PlayFollowBtnContainer musics={musics}/>
       </div>
       <div>
       <div className="w-full py-3 flex text-stone-400">
@@ -61,7 +61,7 @@ const Tracks = async () => {
       </div>
         <StaticCarosel displayCol showAll>
           {musics.map((item,i)=>
-           <LikedList key={item.id} music={item} index={i+1} />
+           <LikedList key={item.id} music={item} index={i+1}  musics={musics}/>
           )}
         </StaticCarosel>
         

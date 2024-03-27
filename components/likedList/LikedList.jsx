@@ -178,7 +178,7 @@ export const LikedList = ({ music, index,musics }) => {
     if (currentMusic) {
       if (currentMusic.id === music.id) {
         const musicIndex = musics.findIndex((item)=>item.id===currentMusic.id)
-        dispatch(setIndexBySelect(musicIndex))
+        dispatch(setIndexBySelect(index-1))
         setPlay(true)
         return
       }

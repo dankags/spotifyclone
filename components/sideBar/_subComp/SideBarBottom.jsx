@@ -25,26 +25,13 @@ const sortTypes=[
     label:"by you",
     sort:"by you"
   },
-  {
-    label:"playlist",
-    sort:"playlist"
-  },
-  {
-    label:"by you",
-    sort:"by you"
-  },{
-    label:"playlist",
-    sort:"playlist"
-  },
-  {
-    label:"by you",
-    sort:"by you"
-  }
+  
 ]
 export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
 
   const { data } = useSession()
   const { userLibrary } = useAppSelector((state) => state.userLibrary)
+  const { playingUrl } = useAppSelector((state) => state.urlPlaying);
   const dispatch=useAppDispatch()
   const [sortTypeSelected, setSortTypeSelect] = useState([]);
   const [showSearchInput,setShowSearchInput]=useState(false)
@@ -235,7 +222,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
               "p-2  rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
               !sidebarSpan &&
                 "aspect-square rounded-md flex items-center justify-center",
-              activeComp === likedmusics?.id && "bg-neutral-800"
+              playingUrl === `/collection/tracks` && "bg-neutral-800"
             )}
           >
             <LikedSongComp showContent={sidebarSpan} />
@@ -248,7 +235,8 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
                 "p-2  rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
                 !sidebarSpan &&
                   "aspect-square rounded-md flex items-center justify-center",
-                activeComp === item?.id && "bg-neutral-800"
+                playingUrl === `/playlist/${item.id}` ||
+                  (playingUrl === `/artist/${item.id}` && "bg-neutral-800")
               )}
             >
               <ArtistPlaylistComp

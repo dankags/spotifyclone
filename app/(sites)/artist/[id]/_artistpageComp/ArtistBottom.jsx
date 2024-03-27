@@ -133,19 +133,21 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
     <div
       style={{
         backgroundImage: `linear-gradient(to top,#171717  88%,${
-          currentFileColor
-            ? `${currentFileColor}`
-            : bgColor
+          currentFileColor ? `${currentFileColor}` : bgColor
         } 100%)`,
       }}
     >
       <div className="w-full px-4 py-3 relative flex items-center gap-5 ">
         <button
           onClick={handlePlay}
-          className="w-14 h-14 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:bg-green-400 cursor-pointer"
+          className="w-14 h-14 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:bg-green-400 hover:scale-[1.03] hover:w-14 hover:h-14 transition shadow shadow-neutral-950 cursor-pointer"
           role="play button"
         >
-          {play ? <IoIosPause className="text-neutral-900 text-4xl"/>:<IoIosPlay className="text-neutral-900 text-4xl" />}
+          {play ? (
+            <IoIosPause className="text-neutral-900 text-4xl" />
+          ) : (
+            <IoIosPlay className="text-neutral-900 text-4xl" />
+          )}
         </button>
         {artist?.userId !== data?.user.id && (
           <button
