@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useSession } from 'next-auth/react'
 
 
-const ArtistInfoCard = ({artistId,MusicId,userData,followings}) => {
+const ArtistInfoCard = ({artistId,MusicId,userData}) => {
 
   const { data }=useSession()
   const [fetching,setFetching]=useState(true)
@@ -73,7 +73,7 @@ const ArtistInfoCard = ({artistId,MusicId,userData,followings}) => {
             <p>
             971,407 <span className='text-xs font-semibold'>monthly listener</span>
             </p>
-            {artistId !== data.user.id && (<FollowBtn artistId={artistId} followings={followings}/>)}
+            {artistId !== data.user.id && (<FollowBtn artistId={artistId} />)}
             </div>
            <p className='text-sm font-medium z-20'>{artist.artistAbout ? artist.artistAbout :"..."}</p> 
            </div>

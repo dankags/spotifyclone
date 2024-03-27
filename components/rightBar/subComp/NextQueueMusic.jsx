@@ -32,7 +32,9 @@ const UpComingMusic = () => {
     if (playlist) {
       handleNextMusic()
     }
-  }, [music,musicIndex, playlist])
+  }, [music, musicIndex, playlist])
+  
+  
   
   useEffect(() => {
      const controller = new AbortController();
@@ -60,19 +62,19 @@ const UpComingMusic = () => {
          console.log(error);
        }
      };
-     if (nextMusic) {
-       !music.artists && fetchArtists();
-     }
+       
+       
+       music && fetchArtists();
      return () => controller.abort();
   },[nextMusic])
 
-  const handlePlayNext = () => {
+  const handlePlayNext = async() => {
     if (!playlist) { return } 
-    dispatch(setMusicBySelect(nextMusic))
+    await dispatch(setMusicBySelect(nextMusic))
     const musicToPlayIndex = playlist.findIndex(
       (item) => item.id === nextMusic?.id
     );
-    dispatch(setIndexBySelect(musicToPlayIndex))
+    await dispatch(setIndexBySelect(musicToPlayIndex))
     
   }
  
@@ -111,7 +113,7 @@ const UpComingMusic = () => {
         <div>
           <Link
             href={`/artist/${mainArtist?.id}`}
-            className="font-normal text-sm dark:text-zinc-400 whitespace-nowrap text-ellipsis overflow-hidden hover:underline"
+            className="font-normal text-sm capitalize text-zinc-400 whitespace-nowrap text-ellipsis overflow-hidden hover:underline hover:text-white"
           >
             {mainArtist?.name}
           </Link>
@@ -119,7 +121,7 @@ const UpComingMusic = () => {
             <Link
               key={item.id}
               href={`/artist/${item.id}`}
-              className="font-normal text-sm dark:text-zinc-400 whitespace-nowrap text-ellipsis overflow-hidden hover:underline"
+              className="font-normal text-sm capitalize text-zinc-400 whitespace-nowrap text-ellipsis overflow-hidden hover:underline hover:text-white"
             >
               {`, ${item.name}`}
             </Link>

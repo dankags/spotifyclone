@@ -12,12 +12,13 @@ import { playMusic,  setMusicByPlaylist,  setPlaylist } from '@/lib/redux/slices
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
 import { filterLibrary, pushToLibrary } from '@/lib/redux/slices/library'
 import { usePathname } from 'next/navigation'
+import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl'
 
 const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,musics,userId}) => {
   
   const { data } = useSession()
   const pathName = usePathname()
-  const [prevPathName,setPrevPathName]=useState(null)
+  const { playingUrl } = useAppSelector((state) => state.urlPlaying);
   const dispatch = useAppDispatch()
   const {music,playing,playlist}=useAppSelector((state)=>state.currentmusic)
   const [followState, setFollowState] = useState(false);
@@ -37,8 +38,16 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
   
   //when the pathname changes the play button is set to default
   useEffect(() => {
-    setPlay(false)
-  },[pathName])
+    
+    if (!music) { return }
+    if (!playingUrl) {return}
+    if (pathName === playingUrl) { 
+        setPlay(playing);
+        return;
+    }
+    setPlay(false);
+    
+  },[playingUrl,pathName,playing])
 
  //change the top color of the component gradient whenever the imageurl changes
   useEffect(() => {
@@ -48,29 +57,6 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
     getBgColor();
   
   }, [imgurl]);
-
-  //checks if the current playing music exists in musics playlist
-  //and playing state is true so as to set the icon
-  useEffect(() => {
-    if (music) {
-      if (musics) {
-        musics.includes(music) ? setPlay(true) : setPlay(false)
-      }
-    }
-    
-    }, [music,musics]);
-
-  useEffect(() => {
-    if (music) {
-      playing ? setPlay(true) : setPlay(false)
-    }
-  }, [playing])
-  
-  useEffect(() => {
-    if (playlist) {
-      dispatch(setPlaylistLength(playlist.length))
-    }
-  },[playlist])
 
   const handleFollow = async() => {
     if (!followState) {
@@ -116,21 +102,26 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
       toast.error(`${error}`)
     }
   }
-
+  
+  
   //dispatches the musics playlist and sets the current music to the fist one in the list
-  const handlePlay = () => {
+  const handlePlay =async () => {
     if (!data) { return }
       if (!play) {
+      
         if (playlist === null) {
           dispatch(setPlaylist(musics))
-          // dispatch(setIndexBySelect(0))
           dispatch(setPlaylistLength(musics.length));
         }
-        pathName !== prevPathName && dispatch(setPlaylist(musics));
+        if (pathName !== playingUrl) {
+          dispatch(setPlaylist(musics));
+          await dispatch(setMusicByPlaylist(0)); 
+          await dispatch(setIndexBySelect(0));
+          await dispatch(setPlaylistLength(musics.length));
+          dispatch(setPlayingUrl(pathName))
+        } 
         !music && dispatch(setMusicByPlaylist(musicIndex))  
-        dispatch(playMusic())
-        setPlay(true)
-        setPrevPathName(pathName)
+        !playing&&dispatch(playMusic())
         return
       }
       dispatch(playMusic())

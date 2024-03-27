@@ -12,13 +12,15 @@ import Music from './subComp/Music'
 import { toast } from 'sonner'
 import { artists } from '@/app/(sites)/user/_userComp/data'
 import { useSession } from 'next-auth/react'
+import { setFollowings } from '@/lib/redux/slices/followings'
 
 
 const RightBar = ({children}) => {
   const { opened } = useAppSelector(state => state.rightbar)
+  const { followings } = useAppSelector((state) => state.userFollowings);
   const {data}=useSession()
     const { music, playlist } = useAppSelector((state) => state.currentmusic);
-  const dispath = useAppDispatch()
+  const dispatch = useAppDispatch()
   const [userFollowings,setUserFollowings]=useState(null)
   
   useEffect(() => {
@@ -26,8 +28,9 @@ const RightBar = ({children}) => {
       try {
         const res = await fetch(`/api/user/userFollowings/${data.user.id}`, { method: "GET" })
         if (res.ok) {
-          const followings = await res.json()
-          setUserFollowings(followings.followings)
+          const following = await res.json()
+          dispatch(setFollowings(following.followings))
+          setUserFollowings(following.followings)
         }
       } catch (error) {
         console.log(error);
@@ -35,7 +38,7 @@ const RightBar = ({children}) => {
       }
     }
     if (data) {
-      fetchUserFollowings()
+      followings.length === 0&&fetchUserFollowings()
     }
   },[])
 
@@ -53,7 +56,7 @@ const RightBar = ({children}) => {
               Liked Songs
             </Link>
             <button
-              onClick={() => dispath(closeRightbar())}
+              onClick={() => dispatch(closeRightbar())}
               className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-stone-700"
             >
               <CgClose size={20} />

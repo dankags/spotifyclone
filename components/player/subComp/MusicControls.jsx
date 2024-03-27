@@ -16,6 +16,7 @@ import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import { playMusic, setMusicByPlaylist } from '@/lib/redux/slices/currentMusic'
 import { addMusicIndex, reduceMusicIndex, setIndexBySelect } from '@/lib/redux/slices/playlistMusicIndex'
+import { ToolTip } from '@/components/ToolTip'
 
 const MusicControls = () => {
   const [audio,setAudio]=useState(null)
@@ -97,10 +98,9 @@ const MusicControls = () => {
   useEffect(() => {
     if (music) {
       if (playing) {
-        // if (playlist) {
+        !trackAudioSrc && audio.pause()
           audio.play()
           setPlay(true)
-        // }
         return
       }
       audio.pause()
@@ -120,8 +120,11 @@ const MusicControls = () => {
        setCurrentTime((prev) => ({ ...prev,min: `${currentminute < 10 ? `0${currentminute}` : `${currentminute}`}`,}));
        setCurrentTime((prev) => ({...prev,sec: `${currentSecond < 10 ? `0${currentSecond}` : `${currentSecond}`}`,}));
 
-       if (currentTime === parseFloat(music?.duration)) {
+      if (currentTime === parseFloat(music?.duration)) {
+         audio.pause()
+         setTrackAudioSrc(null)
          setHasMusicEnded(true);
+         dispatch(playMusic());
          if (playlist) {
            dispatch(addMusicIndex());
          }
@@ -139,12 +142,12 @@ const MusicControls = () => {
         }
       };
   }, [trackAudioSrc]);
-        // const durationInMinute = Math.floor((musicDuration % 3600) / 60);
+       
 
   //every time the musicend this useEffect is fired
   useEffect(() => {
       const dispatchActions = () => {
-        dispatch(playMusic())
+        
         if (playlist) {
          
           dispatch(setMusicByPlaylist(musicIndex))
@@ -277,8 +280,10 @@ const MusicControls = () => {
         <div className='w-4/12 flex items-center justify-end gap-x-3'>
           <button className='text-stone-400 hover:text-white'><TbMicrophone2 size={20}/></button>
           <button className='text-stone-400 hover:text-white'><HiOutlineQueueList size={20}/></button>
-          <button className='text-stone-400 hover:text-white'><LuMonitorSpeaker size={20}/></button>
-          <button onClick={handleMute} title={mute ? "unmute" : "mute"} className='text-stone-400 hover:text-white'>{mute ? <PiSpeakerSimpleXFill size={20}/> : <IoMdVolumeHigh size={20}/>} </button>
+        <button className='text-stone-400 hover:text-white'><LuMonitorSpeaker size={20} /></button>
+        <ToolTip content={mute ? "unmute" : "mute"}  side={"top"}>
+          <button onClick={handleMute}  className='text-stone-400 hover:text-white'>{mute ? <PiSpeakerSimpleXFill size={20}/> : <IoMdVolumeHigh size={20}/>} </button>
+        </ToolTip>
           <div className='w-[34%]'><Slider defaultValue={[defaultVol]} value={[defaultVol]} max={100} onValueChange={handleVolume}/></div>
           <button className='text-stone-400 hover:text-white'><CgMiniPlayer size={20}/></button>
         </div>

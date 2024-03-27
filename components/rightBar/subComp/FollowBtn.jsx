@@ -1,8 +1,10 @@
 "use client"
+import { useAppSelector } from '@/lib/hooks/reduxHooks';
 import React, { useEffect, useState } from 'react'
 
-const FollowBtn = ({artistId,followings}) => {
+const FollowBtn = ({artistId}) => {
   const [followState, setFollowState] = useState(false)
+  const { followings } = useAppSelector((state) => state.userFollowings);
   
   useEffect(() => {
     if (followings) {

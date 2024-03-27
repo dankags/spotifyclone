@@ -12,7 +12,7 @@ export const ToolTip =({children,content,side,align}) => {
     <TooltipProvider>
     <Tooltip >
       <TooltipTrigger >
-        <div >
+        <div className="flex items-center">
         {children}
         </div>
         </TooltipTrigger>

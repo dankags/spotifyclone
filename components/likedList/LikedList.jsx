@@ -6,9 +6,11 @@ import {
   playMusic,
   pushToLikedSongs,
   setLikedSongs,
+  setMusicByPlaylist,
   setMusicBySelect,
   setPlaylist,
 } from "@/lib/redux/slices/currentMusic";
+import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl';
 import { filterLikedMusics, pushToLikedMusics } from '@/lib/redux/slices/likedSongs';
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex';
 import { cn } from "@/lib/utils";
@@ -33,7 +35,8 @@ export const LikedList = ({ music, index,musics }) => {
     playlist,
   } = useAppSelector((state) => state.currentmusic);
   const { likedMusics } = useAppSelector((state) => state.likedMusics)
-  const {playlistLength}=useAppSelector((state)=>state.musicIndex)
+   const { playingUrl } = useAppSelector((state) => state.urlPlaying);
+  const {playlistLength,musicIndex:Index}=useAppSelector((state)=>state.musicIndex)
   const dispatch = useAppDispatch();
   const [currentSong, setCurrentSong] = useState(currentMusic);
   const [liked, setLiked] = useState(false);
@@ -72,30 +75,51 @@ export const LikedList = ({ music, index,musics }) => {
       }
     }
   };
-
+  console.log(playlist);
+  console.log(playlistLength);
+  console.log(Index);
+  
+  
+ 
   //handle play by select and also play and pause music
-  const handlePlay = () => {
+  const handlePlay =async() => {
     const artist = [mainArtist].concat(featuredArtists)
     const musicDetails={...music,artists:artist}
     if (data) {
       if (play) {
-        playlistLength === 0 && dispatch(setPlaylistLength(musics.length))
-        !playlist && dispatch(setPlaylist(musics))
-        
-        dispatch(setIndexBySelect((index-1)))
+        playlistLength === 0&& await dispatch(setPlaylistLength(musics.length))
+        playlist === null && dispatch(setPlaylist(musics));
+         if (pathname !== playingUrl) {
+           await dispatch(setPlaylist(musics));
+           await dispatch(setMusicByPlaylist(index - 1));
+           await dispatch(setIndexBySelect(0));
+           await dispatch(setPlaylistLength(musics.length));
+           dispatch(setPlayingUrl(pathname));
+           setPlay(true);
+         } 
+        !playingUrl&&await dispatch(setPlayingUrl(pathname))
+        await dispatch(setIndexBySelect((index-1)))
         dispatch(playMusic())
         setPlay(prev => !prev)
         return
       }
-      !playlist && dispatch(setPlaylist(musics));
-       dispatch(setIndexBySelect(index - 1));
+      if (pathname !== playingUrl) {
+        await dispatch(setPlaylist(musics));
+        await dispatch(setMusicByPlaylist(index - 1));
+        await dispatch(setIndexBySelect(0));
+        await dispatch(setPlaylistLength(musics.length));
+        dispatch(setPlayingUrl(pathname));
+        setPlay(true);
+      } 
+      playlist === null && dispatch(setPlaylist(musics));
+      await dispatch(setIndexBySelect(index - 1));
       currentMusic?.id !== music.id && dispatch(setMusicBySelect(musicDetails));
       dispatch(playMusic())
       setPlay(prev => !prev)
     }
 
   }
-
+  
   //fetch featured Artists
   useEffect(() => {
     const controller=new AbortController()
@@ -153,9 +177,8 @@ export const LikedList = ({ music, index,musics }) => {
   useEffect(() => {
     if (currentMusic) {
       if (currentMusic.id === music.id) {
-        const musicIndex = musics.indexOf(currentMusic.id)
-        console.log(musicIndex)
-        dispatch(setIndexBySelect(index-1))
+        const musicIndex = musics.findIndex((item)=>item.id===currentMusic.id)
+        dispatch(setIndexBySelect(musicIndex))
         setPlay(true)
         return
       }
