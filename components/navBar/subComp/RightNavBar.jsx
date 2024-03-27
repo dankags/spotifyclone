@@ -24,7 +24,7 @@ export const RightNavBar = () => {
           Explore premium
         </span>
       </div>
-      <div className="hidden  p-2 rounded-2xl bg-neutral-900/80  cursor-pointer hover:bg-neutral-800/80 lg:block">
+      <div className="hidden py-2 px-3 rounded-2xl bg-neutral-900/80  cursor-pointer hover:bg-neutral-800/80 lg:block">
         <span className="font-semibold flex shrink-0 gap-x-2 items-center text-xs text-neutral-50  text-nowrap whitespace-nowrap">
           <FiArrowDownCircle size={20} />
           <span>Install app</span>

@@ -16,7 +16,7 @@ export const ToolTip =({children,content,side,align}) => {
         {children}
         </div>
         </TooltipTrigger>
-      <TooltipContent className="text-white bg-neutral-800" side={side} align={align}>
+      <TooltipContent className="text-white bg-neutral-800 " side={side} align={align}>
         <p>{content}</p>
       </TooltipContent>
     </Tooltip>
