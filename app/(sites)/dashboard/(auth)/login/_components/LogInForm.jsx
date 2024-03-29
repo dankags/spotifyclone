@@ -22,7 +22,6 @@ export const LogInForm = () => {
     const [pending,setPending]=useState(false)
     const [showPassWord,setShowPassWord]=useState(false)
     const {data,status}=useSession();
-    console.log(data,status)
     const handleInputs=(e)=>{
       const {name,value}=e.target
       setInputs(prev=>({...prev,[name]:value}))

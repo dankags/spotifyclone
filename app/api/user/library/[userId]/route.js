@@ -6,10 +6,12 @@ import { NextResponse } from "next/server";
 
 export const GET = async (req,{params}) => {
     const { userId } =params
-    const user =await getServerSession(authOptions)
+    const {user} = await getServerSession(authOptions)
+    
     try {
-        console.log(user)
-        // if(user.id !== userId){return NextResponse.json("cannot fetch others Library", { status: 403 })}
+        
+        if(!user){return NextResponse.json("you have not autheticated",{status:401})}
+        if(user.id !== userId){return NextResponse.json("cannot fetch others Library", { status: 403 })}
         let library = null;
         let artists = null;
         let artist=null

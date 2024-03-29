@@ -34,9 +34,10 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
       setFollowing(followings)
      followings.some((item)=>item.followingId === artist.userId)? setFollowState(true) : setFollowState(false)
    }
-  }, [])
+  })
   
   //when the pathname changes the play button is set to default
+  
   useEffect(() => {
     
     if (!music) { return }

@@ -1,11 +1,19 @@
+import { authOptions } from "@/utils/auth"
 import prisma from "@/utils/connect"
+import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 import { useId } from "react"
 
 export const GET = async (req) => {
-    const userId=await req.params
+    const userId = await req.params
+     const {user} = await getServerSession(authOptions);
     //update followings
     try {
+         if (!user) {
+           return NextResponse.json("you have not autheticated", {
+             status: 401,
+           });
+         }
         const followings = await prisma.follow.findMany({
             where: {
                 followerId : userId

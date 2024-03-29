@@ -61,7 +61,7 @@ const AlbumPage = async(param) => {
                   alt="likedImage"
                   width={230}
                   height={220}
-                  className="z-0 shadow-2xl shadow-black rounded-md"
+                  className="z-0 rounded-[4px] shadow-[0_4px_60px_0] shadow-black/50"
                 />
               </div>
               <div

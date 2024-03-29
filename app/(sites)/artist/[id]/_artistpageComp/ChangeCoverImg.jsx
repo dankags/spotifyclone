@@ -18,7 +18,9 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
     file: null,
     url: "",
   });
+  
   const bgColor = useDarkVibrantColor(`${imgFile.url}`, 1);
+  const btnBgColor=useDarkVibrantColor(`${artistImg ? artistImg : "/ab6761860000101694cd60dbca59178bcdcc8edc.jpg"}`, 1 )
   
   const handleChangeCoverImg = async (e) => {
     const file = e.target.files[0];
@@ -65,7 +67,7 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
         <div
           className={`flex justify-center items-center p-3 rounded-full cursor-pointer  hover:shadow-xl hover:shadow-neutral-900`}
           style={{
-            backgroundColor: `${useDarkVibrantColor(imgFile.url, 1)}`,
+            backgroundColor: `${bgColor}`,
           }}
         >
           <MdAddAPhoto />
@@ -74,14 +76,7 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
         <div
           className={`flex justify-center items-center p-3 rounded-full cursor-pointer  hover:shadow-xl hover:shadow-neutral-900`}
           style={{
-            backgroundColor: `${useDarkVibrantColor(
-              `${
-                artistImg
-                  ? artistImg
-                  : "/ab6761860000101694cd60dbca59178bcdcc8edc.jpg"
-              }`,
-              1
-            )}`,
+            backgroundColor: `${btnBgColor}`,
           }}
         >
           <MdAddAPhoto />

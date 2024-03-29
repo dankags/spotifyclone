@@ -252,43 +252,111 @@ const MusicControls = () => {
      audio.currentTime = (tempSliderValue * audio.duration) / 100;
   }
   return (
-    <div className='flex items-center justify-between'>
-        <div className='w-8/12 flex flex-col justify-center gap-y-2'>
-            <div className='w-full flex items-center justify-center gap-x-3'>
-                <button disabled={music ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><LuShuffle size={18}/></button>
-                <button onClick={handlePrev} disabled={playlist ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><MdSkipPrevious size={30}/></button>
-                <button onClick={handleplay} disabled={music ? false : true} className='h-9 w-9 text-black flex justify-center items-center bg-white rounded-full disabled:cursor-not-allowed disabled:bg-neutral-700'>{play ? <IoIosPause size={25}/> : <IoIosPlay size={25}/>}</button>
-                <button onClick={handleNext} disabled={playlist ? false : true} className='text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><MdSkipNext size={30}/></button>
-                <button disabled={music ? false : true} className='text-stone-400  hover:text-white disabled:cursor-not-allowed disabled:text-stone-400'><SlLoop className='rounded-md' size={18} strokeWidth={30}/></button>
-            </div>
-            <div className='flex items-center justify-center gap-x-2'>
-                {music ? 
-                <span className='text-xs text-stone-400 font-medium'>{currentTime.min}:{currentTime.sec}</span> 
-                :
-                 <span className='text-xs text-stone-400 font-medium'>-- : --</span> 
-                 }
-                <div className='w-[80%]'>
-                  <Slider disabled={music ? false : true} value={[musicProgress]} step={0.5} defaultValue={[0]} onValueChange={musicInputProgresshandler} max={100} className={cn(music ? "" : "cursor-not-allowed")}/>
-                  </div>
-                {music ? 
-                <span className='text-xs text-stone-400 font-medium'>{durationTime.min}:{durationTime.sec}</span> 
-                :
-                 <span className='text-xs text-stone-400 font-medium'>-- : --</span> 
-                 }
-            </div>
+    <div className="flex items-center justify-between">
+      <div className="w-8/12 flex flex-col justify-center gap-y-2">
+        <div className="w-full flex items-center justify-center gap-x-3">
+          <button
+            disabled={music ? false : true}
+            className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
+          >
+            <LuShuffle size={18} />
+          </button>
+          <button
+            onClick={handlePrev}
+            disabled={playlist ? false : true}
+            className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
+          >
+            <MdSkipPrevious size={30} />
+          </button>
+          <button
+            onClick={handleplay}
+            disabled={music ? false : true}
+            className="h-8 w-8 text-black flex justify-center items-center bg-white rounded-full disabled:cursor-not-allowed disabled:bg-neutral-700"
+          >
+            {play ? <IoIosPause size={25} /> : <IoIosPlay size={25} />}
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={playlist ? false : true}
+            className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
+          >
+            <MdSkipNext size={30} />
+          </button>
+          <button
+            disabled={music ? false : true}
+            className="text-stone-400  hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
+          >
+            <SlLoop className="rounded-md" size={18} strokeWidth={30} />
+          </button>
         </div>
-        <div className='w-4/12 flex items-center justify-end gap-x-3'>
-          <button className='text-stone-400 hover:text-white'><TbMicrophone2 size={20}/></button>
-          <button className='text-stone-400 hover:text-white'><HiOutlineQueueList size={20}/></button>
-        <button className='text-stone-400 hover:text-white'><LuMonitorSpeaker size={20} /></button>
-        <ToolTip content={mute ? "unmute" : "mute"}  side={"top"}>
-          <button onClick={handleMute}  className='text-stone-400 hover:text-white'>{mute ? <PiSpeakerSimpleXFill size={20}/> : <IoMdVolumeHigh size={20}/>} </button>
+        <div className="flex items-center justify-center gap-x-2">
+          {music ? (
+            <span className="min-w-10 text-xs text-stone-400 font-normal">
+              {currentTime.min}:{currentTime.sec}
+            </span>
+          ) : (
+            <span className="min-w-10 text-xs text-stone-400 font-normal">
+              -- : --
+            </span>
+          )}
+          <div className="w-[100%]">
+            <Slider
+              disabled={music ? false : true}
+              value={[musicProgress]}
+              step={0.5}
+              defaultValue={[0]}
+              onValueChange={musicInputProgresshandler}
+              max={100}
+              className={cn(music ? "" : "cursor-not-allowed")}
+            />
+          </div>
+          {music ? (
+            <span className="min-w-10 text-xs text-stone-400 font-medium">
+              {durationTime.min}:{durationTime.sec}
+            </span>
+          ) : (
+            <span className="min-w-10 text-xs text-stone-400 font-medium">
+              -- : --
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="w-4/12 flex items-center justify-end gap-x-3">
+        <button className="text-stone-400 hover:text-white">
+          <TbMicrophone2 size={20} />
+        </button>
+        <button className="text-stone-400 hover:text-white">
+          <HiOutlineQueueList size={20} />
+        </button>
+        <button className="text-stone-400 hover:text-white">
+          <LuMonitorSpeaker size={20} />
+        </button>
+        <ToolTip content={mute ? "unmute" : "mute"} side={"top"}>
+          <button
+            onClick={handleMute}
+            className="text-stone-400 hover:text-white"
+          >
+            {mute ? (
+              <PiSpeakerSimpleXFill size={20} />
+            ) : (
+              <IoMdVolumeHigh size={20} />
+            )}{" "}
+          </button>
         </ToolTip>
-          <div className='w-[34%]'><Slider defaultValue={[defaultVol]} value={[defaultVol]} max={100} onValueChange={handleVolume}/></div>
-          <button className='text-stone-400 hover:text-white'><CgMiniPlayer size={20}/></button>
+        <div className="w-[34%]">
+          <Slider
+            defaultValue={[defaultVol]}
+            value={[defaultVol]}
+            max={100}
+            onValueChange={handleVolume}
+          />
         </div>
+        <button className="text-stone-400 hover:text-white">
+          <CgMiniPlayer size={20} />
+        </button>
+      </div>
     </div>
-  )
+  );
 }
 
 export default MusicControls

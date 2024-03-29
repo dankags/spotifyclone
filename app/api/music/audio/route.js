@@ -1,10 +1,16 @@
+import { authOptions } from "@/utils/auth";
 import prisma from "@/utils/connect";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req) => {
     const body = await req.json()
+     const {user} = await getServerSession(authOptions);
+
     try {
-       
+        if (!user) {
+          return NextResponse.json("unautheticaed", { status: 401 });
+        }
         const music = await prisma.music.findUnique({
             where: {
                 id:body.musicId

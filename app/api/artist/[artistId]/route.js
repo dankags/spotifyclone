@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/utils/connect";
-
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/auth";
 
 
 export const GET = async (req, { params }) => {
     const { artistId } = params
+    const {user}=await getServerSession(authOptions)
     try {
+        if(!user){NextResponse.json("unautheticated",{status:401})}
         const artist = await prisma.artist.findUnique({
             where: {
                 userId: artistId

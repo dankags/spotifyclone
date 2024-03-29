@@ -1,14 +1,21 @@
+import { authOptions } from "@/utils/auth"
 import prisma from "@/utils/connect"
+import { getServerSession } from "next-auth"
 import { NextResponse,NextRequest } from "next/server"
 
 export const POST = async (req,{params}) => {
     const url = new URL(req.url)
     
     const followId = url.searchParams.get('followId')
-    
+    const {user} = await getServerSession(authOptions);
     const body = await req.json()
     
     try {
+          if (!user) {
+            return NextResponse.json("you have not autheticated", {
+              status: 401,
+            });
+          }
         if(!followId && !body?.id){return NextResponse.json("you content provided",{status:403})}
         if(followId === body.id){NextResponse.json("you cannot follow your self",{status:403})}
         console.log(body.id,followId)
