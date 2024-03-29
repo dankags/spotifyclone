@@ -14,9 +14,7 @@ const fetchMusics = async (id) => {
   try {
     const res = await fetch(`/api/music/artist/${id}`)
     if (res.ok) {
-      const fetchedMusics = await res.json()
-      console.log(fetchedMusics);
-      
+      const fetchedMusics = await res.json() 
       return fetchedMusics.musics
     }
   } catch (error) {
@@ -31,9 +29,10 @@ export const UserRecomended = ({ pageWidth, data, setContainerColor }) => {
   const { music, playing, playlist } = useAppSelector(
     (state) => state.currentmusic
   );
+  const { userLibrary } = useAppSelector((state) => state.userLibrary)
    const { playingUrl,id } = useAppSelector((state) => state.urlPlaying);
   const pathName = usePathname();
-  const defaultColor = useVibrantColor("/likedSongs.png", 0.45)
+  const defaultColor = useVibrantColor(userLibrary ? userLibrary[0].image:"/likedSongs.png", 0.45)
   const [loading, setLoading] = useState(true);
   
     const [currentPlayList,setCurrentPlayList]=useState( {   id:"1",
