@@ -37,7 +37,7 @@ export const PUT = async (req,{params}) => {
         return NextResponse.json(artist,{status:200})
     } catch (error) {
         console.log(error);
-        return  NextResponse.json(error,{status:500})
+        return  NextResponse.json("internal Server Error",{status:500})
     }
 }
 
