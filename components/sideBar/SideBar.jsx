@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation'
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { IoLibrary, IoSearchSharp } from "react-icons/io5"
-import {GoHome} from "react-icons/go"
+import {GoHome, GoHomeFill} from "react-icons/go"
 import { SideBarItem } from './_subComp/SideBarItem'
 
 import { cn } from '@/lib/utils'  
@@ -16,6 +16,7 @@ import { setWidth } from '@/lib/redux/slices/pageWidth'
 import { BiSearch } from 'react-icons/bi'
 import { Skeleton } from '../ui/skeleton'
 import LoadingSkeleton from '../LoadingSkeleton'
+import { PiMagnifyingGlassFill } from 'react-icons/pi'
 
   
 
@@ -27,20 +28,23 @@ const SideBar = ({children}) => {
   const { opened } = useAppSelector(state => state.rightbar)
   const [sidebarSpan,setSideBarSpan]=useState(true)
   const dispatch=useAppDispatch()
-  const routes=useMemo(()=>[
+  const routes = useMemo(
+    () => [
       {
-        label:"Home",
-        icon:<GoHome size={26}/>,
-        href:"/",
-        active:pathName === "/"
+        label: "Home",
+        icon: pathName !== "/" ? <GoHome size={26} /> : <GoHomeFill size={26} />,
+        href: "/",
+        active: pathName === "/",
       },
       {
-        label:"Search",
-        icon:<IoSearchSharp size={26}/>,
-        href:"/search",
-        active:pathName === "/search"
-      }
-    ],[pathName])
+        label: "Search",
+        icon: pathName !== "/search" ? < IoSearchSharp size={ 26} /> : < PiMagnifyingGlassFill size = { 26} />,
+        href: "/search",
+        active: pathName === "/search",
+      },
+    ],
+    [pathName]
+  );
    useEffect(() => {
     if (pageWidth) {
       dispatch(setWidth(pageWidth))

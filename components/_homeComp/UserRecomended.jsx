@@ -126,7 +126,7 @@ export const UserRecomended = ({ pageWidth, data, setContainerColor }) => {
       <div
         onMouseOut={handleMouseOut}
         onMouseOver={handleMouseOver}
-        className={`group min-h-[64px] w-full cursor-pointer flex items-center rounded-md gap-2 transition-all  ease-in-out  bg-neutral-100/10 hover:duration-300 hover:bg-neutral-500/20 `}
+        className={`group min-h-[64px] w-full cursor-pointer flex items-center rounded-md gap-2 overflow-hidden transition-all  ease-in-out  bg-neutral-100/10 hover:duration-300 hover:bg-neutral-500/20 `}
       >
         <div className="w-3/12 h-full flex justify-start shrink-0">
           <div className="min-h-[64px] min-w-[64px] relative shadow-[0_0px_40px_5px] shadow-neutral-950/60">

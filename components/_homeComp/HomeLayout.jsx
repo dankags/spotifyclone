@@ -33,17 +33,17 @@ const HomeLayOut = ({ children, likedSongs }) => {
   return (
     <ScrollArea
       onScrollCapture={handleScroll}
-      className="relative h-full rounded-md  hover:transition-all hover:duration-700"
+      className="relative h-full rounded-md transition-all duration-1000 ease-in-out "
       style={{
         backgroundImage: `linear-gradient(to top,rgb(23,23,23)  40%,${containerColor} 100%)`,
-        // transition:"back",
+        // transition: "all 3s ease 1s",
         // transitionDuration:"0.7s",
         // transitionTimingFunction:"ease-in-out"
       }}
     >
-      <div  className='relative'  >
+      <div className="relative">
         <div className="sticky top-0 z-10">
-          <NavBar bgColor={navColor ? `${navBgColor}` : ""}/>
+          <NavBar bgColor={navColor ? `${navBgColor}` : ""} />
         </div>
         <TopSection changeColor={setContainerColor} />
         {children}
