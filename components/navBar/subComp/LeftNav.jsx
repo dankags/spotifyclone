@@ -24,14 +24,14 @@ export const LeftNav = ({children}) => {
        onClick={()=>router.back()}
        
        >
-        <IoIosArrowBack size={20} className="text-lg" />
+        <IoIosArrowBack size={20} className="" />
       </button>
       <button 
       className="hidden p-2 lg:flex items-center justify-center rounded-full bg-neutral-950/80 hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50 "
       onClick={()=>router.forward()}
       
         >
-        <IoIosArrowForward size={20} className="text-lg" />
+        <IoIosArrowForward size={20} className="" />
       </button>
     </div>
     <div className={`w-10/12 h-full flex items-center justify-start truncate`}>
@@ -73,12 +73,12 @@ const ActiveMusicPlaying=({currentPlaylist,setPlay})=>{
   onClick={handleClick}
 >
   {isPlaying ? (
-    <IoIosPlay size={27} className="m-2 text-neutral-900 text-2xl" />
+    <IoIosPlay size={27} className="m-2 text-neutral-900 " />
   ) : (
-    <IoIosPause size={27} className="m-2 text-neutral-900 text-3xl" />
+    <IoIosPause size={27} className="m-2 text-neutral-900 " />
   )}
 </button>
-<span className={`pl-2 text-2xl py-2 font-bold capitalize truncate`}>daniel kagombe</span>
+<span className={`pl-2 text-xl py-2 font-bold capitalize truncate`}>daniel kagombe</span>
    </div> 
   )
 }

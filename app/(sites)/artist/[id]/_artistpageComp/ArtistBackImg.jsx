@@ -13,7 +13,7 @@ const ArtistBackImg = ({ artistBackImg }) => {
           src={imgurl}
           alt=""
           fill
-          className="aspect-square object-cover fixed top-0"
+          className="aspect-square  object-cover fixed top-0 "
           /> 
               :
               <Image

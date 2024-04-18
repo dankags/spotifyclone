@@ -6,7 +6,7 @@ import PlaylistAction from './_playlistComp/PlaylistAction'
 import MusicTitles from './_playlistComp/MusicTitles'
 import { StaticCarosel } from '@/components/StaticCarosel'
 import { Musics } from '../../collection/tracks/_trackSubComp/data'
-import { LikedList } from '@/components/likedList/LikedList'
+import { LikedList } from "@/components/MusicListComp/LikedList";
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/utils/auth'
 import { redirect } from 'next/navigation'
@@ -44,7 +44,7 @@ const PlayList = async({params}) => {
                   </div>
                   <div>
                     <span
-                      className={`w-full capitalize  text-7xl font-extrabold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden`}
+                      className={`w-full capitalize  text-3xl md:text-5xl font-extrabold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden`}
                     >
                       unity
                     </span>

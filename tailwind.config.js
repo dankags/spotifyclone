@@ -41,6 +41,18 @@ module.exports = {
         DEFAULT: "0 2px 4px var(--tw-shadow-color)",
         lg: "0 8px 16px var(--tw-shadow-color)",
       },
+      fontSize:{
+        sm: "clamp(0.8rem, -0.12vi + 0.85rem, 0.75rem)",
+        base: "clamp(1rem, 0vi + 1rem, 1rem)",
+        lg: "clamp(1.25rem, 0.21vi + 1.17rem, 1.33rem)",
+        xl: "clamp(1.56rem, 0.54vi + 1.35rem, 1.78rem)",
+        "2xl": "clamp(1.95rem, 1.04vi + 1.54rem, 2.37rem)",
+       "3xl": "clamp(2.44rem, 1.79vi + 1.73rem, 3.16rem)",
+        "4xl": "clamp(3.05rem, 2.89vi + 1.89rem, 4.21rem)",
+        "5xl": "clamp(3.81rem, 4.49vi + 2.02rem, 5.61rem)",
+        "6xl": "clamp(4.77rem, 6.78vi + 2.06rem, 7.48rem)"
+       },
+
     },
   },
   plugins: [

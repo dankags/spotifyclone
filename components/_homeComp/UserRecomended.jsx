@@ -157,9 +157,9 @@ export const UserRecomended = ({ pageWidth, data, setContainerColor }) => {
               className=" p-2 hidden rounded-full shadow-lg shadow-neutral-900 justify-center items-center transition-all ease-in-out bg-green-500 hover:bg-green-400 group-hover:flex max-md:hidden max-md:group-hover:hidden"
             >
               {recommendedPlaying ? (
-                <IoIosPause className="text-neutral-900 text-2xl" />
+                <IoIosPause className="text-neutral-900 text-xl" />
               ) : (
-                <IoIosPlay className="text-2xl text-neutral-900" />
+                <IoIosPlay className="text-xl text-neutral-900" />
               )}
             </button>
           )}

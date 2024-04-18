@@ -3,7 +3,7 @@ import UserLayOut from '../_userComp/UserLayOut'
 import { BsThreeDots } from 'react-icons/bs'
 import { StaticCarosel } from '@/components/StaticCarosel'
 import ArtistCard from '@/components/artistCard/ArtistCard'
-import { LikedList } from '@/components/likedList/LikedList'
+import { LikedList } from "@/components/MusicListComp/LikedList";
 import prisma from '@/utils/connect'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'

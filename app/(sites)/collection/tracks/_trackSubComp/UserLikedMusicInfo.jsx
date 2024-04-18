@@ -20,8 +20,8 @@ const UserLikedMusicInfo = () => {
   
   
   return (
-    <div className="flex items-center mt-7">
-      <div className="h-6 w-6 mr-2">
+    <div className="flex justify-center items-center md:justify-start  mt-7  ">
+      <div className="h-6 w-6 mr-2 hidden md:block">
         {data?.user.image ? (
           <Image
             src={data.user.image}

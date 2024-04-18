@@ -3,7 +3,7 @@ import React, { Suspense } from 'react'
 import ArtistLayout from './_artistpageComp/ArtistLayout'
 import ArtistBottom from './_artistpageComp/ArtistBottom'
 import Footer from '@/components/Footer'
-import { LikedList } from '@/components/likedList/LikedList'
+import { LikedList } from "@/components/MusicListComp/LikedList";
 import { StaticCarosel } from '@/components/StaticCarosel'
 import ArtistAbout from './_artistpageComp/ArtistAbout'
 import ArtistPick from './_artistpageComp/ArtistPick'
@@ -83,7 +83,7 @@ const ArtistPage = async (params) => {
           <ArtistBackImg artistBackImg={artist.backImg} />
         </div>
         <ArtistLayout imageUrl={artist.backImg}>
-          <div className={`h-64 flex flex-col justify-center relative pl-4 `}>
+          <div className={`h-64 flex flex-col justify-end md:justify-center relative pl-4 `}>
             <ChangeCoverImg
               artistImg={
                 artist.backImg
@@ -94,10 +94,10 @@ const ArtistPage = async (params) => {
               artistId={artist?.id}
             />
 
-            <div className="h-[15%] flex items-end gap-2">
+            <div className="h-[10%] lg:h-[15%] flex items-center gap-2">
               {artist.verified ? (
                 <>
-                  <div className="h-7 w-7 relative flex items-center">
+                  <div className="h-5 w-5 md:h-7 md:w-7 relative flex items-center">
                     <Image
                       src={"/verified.png"}
                       alt=""
@@ -113,9 +113,9 @@ const ArtistPage = async (params) => {
                 ""
               )}
             </div>
-            <div className="h-[70%] flex flex-col justify-center">
+            <div className="h-fit flex flex-col justify-center">
               <span
-                className={`py-2 sm:text-6xl md:text-7xl lg:text-8xl text-white font-bold truncate capitalize cursor-default`}
+                className={`py-2 text-4xl md:text-5xl text-white font-bold truncate capitalize cursor-default`}
               >
                 {mainArtist?.name ? mainArtist.name : "ava max"}
               </span>

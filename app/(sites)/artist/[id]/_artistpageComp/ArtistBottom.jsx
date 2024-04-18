@@ -145,9 +145,9 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
           role="play button"
         >
           {play ? (
-            <IoIosPause className="text-neutral-900 text-4xl" />
+            <IoIosPause className="text-neutral-900 text-2xl" />
           ) : (
-            <IoIosPlay className="text-neutral-900 text-4xl" />
+            <IoIosPlay className="text-neutral-900 text-2xl" />
           )}
         </button>
         {artist?.userId !== data?.user.id && (

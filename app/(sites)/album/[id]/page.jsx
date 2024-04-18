@@ -4,7 +4,7 @@ import AlbumActions from '@/components/albumPageComp/AlbumActions'
 import AlbumTableTitle from '@/components/albumPageComp/AlbumTableTitle'
 import AlbumWrapper from '@/components/albumPageComp/AlbumWrapper'
 import DurationDate from '@/components/albumPageComp/DurationDate'
-import { LikedList } from '@/components/likedList/LikedList'
+import { LikedList } from "@/components/MusicListComp/LikedList";
 import { NavBar } from '@/components/navBar/NavBar'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { VibrantColor } from '@/lib/functions/colorFunc'
@@ -74,7 +74,7 @@ const AlbumPage = async(param) => {
                   </div>
                   <div>
                     <span
-                      className={`w-full capitalize  text-7xl font-extrabold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden`}
+                      className={`w-full capitalize text-3xl md:text-5xl font-extrabold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden`}
                     >
                       {album.musicName}
                     </span>

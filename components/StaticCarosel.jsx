@@ -63,7 +63,7 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
     
       <section className='p-3 flex flex-col justify-center gap-y-3'>
         {!showAll && <div className=' flex items-center justify-between'>
-          <p className={cn("w-full text-2xl font-bold max-md:text-xl ", childrenArray > visibleCounts && "w-8/12")}>{title}</p>
+          <p className={cn("w-full text-xl font-bold  ", childrenArray > visibleCounts && "w-8/12")}>{title}</p>
           <div className='w-4/12 px-2 flex justify-end items-center'>
             {childrenArray.length > visibleCounts && <Link href={"/"} className='w-full font-semibold text-sm  text-right text-nowrap text-stone-400 hover:text-white hover:underline'>Show all</Link>}
           </div>
