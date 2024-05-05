@@ -36,8 +36,11 @@ const PlayFollowBtnContainer = ({params,musics}) => {
     setPlay(false);
   }, [playingUrl, pathName, playing]);
   
-    const handleClick=async()=>{
-       if (!data) { return }
+    const handlePlay=async()=>{
+      if (!data) { return }
+      if (!playingUrl) {
+        await dispatch(setPlayingUrl(pathName));
+      }
       if (!play) {
       
         if (playlist === null) {
@@ -45,11 +48,13 @@ const PlayFollowBtnContainer = ({params,musics}) => {
           dispatch(setPlaylistLength(musics.length));
         }
         if (pathName !== playingUrl) {
-          dispatch(setPlaylist(musics));
+          
+          
+          await dispatch(setPlayingUrl(pathName))
+          await dispatch(setPlaylist(musics));
           await dispatch(setMusicByPlaylist(0)); 
           await dispatch(setIndexBySelect(0));
           await dispatch(setPlaylistLength(musics.length));
-          dispatch(setPlayingUrl(pathName))
         } 
         !music && dispatch(setMusicByPlaylist(musicIndex))  
         !playing&&dispatch(playMusic())
@@ -65,14 +70,14 @@ const PlayFollowBtnContainer = ({params,musics}) => {
   return (
     <div className="relative p-3 flex justify-start items-center gap-x-6">
       <button
-        onClick={handleClick}
-        className="w-14 h-14 flex items-center sticky top-16 justify-center rounded-full bg-green-500/80 hover:bg-green-500 hover:scale-[1.03] hover:w-14 hover:h-14 shadow shadow-neutral-950 transition  cursor-pointer"
+        onClick={handlePlay}
+        className="p-4 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:scale-105 hover:bg-green-400 hover:shadow-md hover:shadow-neutral-900 transition-transform shadow shadow-neutral-950  cursor-pointer"
         role="play button"
       >
         {play ? (
-          <IoIosPause size={27} className=" text-neutral-950" />
+          <IoIosPause size={27} className=" text-neutral-950 text-xl" />
         ) : (
-          <IoIosPlay size={27} className=" text-neutral-950" />
+          <IoIosPlay size={27} className=" text-neutral-950 text-xl" />
         )}
       </button>
 

@@ -7,6 +7,7 @@ import { Skeleton } from './ui/skeleton'
 import { usePathname } from 'next/navigation'
 import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { HiOutlineSpeakerWave } from 'react-icons/hi2'
+import { BiSolidVolumeLow } from 'react-icons/bi'
 
 
 export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
@@ -88,7 +89,7 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
                     (playingUrl === `/artist/${item.id}` && "flex")
                 )}
               >
-                <HiOutlineSpeakerWave size={20} />
+                <BiSolidVolumeLow  size={20} />
               </div>
             )}
           </div>

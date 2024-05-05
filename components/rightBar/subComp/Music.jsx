@@ -60,7 +60,7 @@ const Music =({musicItem}) => {
             <div className='w-full flex items-center justify-between pt-2'>
                 <div className='w-[75%]'>
                    
-                    <div className='w-full flex items-center justify-start font-bold  text-3xl '>
+                    <div className='w-full flex items-center justify-start font-bold  text-lg '>
                      <Link href={`/album/${music?.id}`} className='w-full capitalize mb-1 truncate cursor-pointer hover:underline'>{music?.musicName}</Link>
                     </div>
           <div className='flex items-center overflow-hidden text-stone-400 truncate'>

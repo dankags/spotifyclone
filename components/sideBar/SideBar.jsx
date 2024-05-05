@@ -3,24 +3,26 @@ import { usePathname } from 'next/navigation'
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { IoLibrary, IoSearchSharp } from "react-icons/io5"
 import {GoHome, GoHomeFill} from "react-icons/go"
-import { SideBarItem } from './_subComp/SideBarItem'
+import { SideBarItem } from './subComp/SideBarItem'
 
 import { cn } from '@/lib/utils'  
 
-import { SideBarBottom } from './_subComp/SideBarBottom'
+import { SideBarBottom } from './subComp/SideBarBottom'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import RightBar from '../rightBar/RightBar'
+
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { setWidth } from '@/lib/redux/slices/pageWidth'
-import { BiSearch } from 'react-icons/bi'
+
 import { Skeleton } from '../ui/skeleton'
 import LoadingSkeleton from '../LoadingSkeleton'
 import { PiMagnifyingGlassFill } from 'react-icons/pi'
+import RightBar from '../rightBar/RightBar'
+
 
   
 
-const SideBar = ({children}) => {
+export default function SideBar({children}){
   const {data,status}=useSession()
   const pageRef = useRef(null)
   const pageWidth=pageRef.current?.clientWidth
@@ -153,4 +155,3 @@ const Loading = () => {
   )
 }
 
-export default SideBar

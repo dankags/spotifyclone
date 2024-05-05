@@ -53,11 +53,15 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
  //change the top color of the component gradient whenever the imageurl changes
   useEffect(() => {
     const getBgColor = async () => {
-      setCurrentFileColor(await darkVibrantColor(`${imgurl}`,0.9)) 
+      setCurrentFileColor(
+        await darkVibrantColor(`${imgurl ? imgurl : artist.backImg}`, 0.9)
+      ); 
     }
-    getBgColor();
+   getBgColor();
   
   }, [imgurl]);
+  console.log(bgColor,currentFileColor);
+  
 
   const handleFollow = async() => {
     if (!followState) {
@@ -108,18 +112,18 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
   //dispatches the musics playlist and sets the current music to the fist one in the list
   const handlePlay =async () => {
     if (!data) { return }
+    if(!playingUrl){await dispatch(setPlayingUrl(pathName))}
       if (!play) {
-      
         if (playlist === null) {
           dispatch(setPlaylist(musics))
           dispatch(setPlaylistLength(musics.length));
         }
         if (pathName !== playingUrl) {
-          dispatch(setPlaylist(musics));
+          await dispatch(setPlayingUrl(pathName))
+          await dispatch(setPlaylist(musics));
           await dispatch(setMusicByPlaylist(0)); 
           await dispatch(setIndexBySelect(0));
           await dispatch(setPlaylistLength(musics.length));
-          dispatch(setPlayingUrl(pathName))
         } 
         !music && dispatch(setMusicByPlaylist(musicIndex))  
         !playing&&dispatch(playMusic())
@@ -141,25 +145,25 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
       <div className="w-full px-4 py-3 relative flex items-center gap-5 ">
         <button
           onClick={handlePlay}
-          className="w-14 h-14 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:bg-green-400 hover:scale-[1.03] hover:w-14 hover:h-14 transition shadow shadow-neutral-950 cursor-pointer"
+          className="group p-4 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:scale-105 hover:bg-green-400 hover:shadow-md hover:shadow-neutral-900 transition-transform shadow shadow-neutral-950 cursor-pointer"
           role="play button"
         >
           {play ? (
-            <IoIosPause className="text-neutral-900 text-2xl" />
+            <IoIosPause className="text-neutral-900 text-xl   " />
           ) : (
-            <IoIosPlay className="text-neutral-900 text-2xl" />
+            <IoIosPlay className="text-neutral-900 text-xl  " />
           )}
         </button>
-        {artist?.userId !== data?.user.id && (
+        {artist?.userId !== userId && (
           <button
             onClick={handleFollow}
-            className="py-1 px-6 text-center text-white text-base font-bold rounded-3xl ring-1 ring-stone-500 transition ease-in-out hover:ring-white hover:ring-1 hover:text-base hover:font-bold hover:scale-105 "
+            className="py-1 px-6 text-center text-white text-base font-bold rounded-3xl ring-1 ring-stone-300 transition ease-in-out hover:ring-white hover:ring-1 hover:text-base hover:font-bold hover:scale-105 "
           >
             {followState ? <span>following</span> : <span>follow</span>}
           </button>
         )}
         <DropDown>
-          <button className="p-2  rounded-full text-stone-400 hover:text-white no-underline border-none outline-none transition">
+          <button className="p-2  rounded-full text-stone-400 hover:text-white no-underline border-none outline-none transition hover:scale-105">
             <BsThreeDots size={29} />
           </button>
         </DropDown>

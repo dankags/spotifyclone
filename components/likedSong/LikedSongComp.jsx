@@ -7,6 +7,7 @@ import Link from 'next/link'
 import React, { Suspense, useEffect, useMemo, useState } from 'react'
 import { HiOutlineSpeakerWave } from 'react-icons/hi2'
 import { Skeleton } from '../ui/skeleton'
+import { BiSolidVolumeLow } from 'react-icons/bi'
 
 const LikedSongComp = ({showContent,library}) => {
   const {data} =useSession()
@@ -73,7 +74,7 @@ const LikedSongComp = ({showContent,library}) => {
                   playingUrl === `/collection/tracks` && "flex"
                 )}
               >
-                <HiOutlineSpeakerWave size={20} />
+                <BiSolidVolumeLow  size={20} />
               </div>
             )}
           </div>

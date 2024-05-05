@@ -9,17 +9,21 @@ import UpComingMusic from './subComp/NextQueueMusic'
 import { useAppDispatch, useAppSelector, useAppStore } from '@/lib/hooks/reduxHooks'
 import { closeRightbar } from '@/lib/redux/slices/rightbar'
 import Music from './subComp/Music'
-import { toast } from 'sonner'
-import { artists } from '@/app/(sites)/user/_userComp/data'
 import { useSession } from 'next-auth/react'
 import { setFollowings } from '@/lib/redux/slices/followings'
 
 
-const RightBar = ({children}) => {
+
+export default function RightBar({children}){
+
+  const { data } = useSession()
   const { opened } = useAppSelector(state => state.rightbar)
   const { followings } = useAppSelector((state) => state.userFollowings);
-  const {data}=useSession()
-    const { music, playlist } = useAppSelector((state) => state.currentmusic);
+  const { music, playlist } = useAppSelector((state) => state.currentmusic);
+  const { musicIndex, playlistLength } = useAppSelector(
+     (state) => state.musicIndex
+  );
+  const [showNextQueueMusic,setShowNextQueueMusic]=useState(true)
   const dispatch = useAppDispatch()
   const [userFollowings,setUserFollowings]=useState(null)
   
@@ -40,7 +44,15 @@ const RightBar = ({children}) => {
     if (data) {
       followings.length === 0&&fetchUserFollowings()
     }
-  },[])
+  }, [])
+  
+  useEffect(() => {
+    if (playlistLength === 0) {
+      setShowNextQueueMusic(false)
+      return
+    }
+    setShowNextQueueMusic(true)
+  },[playlistLength])
 
   
   
@@ -50,7 +62,7 @@ const RightBar = ({children}) => {
       <ScrollArea
         className={cn(" w-full h-full px-3 z-10 bg-neutral-900 rounded-md")}
       >
-        <div className="w-full">
+        <div className="w-full pb-3">
           <section className="py-2 mb-3 flex items-center justify-between">
             <Link href={"/"} className="font-bold text-sm hover:underline">
               Liked Songs
@@ -66,9 +78,12 @@ const RightBar = ({children}) => {
             <Music musicItem={music} />
           </section>
           <section className="mt-3">
-            <ArtistInfoCard artistId={music?.artistId} followings={userFollowings} />
+            <ArtistInfoCard
+              artistId={music?.artistId}
+              followings={userFollowings}
+            />
           </section>
-          {playlist && (
+           
             <section className="py-3 px-2 rounded-md bg-neutral-800 flex flex-col justify-center gap-4  ">
               <div className="w-full flex items-center justify-between gap-x-3">
                 <span className="font-semibold text-base flex items-center">
@@ -81,13 +96,23 @@ const RightBar = ({children}) => {
                   Open queue
                 </Link>
               </div>
-              <UpComingMusic />
+              {showNextQueueMusic ? (
+                  <UpComingMusic />
+              ) : (
+                <div className="w-full flex items-center justify-start">
+                  <Link
+                    href={"/search"}
+                    className="py-1 px-4 text-base font-bold rounded-3xl ring-1 ring-stone-300 transition hover:ring-white hover:ring-1 hover:text-base hover:font-bold hover:scale-105"
+                  >
+                    Search for something new
+                  </Link>
+                </div>
+              )}
             </section>
-          )}
+          
         </div>
       </ScrollArea>
     </div>
   );
 }
 
-export default RightBar

@@ -5,7 +5,7 @@ import { NavBar } from '@/components/navBar/NavBar'
 import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { Skeleton } from '../ui/skeleton'
 
-export const TopSection = ({children,changeColor}) => {
+const TopSection=({children,changeColor})=>{
   const pageRef = useRef();
   const { userLibrary } = useAppSelector((state) => state.userLibrary)
   const [loading,setLoading]=useState(true)
@@ -31,7 +31,7 @@ export const TopSection = ({children,changeColor}) => {
       <div className="w-full">{children}</div>
       <div className="w-full  ">
         <div className={`w-full pt-2  mb-4 `}>
-          <span className="w-full  font-bold px-4 text-3xl ">
+          <span className="w-full  font-bold px-4 text-2xl ">
             Good afternoon
           </span>
           <div
@@ -40,6 +40,9 @@ export const TopSection = ({children,changeColor}) => {
             {userLibrary && (
               <>
                 {recommended?.map((item, i) => (
+                  // <li key={i}>
+                  //    hello
+                  // </li>
                   <UserRecomended
                     key={item.id}
                     data={item}
@@ -78,3 +81,5 @@ const HomeTopLoadingSkeleton = () => {
     </section>
   );
 }
+
+export default TopSection

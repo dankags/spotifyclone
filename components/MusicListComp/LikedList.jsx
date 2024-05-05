@@ -18,10 +18,11 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { IoPause, IoPlay } from "react-icons/io5";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
+import { TbRuler } from 'react-icons/tb';
 import { toast } from "sonner";
 
 export const LikedList = ({ music, index,musics }) => {
@@ -41,8 +42,47 @@ export const LikedList = ({ music, index,musics }) => {
   const [currentSong, setCurrentSong] = useState(currentMusic);
   const [liked, setLiked] = useState(false);
   const [play, setPlay] = useState(false)
-  const [mainArtist,setMainArtist]=useState(null)
-  const [featuredArtists,setFeaturedArtists]=useState(null)
+  const [isMusicAtiveInPathName,setIsMusicAtiveInPathName]=useState(false)
+
+  //fetch music artists
+  const musicArtists = useMemo(() => {
+    const controller = new AbortController();
+    let artists = [];
+    const fetchMainArtist = async () => {
+      try {
+        const res = await fetch(`/api/artist/profile/${music?.artistId}`, {
+          method: "GET",
+          signal: controller.signal,
+        });
+        if (res.ok) {
+          const artist = await res.json();
+          artists.push(artist)
+        
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    const fetchFeaturedArtists = async () => {
+      try {
+        const res = await fetch("/api/artist/profile", {
+          method: "POST",
+          body: JSON.stringify(music?.otherFeaturedArtist),
+          signal: controller.signal,
+        });
+        if (res.ok) {
+          const otherArtists = await res.json();
+          artists.push(...otherArtists)
+          
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    fetchMainArtist();
+    fetchFeaturedArtists();
+    return artists
+  },[music])
 
   //handle likemusic
   const handleLike = async () => {
@@ -75,17 +115,12 @@ export const LikedList = ({ music, index,musics }) => {
       }
     }
   };
-  console.log(playlist);
-  console.log(playlistLength);
-  console.log(Index);
-  
-  
- 
+
   //handle play by select and also play and pause music
   const handlePlay =async() => {
-    const artist = [mainArtist].concat(featuredArtists)
-    const musicDetails={...music,artists:artist}
+    const musicDetails={...music,artists:musicArtists}
     if (data) {
+      //play is true
       if (play) {
         playlistLength === 0&& await dispatch(setPlaylistLength(musics.length))
         playlist === null && dispatch(setPlaylist(musics));
@@ -103,6 +138,7 @@ export const LikedList = ({ music, index,musics }) => {
         setPlay(prev => !prev)
         return
       }
+      // if play var is false
       if (pathname !== playingUrl) {
         await dispatch(setPlaylist(musics));
         await dispatch(setMusicByPlaylist(index - 1));
@@ -111,80 +147,43 @@ export const LikedList = ({ music, index,musics }) => {
         dispatch(setPlayingUrl(pathname));
         setPlay(true);
       } 
-      playlist === null && dispatch(setPlaylist(musics));
+      playlist === null && await dispatch(setPlaylist(musics));
       await dispatch(setIndexBySelect(index - 1));
-      currentMusic?.id !== music.id && dispatch(setMusicBySelect(musicDetails));
+      await dispatch(setMusicBySelect(musicDetails));
       dispatch(playMusic())
-      setPlay(prev => !prev)
+      setPlay(true)
     }
 
   }
   
-  //fetch featured Artists
-  useEffect(() => {
-    const controller=new AbortController()
-    const fetchMainArtist = async () => {
-      try {
-        const res = await fetch(`/api/artist/profile/${music?.artistId}`, {
-          method: "GET",
-          signal:controller.signal
-        })
-        if (res.ok) {
-          const artist = await res.json()
-          setMainArtist(artist)
-        }
-      } catch (error) {
-        // console.log(error)
-      }
-    }
-    const fetchFeaturedArtists = async () => {
-      try {
-        const res = await fetch("/api/artist/profile", {
-          method: "POST",
-          body: JSON.stringify(music?.otherFeaturedArtist),
-          signal:controller.signal
-        })
-        if (res.ok) {
-          const artists = await res.json()
-          setFeaturedArtists(artists)
-        }
-      } catch (error) {
-        // console.log(error)
-      }
-    }
-    fetchMainArtist()
-    fetchFeaturedArtists()
-    return ()=>controller.abort()
-  },[music])
-
   // set play or pause icon and also playing state
   useEffect(() => {
     if (currentMusic) {
-      if (currentMusic.id===music.id) {
+      if (isMusicAtiveInPathName) {
         playing ? setPlay(true) : setPlay(false)
        
       }
     }
   },[playing])
-
-  
+ 
   //check if current song isliked
   useEffect(() => {
     setLiked(likedMusics?.includes(`${music?.id}`));
   }, [likedMusics]);
 
   //set current music play icon whenever it changes
-  useEffect(() => {
-    if (currentMusic) {
-      if (currentMusic.id === music.id) {
-        const musicIndex = musics?.findIndex((item)=>item.id===currentMusic.id)
-        dispatch(setIndexBySelect(index-1))
-        setPlay(true)
-        return
-      }
-      setPlay(false)
-    }
-},[currentMusic])
+//   useEffect(() => {
+//     if (currentMusic) {
+//       if (currentMusic.id === music.id) {
+//         const musicIndex = musics?.findIndex((item) => item.id === currentMusic.id)
+//         setIsMusicAtiveInPathName(true)
+//         dispatch(setIndexBySelect(index-1))
+//         setPlay(true)
+//         return
+//       }
+//       setPlay(false)
+//     }
+// },[currentMusic])
 
 //calculate the duration of the given music
   useEffect(() => {
@@ -202,20 +201,49 @@ export const LikedList = ({ music, index,musics }) => {
     
   }, [music]);
 
+  //check if the music playing is in the current playing url musics
+  //if true (exists playing url musics) the equilizer gif will show in that is playing
+  //if false (thats if music playing exist in current url & playing url ) the equalizer gif will not show
+  useEffect(() => {
+    const getActiveSongByPathName = () => {
+    console.log(currentMusic);
+    
+      if (pathname !== playingUrl) {
+        console.log();
+        
+        setIsMusicAtiveInPathName(false);
+        return;
+      }
+        if (currentMusic?.id === music?.id) {
+          setIsMusicAtiveInPathName(true)
+          const musicIndex = musics?.findIndex( (item) => item.id === currentMusic.id);
+          setIsMusicAtiveInPathName(true);
+          dispatch(setIndexBySelect(index - 1));
+          setPlay(true);
+          return
+        }
+        setPlay(false);
+        setIsMusicAtiveInPathName(false)
+        return
+    }
+    getActiveSongByPathName()
+
+  },[pathname,currentMusic,playlist])
+
   return (
     <div
       onMouseOver={() => setShowplayIcon(true)}
       onMouseOut={() => setShowplayIcon(false)}
       className={cn(
         "flex py-2 rounded-md hover:bg-neutral-700/20 group",
-        currentMusic?.id === music?.id ? "bg-neutral-700/35" : ""
+        isMusicAtiveInPathName? "bg-neutral-700/35" : ""
       )}
     >
       <div className="w-9/12 lg:w-6/12 pl-4 flex items-center max-md:justify-start shrink-0">
         <div className="hidden lg:w-1/12 lg:flex items-center  overflow-hidden">
           {showPlayIcon ? (
             <span
-              className="text-xl text-white"
+              className="text-lg text-white"
               onClick={handlePlay}
             >
               {" "}
@@ -223,7 +251,7 @@ export const LikedList = ({ music, index,musics }) => {
             </span>
           ) : (
             <div>
-              {currentMusic?.id === music?.id ? (
+              {isMusicAtiveInPathName? (
                 <Image
                   src={"/equaliser-animated-green.f5eb96f2.gif"}
                   alt="equilizer"
@@ -254,22 +282,13 @@ export const LikedList = ({ music, index,musics }) => {
               href={`/album/${music?.id ? music.id : "ueued93dn389dd39d"}`}
               className={cn(
                 "text-base font-semibold capitalize hover:underline",
-                currentMusic?.id === music?.id ? "text-green-600" : "text-white"
+                isMusicAtiveInPathName ? "text-green-600" : "text-white"
               )}
             >
               {music?.musicName ? music.musicName : "none"}
             </Link>
             <p className="flex items-center justify-start text-stone-400">
-              <Link
-                href={`/artist/${
-                  mainArtist?.id ? mainArtist.id : "uuew948ewn894en89"
-                }`}
-                className="text-sm font-medium capitalize hover:underline"
-              >
-                {mainArtist?.name ? mainArtist.name : "Jim Yosef"}
-              </Link>
-
-              {featuredArtists?.map((artist) =>
+              {musicArtists?.map((artist,indx) =>
                 <Link
                   key={artist.id}
                href={`/artist/${
@@ -277,7 +296,7 @@ export const LikedList = ({ music, index,musics }) => {
                }`}
                className="text-sm font-medium capitalize hover:underline"
              >
-                  {artist?.name ? `, ${artist.name}` : "Jim Yosef"}
+                  {artist?.name ? `${indx===0 ? artist.name :", "+artist.name}` : "Jim Yosef"}
              </Link>
               )}
 

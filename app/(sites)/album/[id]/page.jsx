@@ -7,7 +7,7 @@ import DurationDate from '@/components/albumPageComp/DurationDate'
 import { LikedList } from "@/components/MusicListComp/LikedList";
 import { NavBar } from '@/components/navBar/NavBar'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { VibrantColor } from '@/lib/functions/colorFunc'
+import { VibrantColor, darkVibrantColor } from "@/lib/functions/colorFunc";
 import { authOptions } from '@/utils/auth'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
@@ -47,7 +47,7 @@ const AlbumPage = async(param) => {
       id:true,
     }
   })
-  const bgColor = await VibrantColor(`${album.musicImage}`, 1)
+  const bgColor = await darkVibrantColor(`${album.musicImage}`, 1)
  
   return (
     <Suspense fallback={<LoadingSkeleton />}>
@@ -108,7 +108,7 @@ const AlbumPage = async(param) => {
             </div>
           </div>
           <div className="p-3 bg-gradient-to-t from-[80%] from-neutral-900 to-neutral-900/30">
-            <AlbumActions />
+            <AlbumActions album={album}/>
             <div className="w-full flex items-center gap-x-3 py-3 pl-2 rounded-md  hover:bg-neutral-800/40 ">
               <div className="relative min-w-[75px] min-h-[75px]">
                 <Image

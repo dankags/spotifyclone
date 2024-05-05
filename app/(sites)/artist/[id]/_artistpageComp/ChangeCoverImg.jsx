@@ -79,7 +79,7 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
             backgroundColor: `${btnBgColor}`,
           }}
         >
-          <MdAddAPhoto />
+          <MdAddAPhoto className=""/>
         </div>
       )}
       <input

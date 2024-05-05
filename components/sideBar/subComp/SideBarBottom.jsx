@@ -1,7 +1,6 @@
 "use client"
 import LikedSongComp from '@/components/likedSong/LikedSongComp'
 import { ArtistPlaylistComp } from '../../ArtistPlaylistComp'
-import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
 import { setLikedSongs } from '@/lib/redux/slices/currentMusic'
@@ -10,11 +9,11 @@ import { setLikedMusics } from '@/lib/redux/slices/likedSongs'
 import { cn } from '@/lib/utils'
 import { ArrowRight, PlusIcon, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { BiLibrary, BiSearch } from 'react-icons/bi'
 import { FaList } from 'react-icons/fa'
 import { toast } from 'sonner'
-import { Skeleton } from '@/components/ui/skeleton'
+
 
 const sortTypes=[
   {
@@ -30,6 +29,7 @@ const sortTypes=[
 export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
 
   const { data } = useSession()
+  const searchInputRef=useRef()
   const { userLibrary } = useAppSelector((state) => state.userLibrary)
   const { playingUrl } = useAppSelector((state) => state.urlPlaying);
   const dispatch=useAppDispatch()
@@ -95,6 +95,15 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
       return
     }
     setShowLibraryShadow(false)
+  }
+  const handleSearchBtnToogle = () => {
+    if (!showSearchInput) {
+      searchInputRef.current.focus()
+      setShowSearchInput(!showSearchInput)
+      return
+    }
+    searchInputRef.current.value=""
+    setShowSearchInput(!showSearchInput)
   }
 
   return (
@@ -190,12 +199,13 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
               )}
             >
               <span
-                onClick={() => setShowSearchInput(!showSearchInput)}
+                onClick={handleSearchBtnToogle}
                 className=" shrink-0 text-stone-400  group-hover:text-white"
               >
                 <BiSearch size={20} />
               </span>
               <input
+              ref={searchInputRef}
                 placeholder="Search"
                 className={cn(
                   " w-full tracking-wide text-sm placeholder:text-sm bg-neutral-800 focus:border-none focus:outline-none "
@@ -255,7 +265,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
 const SortComponent=({sortTypeSelectedIncludes,sort} )=>{
   
    return(
-    <div className={cn('text-sm flex items-center justify-center shrink-0 text-center  font-medium capitalize rounded-3xl px-3 py-2 mr-2 bg-neutral-800 hover:bg-neutral-700 cursor-pointer ',sortTypeSelectedIncludes && "bg-white text-black font-normal transition-colors duration-300 hover:bg-white")}>
+    <div className={cn('text-sm flex items-center justify-center shrink-0 text-center  font-semibold capitalize rounded-3xl px-5 py-2 mr-2 bg-neutral-800 hover:bg-neutral-700 cursor-pointer ',sortTypeSelectedIncludes && "bg-white text-black font-semibold transition-colors duration-300 hover:bg-white")}>
       <span className='text-nowrap'>{sort?.sort}</span>
       </div>
    )

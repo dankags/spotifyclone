@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
-import { playMusic, setMusicByPlaylist } from '@/lib/redux/slices/currentMusic'
+import { playMusic, setMusicByPlaylist, setPlayMusicValue } from '@/lib/redux/slices/currentMusic'
 import { addMusicIndex, reduceMusicIndex, setIndexBySelect } from '@/lib/redux/slices/playlistMusicIndex'
 import { ToolTip } from '@/components/ToolTip'
 
@@ -71,8 +71,11 @@ const MusicControls = () => {
           setTrackAudioSrc(`${serverResponse.audioUrl}`);
           audio.play()
           setPlay(true)
+          await dispatch(setPlayMusicValue(true))
+          return;
         }
-        
+        await dispatch(setPlayMusicValue(false));
+        return
       } catch (error) {
         // toast.error(`${error}`)
       }
@@ -137,7 +140,7 @@ const MusicControls = () => {
       audio.addEventListener("timeupdate", handleTimeUpdate);
     }
     return () => {
-        if (audio?.src) {
+        if (audio?.src || music) {
           audio.removeEventListener("timeupdate", handleTimeUpdate);
         }
       };

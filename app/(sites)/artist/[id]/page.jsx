@@ -12,61 +12,101 @@ import prisma from '@/utils/connect'
 import ArtistBackImg from './_artistpageComp/ArtistBackImg'
 import { authOptions } from '@/utils/auth'
 import { getServerSession } from 'next-auth'
-import { darkVibrantColor } from '@/lib/functions/colorFunc'
+import { MutedColor, darkVibrantColor } from '@/lib/functions/colorFunc'
 import { redirect } from 'next/navigation'
 import LoadingSkeleton from '@/components/LoadingSkeleton'
 
+const fetchArtist = async (id) => {
+  let artist = null;
+ try {
+  artist = await prisma.artist.findUnique({
+    where: {
+      userId: id,
+    },
+  });
+   if(artist){return artist}
+ } catch (error) {
+  console.log(error);
+ }
+  
+}
+const fetchMainArtist = async (artistsInfo) => {
+ 
+   try {
+     const artist =await prisma.user.findUnique({
+       where: {
+         id: artistsInfo.userId,
+       },
+       select: {
+         name: true,
+         id: true,
+         image: true,
+         artist: {
+           select: {
+             slug: true,
+           },
+         },
+       },
+     });
+     return artist
+     
+   } catch (error) {
+     return error
+   }
+ 
+}
+const fetchMusics = async (artistId) => {
+ 
+    try {
+      
+      const musics =await prisma.music.findMany({
+        where: {
+          OR: [
+            {
+              artistId: artistId,
+            },
+            {
+              otherFeaturedArtist: {
+                has: artistId,
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+          artistId: true,
+          musicName: true,
+          duration: true,
+          musicImage: true,
+          otherFeaturedArtist: true,
+        },
+      });
+      
+      return musics
+    } catch (error) {
+      return error
+    }
+
+}
+
+
 const ArtistPage = async (params) => {
   const session = await getServerSession(authOptions);
+  let bgColor = null
+  
   if (!session) {
     redirect("/dashboard/login")
   }
-  const artist = await prisma.artist.findUnique({
-    where: {
-      userId: params.params.id,
-    },
-  });
+
+//fetching artist and computing the image darkVibrant color
+const artist = await fetchArtist(params.params.id);
+const mainArtist = await fetchMainArtist(artist)
+const musics = await fetchMusics(params.params.id);
+bgColor=await darkVibrantColor(artist.backImg,0.9)
   
-  const bgColor = await darkVibrantColor(`${artist.backImg ? artist.backImg : "public/pexels-ahmed-adly-1270184.jpg"}`, 0.9);
   
-  const musics = await prisma.music.findMany({
-      where: {
-        OR: [
-          {
-            artistId: params.params.id,
-          },
-          {
-            otherFeaturedArtist: {
-              has: params.params.id,
-            },
-          },
-        ],
-      },
-    select: {
-      id: true,
-      artistId:true,
-      musicName:true,
-      duration:true,
-      musicImage:true,
-      otherFeaturedArtist:true,
-    },
-  });
-  const mainArtist=await prisma.user.findUnique({
-    where:{
-      id:artist.userId
-    },
-    select:{
-      name:true,
-      id: true,
-      image: true,
-      artist: {
-        select: {
-         slug:true   
-        }
-    },
-    }
-  })
- 
+  
+  
   const followings = await prisma.follow.findMany({
     where: {
       followerId: session?.user.id
@@ -80,22 +120,22 @@ const ArtistPage = async (params) => {
     <Suspense fallback={<LoadingSkeleton />}>
       <div className="relative w-full h-full overflow-hidden rounded-md">
         <div className="absolute left-0 w-full h-[95%]  rounded-md overflow-hidden ">
-          <ArtistBackImg artistBackImg={artist.backImg} />
+          <ArtistBackImg artistBackImg={artist?.backImg} />
         </div>
-        <ArtistLayout imageUrl={artist.backImg}>
+        <ArtistLayout imageUrl={artist?.backImg}>
           <div className={`h-64 flex flex-col justify-end md:justify-center relative pl-4 `}>
             <ChangeCoverImg
               artistImg={
-                artist.backImg
+                artist
                   ? artist.backImg
                   : "/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"
               }
-              isArtist={session?.user.id === artist.userId}
+              isArtist={session?.user.id === artist?.userId}
               artistId={artist?.id}
             />
 
             <div className="h-[10%] lg:h-[15%] flex items-center gap-2">
-              {artist.verified ? (
+              {artist?.verified ? (
                 <>
                   <div className="h-5 w-5 md:h-7 md:w-7 relative flex items-center">
                     <Image
@@ -117,7 +157,7 @@ const ArtistPage = async (params) => {
               <span
                 className={`py-2 text-4xl md:text-5xl text-white font-bold truncate capitalize cursor-default`}
               >
-                {mainArtist?.name ? mainArtist.name : "ava max"}
+                { mainArtist?.name??"hello" }
               </span>
             </div>
             <div className="h-[15%] flex flex-col justify-center">
@@ -154,7 +194,7 @@ const ArtistPage = async (params) => {
             </div>
             <div className=" flex flex-col p-4 gap-2">
               <span className="text-xl font-semibold">Artist Pick</span>
-              <ArtistPick />
+              <ArtistPick mainArtist={mainArtist} artistMusicPic={musics[0]} />
 
               <div className=" flex flex-col py-4 gap-2">
                 <span className="text-xl font-bold">About</span>

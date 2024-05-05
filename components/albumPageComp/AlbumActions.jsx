@@ -1,14 +1,50 @@
 "use client"
+import { useAppSelector } from '@/lib/hooks/reduxHooks'
+import { playMusic, setMusicByPlaylist, setNotByPlayList, setPlaylist } from '@/lib/redux/slices/currentMusic'
+import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl'
+import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
+import { useSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 import React, { useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs'
 import { IoIosPause, IoIosPlay } from 'react-icons/io'
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from 'react-icons/md'
+import { useDispatch } from 'react-redux'
 
-const AlbumActions = ({album}) => {
+const AlbumActions = ({ album }) => {
+  
+  const {data}=useSession()
+  const pathName = usePathname();
+  const { playingUrl } = useAppSelector((state) => state.urlPlaying);
+  const { playing, playlist, music } = useAppSelector(
+    (state) => state.currentmusic
+  );
+  const dispatch = useDispatch();
     const [play,setPlay]=useState(false)
     const [liked,setLiked]=useState(false)
-    const handlePlay=()=>{
-       setPlay(prev=>!prev)
+  const handlePlay = async() => {
+       if (!data) { return }
+      if (!playingUrl) {
+        await dispatch(setPlayingUrl(pathName));
+      }
+      if (!play) {
+        await dispatch(setNotByPlayList(album))
+        if (playlist === null) {
+          dispatch(setPlaylist(null))
+          dispatch(setPlaylistLength(0));
+        }
+        if (pathName !== playingUrl) {
+          await dispatch(setPlayingUrl(pathName))
+          await dispatch(setPlaylist(null));
+          await dispatch(setIndexBySelect(0));
+          await dispatch(setPlaylistLength(0));
+        }  
+        !playing && dispatch(playMusic())
+        setPlay(!play)
+        return
+      }
+      dispatch(playMusic())
+      setPlay(false)
     }
     const handleLike=()=>{
         setLiked(prev=>!prev)

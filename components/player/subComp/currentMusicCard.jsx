@@ -163,8 +163,8 @@ const CurrentMusicCard = ({ children }) => {
                     {music.artists?.slice(1).map((artist) => {
                     return (
                         
-                        <Link key={artist.id} href={`/artist/${artist.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
-                        {`, ${artist.name}`}
+                        <Link key={artist?.id} href={`/artist/${artist?.id}`} className="text-xs font-medium truncate text-stone-400 cursor-pointer hover:text-white hover:underline ">
+                        {`, ${artist?.name}`}
                         </Link>
                         
                       ) 
