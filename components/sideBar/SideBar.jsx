@@ -332,14 +332,17 @@ const Loading = () => {
    }
 
    return (
-     <div className="w-full rounded-md p-3 flex items-center justify-between lg:hidden" style={{backgroundColor:`${color}`}}>
+     <div
+       className="w-full rounded-md p-3 flex items-center justify-between lg:hidden"
+       style={{ backgroundColor: `${color}` }}
+     >
        <div
          className={
            "w-9/12 h-full px-2 flex items-center justify-between  gap-4"
          }
        >
          {music ? (
-           < >
+           <>
              <div className="w-1/12 ">
                <div className="group w-14 h-14 rounded-md relative">
                  <Image
@@ -417,8 +420,8 @@ const Loading = () => {
            <></>
          )}
        </div>
-       <div className="w-3/12 flex items-center justify-end pr-3">
-         <button onClick={handleplay}>
+       <div className="w-3/12 flex items-center justify-end pr-3 gap-3">
+         <button onClick={handleplay} className="hover:scale-105">
            {isPlaying ? (
              <IoIosPause className="text-neutral-50 text-xl" />
            ) : (
@@ -426,7 +429,10 @@ const Loading = () => {
            )}
          </button>
          {playlist && (
-           <button onClick={handleNext} className="text-neutral-50">
+           <button
+             onClick={handleNext}
+             className="text-neutral-50 hover:scale-105"
+           >
              <MdSkipNext size={30} />
            </button>
          )}
