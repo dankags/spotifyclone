@@ -3,7 +3,7 @@ import PlayFollowBtnContainer from '@/components/PlayFollowBtnCont'
 import { StaticCarosel } from '@/components/StaticCarosel'
 import React, { Suspense } from 'react'
 import { MdOutlineAccessTime } from 'react-icons/md'
-import { LikedList } from "@/components/MusicListComp/LikedList";
+import { LikedList } from "@/components/musicListComp/LikedList";
 import prisma from '@/utils/connect'
 import { authOptions } from '@/utils/auth'
 import { getServerSession } from 'next-auth'

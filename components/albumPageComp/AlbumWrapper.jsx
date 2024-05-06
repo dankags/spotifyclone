@@ -1,7 +1,7 @@
 "use client"
 import { useDarkVibrantColor, useNavBarDarkVibrant, useVibrantColor } from '@/lib/hooks/colorHooks'
 import React, { useState } from 'react'
-import { NavBar } from '../navBar/NavBar'
+import { NavBar } from "../navigationbar/NavBar";
 import Footer from '../Footer'
 import { ScrollArea, ScrollBar } from '../ui/scroll-area'
 

@@ -1,21 +1,21 @@
-import { NavBar } from '@/components/navBar/NavBar'
-import React, { Suspense } from 'react'
-import PlaylistWrapper from './_playlistComp/PlaylistWrapper'
-import Image from 'next/image'
-import PlaylistAction from './_playlistComp/PlaylistAction'
-import MusicTitles from './_playlistComp/MusicTitles'
-import { StaticCarosel } from '@/components/StaticCarosel'
-import { Musics } from '../../collection/tracks/_trackSubComp/data'
-import { LikedList } from "@/components/MusicListComp/LikedList";
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/utils/auth'
-import { redirect } from 'next/navigation'
-import LoadingSkeleton from '@/components/LoadingSkeleton'
+import { NavBar } from "@/components/navigationbar/NavBar";
+import React, { Suspense } from "react";
+import PlaylistWrapper from "./_playlistComp/PlaylistWrapper";
+import Image from "next/image";
+import PlaylistAction from "./_playlistComp/PlaylistAction";
+import MusicTitles from "./_playlistComp/MusicTitles";
+import { StaticCarosel } from "@/components/StaticCarosel";
+import { Musics } from "../../collection/tracks/_trackSubComp/data";
+import { LikedList } from "@/components/musicListComp/LikedList";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/auth";
+import { redirect } from "next/navigation";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
 
-const PlayList = async({params}) => {
-   const session=await getServerSession(authOptions)
+const PlayList = async ({ params }) => {
+  const session = await getServerSession(authOptions);
   if (!session) {
-    redirect("/dashboard/login")
+    redirect("/dashboard/login");
   }
   return (
     <Suspense fallback={<LoadingSkeleton />}>
@@ -87,6 +87,6 @@ const PlayList = async({params}) => {
       </div>
     </Suspense>
   );
-}
+};
 
-export default PlayList
+export default PlayList;

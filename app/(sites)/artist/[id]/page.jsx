@@ -3,7 +3,7 @@ import React, { Suspense } from 'react'
 import ArtistLayout from './_artistpageComp/ArtistLayout'
 import ArtistBottom from './_artistpageComp/ArtistBottom'
 import Footer from '@/components/Footer'
-import { LikedList } from "@/components/MusicListComp/LikedList";
+import { LikedList } from "@/components/musicListComp/LikedList";
 import { StaticCarosel } from '@/components/StaticCarosel'
 import ArtistAbout from './_artistpageComp/ArtistAbout'
 import ArtistPick from './_artistpageComp/ArtistPick'

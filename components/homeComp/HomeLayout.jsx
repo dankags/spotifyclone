@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useState } from 'react'
-import { NavBar } from '@/components/navBar/NavBar'
+import { NavBar } from "@/components/navigationbar/NavBar";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { ScrollAreaScrollbar } from '@radix-ui/react-scroll-area'
 import { useSession } from 'next-auth/react'

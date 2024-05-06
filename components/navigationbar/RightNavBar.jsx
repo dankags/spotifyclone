@@ -1,22 +1,21 @@
-"use client"
-import { signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { BiBell, BiSearch } from 'react-icons/bi'
-import { FiArrowDownCircle } from "react-icons/fi"
-import { LuUser2 } from "react-icons/lu"
-import { ToolTip } from '../../ToolTip'
-import { NavMenu } from './NavMenu'
-import { cn } from '@/lib/utils'
-import { Tooltip } from '@/components/ui/tooltip'
+"use client";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
+import { BiBell, BiSearch } from "react-icons/bi";
+import { FiArrowDownCircle } from "react-icons/fi";
+import { LuUser2 } from "react-icons/lu";
+import { ToolTip } from "../ToolTip";
+import { NavMenu } from "./NavMenu";
+import { cn } from "@/lib/utils";
+import { Tooltip } from "@/components/ui/tooltip";
 
 export const RightNavBar = () => {
-   
-   const {data}=useSession() 
-   const [showDropDown,setShowDropDown]=useState(false)
-   const [showSearchInput,setShowSearchInput]=useState(false)
-    
+  const { data } = useSession();
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [showSearchInput, setShowSearchInput] = useState(false);
+
   return (
     <div className="w-10/12 lg:w-6/12 flex items-center justify-end gap-2 relative pr-2">
       <div className="hidden p-2 ml-2  items-center rounded-2xl bg-neutral-50 cursor-pointer lg:flex">
@@ -87,6 +86,4 @@ export const RightNavBar = () => {
       </div>
     </div>
   );
-}
-
-
+};

@@ -16,10 +16,10 @@ export const SignUpProviders = () => {
           width={50}
           className=""
         />
-        <span className="text-2xl font-bold ">Spotify</span>
+        <span className="text-xl font-bold ">Spotify</span>
       </div>
       <div className="flex flex-col items-center gap-6">
-        <span className="text-2xl font-bold mb-2">
+        <span className="text-xl font-bold mb-2">
           Sign up for free to start listening.
         </span>
         <div className="w-full flex justify-center items-center gap-3 ring-0 bg-blue-900 rounded-3xl px-6 py-3 font-medium text-sm text-white hover:bg-blue-800 cursor-pointer">

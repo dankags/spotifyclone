@@ -1,5 +1,5 @@
 "use client"
-import { NavBar } from '@/components/navBar/NavBar';
+import { NavBar } from "@/components/navigationbar/NavBar";
 import React, { Suspense, useRef, useState } from 'react'
 import TopTrackSection from './_trackSubComp/TopTrackSection';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';

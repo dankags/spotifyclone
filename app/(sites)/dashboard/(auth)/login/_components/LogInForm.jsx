@@ -1,27 +1,25 @@
 "use client"
 import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
-import { SwitchThumb } from '@radix-ui/react-switch'
-import { signIn, useSession ,} from 'next-auth/react'
+import { useLocalStorage } from '@uidotdev/usehooks'
+import { signIn} from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md'
 
 export const LogInForm = () => {
-  const userCredential= JSON.parse(localStorage.getItem("credential"))
-  const {update}=useSession()
+  const [userCredentials,saveUserCredentials] = useLocalStorage("credential");
   const router=useRouter()
     const [inputs,setInputs]=useState({
-      email:userCredential?.email ? userCredential.email : "",
-      password:userCredential?.password ? userCredential.password : ""
+      email:userCredentials?.email ? userCredentials.email : "",
+      password:userCredentials?.password ? userCredentials.password : ""
     })
-    const [rememberMe,setRememberMe]=useState(userCredential?.remember ? userCredential.remember : false )
+    const [rememberMe,setRememberMe]=useState(userCredentials?.remember ? userCredentials.remember : false )
     
     const [error,setError]=useState(null)
     const [pending,setPending]=useState(false)
     const [showPassWord,setShowPassWord]=useState(false)
-    const {data,status}=useSession();
     const handleInputs=(e)=>{
       const {name,value}=e.target
       setInputs(prev=>({...prev,[name]:value}))
@@ -33,13 +31,12 @@ export const LogInForm = () => {
         return
       }
       if(!rememberMe){
-        await localStorage.removeItem("credential")
+        await window.localStorage.clear("credential")
       }
       
       try {
         setPending(true)
         const res=await signIn("credentials",{...inputs,redirect:false});
-        console.log(res)
         if (res.error) {
           setError("invalid credentials")
           setPending(false)
@@ -47,10 +44,10 @@ export const LogInForm = () => {
         }
         if (res.ok) {
           if(rememberMe){
-            await localStorage.setItem("credential",JSON.stringify({
+            await saveUserCredentials({
               remember:rememberMe,
               ...inputs
-            }))
+            })
           }
           
           setError(null)
@@ -63,49 +60,92 @@ export const LogInForm = () => {
      
     }
   return (
-    <form onSubmit={handleLogin} className='w-7/12 flex flex-col items-center gap-4'>
-      <div className='flex justify-center items-center'>
-        {error ?
-        <span className='text-base font-medium text-red-400'>{error}</span>
-        :
-        <></> 
-        }
+    <form
+      onSubmit={handleLogin}
+      className="w-7/12 flex flex-col items-center gap-4"
+    >
+      <div className="flex justify-center items-center">
+        {error ? (
+          <span className="text-base font-medium text-red-400">{error}</span>
+        ) : (
+          <></>
+        )}
       </div>
-    <div className='w-8/12 flex flex-col gap-2'>
-      <label htmlFor="Email" className='text-sm font-medium'>Email</label>
-    <input
-     type="email"
-     name="email"
-     placeholder={userCredential?.email ? userCredential.email : "Email"}
-      onChange={handleInputs}
-       id="Email"
-        className='h-10 rounded-sm px-2 text-sm text-black font-medium focus:outline-green-600' />
-    </div>
-    <div className='w-8/12 flex flex-col gap-2'>
-      <label htmlFor="Password" className='text-sm font-medium'>Password</label>
-      <div className='w-full flex gap-x-2 items-center rounded-sm bg-neutral-50 focus-within:ring-2 focus-within:ring-green-600'>
-         <input type={showPassWord ? "text":"password"} placeholder={userCredential?.password ? userCredential.password : inputs.password} name="password"  onChange={handleInputs} id="password" className='h-10 w-[88%] rounded-sm px-2 text-sm text-black font-medium focus:outline-none ' />
-         <div onClick={()=>setShowPassWord(prev=>!prev)} className={cn('flex items-center justify-center cursor-pointer text-neutral-700 opacity-0 transition',inputs?.password ? "opacity-100":"opacity-0")}>
-         {showPassWord ? (
-           <MdOutlineVisibilityOff size={20} />
-           ) : (
+      <div className="w-8/12 flex flex-col gap-2">
+        <label htmlFor="Email" className="text-sm font-medium">
+          Email
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={inputs.email}
+          placeholder={userCredentials?.email ? userCredentials.email : "Email"}
+          onChange={handleInputs}
+          id="Email"
+          className="h-10 rounded-sm px-2 text-sm text-black font-medium focus:outline-none focus:ring-2 focus:ring-green-600"
+        />
+      </div>
+      <div className="w-8/12 flex flex-col gap-2">
+        <label htmlFor="Password" className="text-sm font-medium">
+          Password
+        </label>
+        <div className="w-full flex gap-x-2 items-center rounded-sm bg-neutral-50 focus-within:ring-2 focus-within:ring-green-600">
+          <input
+            type={showPassWord ? "text" : "password"}
+            value={inputs.password}
+            placeholder={
+              userCredentials?.password ? userCredentials.password : "Password"
+            }
+            name="password"
+            onChange={handleInputs}
+            id="password"
+            className="h-10 w-[88%] rounded-sm px-2 text-sm text-black font-medium focus:outline-none "
+          />
+          <div
+            onClick={() => setShowPassWord((prev) => !prev)}
+            className={cn(
+              "flex items-center justify-center cursor-pointer text-neutral-700 opacity-0 transition",
+              inputs?.password ? "opacity-100" : "opacity-0"
+            )}
+          >
+            {showPassWord ? (
+              <MdOutlineVisibilityOff size={20} />
+            ) : (
               <MdOutlineVisibility size={20} />
             )}
-         </div>
+          </div>
+        </div>
       </div>
-      </div>
-      <div className='w-8/12 flex items-center justify-start mb-4'>
-        <Switch checked={rememberMe} onCheckedChange={()=>setRememberMe(prev=>!prev)} className="h-4 w-8"/>
-          
+      <div className="w-8/12 flex items-center justify-start mb-4">
+        <Switch
+          checked={rememberMe}
+          onCheckedChange={() => setRememberMe((prev) => !prev)}
+          className="h-4 w-8"
+        />
 
-        <span className='text-xs font-bold ml-2'>Remember me</span>
+        <span className="text-xs font-bold ml-2">Remember me</span>
       </div>
-    <button className='w-8/12 py-3 rounded-3xl text-lg font-bold text-neutral-900 bg-green-500 hover:bg-green-400' disabled={pending}>Log in</button>
-    <Link href="" className='text-sm font-normal dark:text-white hover:underline'>Forgot Your Password?</Link>
-    <div className='w-full'>
-      <hr className='dark:border-neutral-700 mt-5 mb-9'/>
-    </div>
-    <p className='text-sm font-medium text-stone-400'>Do not have an account? <Link href="/dashboard/register" className='text-white hover:underline'>Sign up for Spotify</Link></p>
-  </form>
-  )
+      <button
+        className="w-8/12 py-3 rounded-3xl text-base font-bold text-neutral-900 bg-green-500 hover:bg-green-400"
+        disabled={pending}
+      >
+        Log in
+      </button>
+      <Link
+        href=""
+        className="text-sm font-normal dark:text-white hover:underline"
+      >
+        Forgot Your Password?
+      </Link>
+      <div className="w-full">
+        <hr className="dark:border-neutral-700 mt-5 mb-9" />
+      </div>
+      <p className="text-sm font-medium text-stone-400">
+        Do not have an account?{" "}
+        <Link href="/dashboard/register" className="text-white hover:underline">
+          Sign up for Spotify
+        </Link>
+      </p>
+    </form>
+  );
 }

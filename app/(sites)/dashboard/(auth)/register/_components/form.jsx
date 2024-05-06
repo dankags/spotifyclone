@@ -276,7 +276,7 @@ export const Form = () => {
 
     <button
       type="submit"
-      className="w-5/12 mt-4 py-3 px-6 rounded-3xl text-lg font-bold text-black bg-green-500 hover:bg-green-400 "
+      className="w-5/12 mt-4 py-3 px-6 rounded-3xl text-base font-bold text-black bg-green-500 hover:bg-green-400 "
     >
       Sign up
     </button>

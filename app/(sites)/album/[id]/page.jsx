@@ -4,8 +4,8 @@ import AlbumActions from '@/components/albumPageComp/AlbumActions'
 import AlbumTableTitle from '@/components/albumPageComp/AlbumTableTitle'
 import AlbumWrapper from '@/components/albumPageComp/AlbumWrapper'
 import DurationDate from '@/components/albumPageComp/DurationDate'
-import { LikedList } from "@/components/MusicListComp/LikedList";
-import { NavBar } from '@/components/navBar/NavBar'
+import { LikedList } from "@/components/musicListComp/LikedList";
+import { NavBar } from "@/components/navigationbar/NavBar";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { VibrantColor, darkVibrantColor } from "@/lib/functions/colorFunc";
 import { authOptions } from '@/utils/auth'

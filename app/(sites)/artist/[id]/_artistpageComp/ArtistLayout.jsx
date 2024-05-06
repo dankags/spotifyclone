@@ -1,5 +1,5 @@
 "use client"
-import { NavBar } from '@/components/navBar/NavBar'
+import { NavBar } from "@/components/navigationbar/NavBar";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useNavBarDarkVibrant } from '@/lib/hooks/colorHooks'
 import React, { useState } from 'react'

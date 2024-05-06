@@ -1,6 +1,6 @@
 "use client"
 import { StaticCarosel } from '@/components/StaticCarosel'
-import { LikedList } from "@/components/MusicListComp/LikedList";
+import { LikedList } from "@/components/musicListComp/LikedList";
 import React from 'react'
 import { Musics } from './data'
 

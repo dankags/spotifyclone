@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { UserRecomended, UserRecommendedLoadingSkele } from './UserRecomended'
-import { NavBar } from '@/components/navBar/NavBar'
+import { NavBar } from "@/components/navigationbar/NavBar";
 import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { Skeleton } from '../ui/skeleton'
 

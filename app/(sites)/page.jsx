@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer'
-import { NavBar } from '@/components/navBar/NavBar'
+import { NavBar } from "@/components/navigationbar/NavBar";
 import Image from 'next/image'
 import { TopSection } from '../../components/homeComp/TopSection'
 import { BottomHomeSection } from '../../components/homeComp/BottomHomeSection'

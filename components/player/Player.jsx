@@ -1,6 +1,6 @@
 import React from 'react'
-import CurrentMusicCard from './subComp/currentMusicCard';
-import MusicControls from './subComp/MusicControls';
+import CurrentMusicCard from './currentMusicCard';
+import MusicControls from './MusicControls';
 
 
 export const Player = () => {

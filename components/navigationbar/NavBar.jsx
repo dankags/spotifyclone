@@ -1,6 +1,6 @@
 import React from 'react'
-import { LeftNav} from './subComp/LeftNav'
-import { RightNavBar } from './subComp/RightNavBar'
+import { LeftNav } from "./LeftNav";
+import { RightNavBar } from "./RightNavBar";
 
 export const NavBar = ({bgColor}) => {
   return (

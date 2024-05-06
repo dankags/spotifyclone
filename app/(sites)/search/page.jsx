@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer'
-import { NavBar } from '@/components/navBar/NavBar'
+import { NavBar } from "@/components/navigationbar/NavBar";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import React, { Suspense } from 'react'
 import SearchBody from './_searchComponents/SearchBody'

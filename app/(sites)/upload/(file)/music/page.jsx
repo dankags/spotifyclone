@@ -1,19 +1,19 @@
-import { NavBar } from '@/components/navbar/NavBar'
-import MusicForm from './_subComp/MusicForm'
-import Footer from '@/components/Footer'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/utils/auth'
-import { redirect } from 'next/navigation'
-import { Suspense } from 'react'
-import LoadingSkeleton from '@/components/LoadingSkeleton'
+import { NavBar } from "@/components/navigationbar/NavBar";
+import MusicForm from "./_subComp/MusicForm";
+import Footer from "@/components/Footer";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/auth";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
 
-const Music = async() => {
-  const session=await getServerSession(authOptions)
+const Music = async () => {
+  const session = await getServerSession(authOptions);
   if (!session) {
-    redirect("/dashboard/login")
+    redirect("/dashboard/login");
   }
- 
+
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <ScrollArea className={` w-full h-full rounded-md`}>
@@ -27,5 +27,5 @@ const Music = async() => {
       </ScrollArea>
     </Suspense>
   );
-}
-export default Music
+};
+export default Music;
