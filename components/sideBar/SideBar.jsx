@@ -140,6 +140,49 @@ export default function SideBar({children}){
               className={cn("lg:w-[70%] relative w-full  h-full rounded-md")}
             >
               {children}
+              <div className="px-2 w-full fixed bottom-16 ">
+                <MobilePlayer />
+              </div>
+              <div className="w-full h-14 p-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
+                <div>
+                  <Link
+                    href={"/"}
+                    className={cn(
+                      "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
+                      pathName === "/" && "text-white"
+                    )}
+                  >
+                    <GoHome size={24} />
+                    <span className="capitalize text-xs font-bold">home</span>
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href={"/search"}
+                    className={cn(
+                      "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
+                      pathName === "/search" && "text-white"
+                    )}
+                  >
+                    <IoSearchSharp size={24} />
+                    <span className="capitalize text-xs font-bold">search</span>
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href={"/collection/tracks"}
+                    className={cn(
+                      "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
+                      pathName === "/collection/tracks" && "text-white"
+                    )}
+                  >
+                    <IoLibrary size={24} />
+                    <span className="capitalize text-xs font-bold">
+                      library
+                    </span>
+                  </Link>
+                </div>
+              </div>
             </main>
             <div
               className={cn(
@@ -153,7 +196,7 @@ export default function SideBar({children}){
           <main className={cn("w-full  h-full rounded-md")}>
             {children}
             {/* navbar and footer in small screens */}
-            <div className='px-2 w-full fixed bottom-16 '>
+            <div className="px-2 w-full fixed bottom-16 ">
               <MobilePlayer />
             </div>
             <div className="w-full h-14 p-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
