@@ -1,110 +1,101 @@
-"use client"
-import LikedSongComp from '@/components/likedSong/LikedSongComp'
-import { ArtistPlaylistComp } from '../../ArtistPlaylistComp'
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks'
-import { setLikedSongs } from '@/lib/redux/slices/currentMusic'
-import { pushToLibrary, setLibrary } from '@/lib/redux/slices/library'
-import { setLikedMusics } from '@/lib/redux/slices/likedSongs'
-import { cn } from '@/lib/utils'
-import { ArrowRight, PlusIcon, X } from 'lucide-react'
-import { useSession } from 'next-auth/react'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { BiLibrary, BiSearch } from 'react-icons/bi'
-import { FaList } from 'react-icons/fa'
-import { toast } from 'sonner'
+"use client";
+import LikedSongComp from "@/components/likedSong/LikedSongComp";
+import { ArtistPlaylistComp } from "../ArtistPlaylistComp";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks/reduxHooks";
+import { setLikedSongs } from "@/lib/redux/slices/currentMusic";
+import { pushToLibrary, setLibrary } from "@/lib/redux/slices/library";
+import { setLikedMusics } from "@/lib/redux/slices/likedSongs";
+import { cn } from "@/lib/utils";
+import { ArrowRight, PlusIcon, X } from "lucide-react";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { BiLibrary, BiSearch } from "react-icons/bi";
+import { FaList } from "react-icons/fa";
+import { toast } from "sonner";
 
-
-const sortTypes=[
+const sortTypes = [
   {
-    label:"playlist",
-    sort:"playlist"
+    label: "playlist",
+    sort: "playlist",
   },
   {
-    label:"by you",
-    sort:"by you"
+    label: "by you",
+    sort: "by you",
   },
-  
-]
-export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
-
-  const { data } = useSession()
-  const searchInputRef=useRef()
-  const { userLibrary } = useAppSelector((state) => state.userLibrary)
+];
+export const SideBarBottom = ({ setSideBarSpan, sidebarSpan }) => {
+  const { data } = useSession();
+  const searchInputRef = useRef();
+  const { userLibrary } = useAppSelector((state) => state.userLibrary);
   const { playingUrl } = useAppSelector((state) => state.urlPlaying);
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
   const [sortTypeSelected, setSortTypeSelect] = useState([]);
-  const [showSearchInput,setShowSearchInput]=useState(false)
-  const [activeComp, setActiveComp] = useState(null)
-  const [likedmusics, setLikedmusics] = useState(null)
-  const [showLibraryShadow, setShowLibraryShadow] = useState(false)
-  
- 
-  
-  
+  const [showSearchInput, setShowSearchInput] = useState(false);
+  const [activeComp, setActiveComp] = useState(null);
+  const [likedmusics, setLikedmusics] = useState(null);
+  const [showLibraryShadow, setShowLibraryShadow] = useState(false);
+
   useEffect(() => {
     const fetchLikedSongsPlaylist = async () => {
       try {
         const likedSongs = await fetch(`/api/likedSongs/${data.user.id}`, {
           method: "GET",
-        })
+        });
         if (likedSongs.ok) {
-          const likedSong = await likedSongs.json()
-          
+          const likedSong = await likedSongs.json();
+
           // likedSong&&dispatch(pushToLibrary(likedSong))
-          setLikedmusics(likedSong)
-          dispatch(setLikedMusics(likedSong.songs))
-          dispatch(setLikedSongs(likedSong))
+          setLikedmusics(likedSong);
+          dispatch(setLikedMusics(likedSong.songs));
+          dispatch(setLikedSongs(likedSong));
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     const fetchlibrary = async () => {
       if (data.user) {
         try {
           const res = await fetch(`/api/user/library/${data.user.id}`, {
-            method: "GET"
-          })
-         
+            method: "GET",
+          });
+
           if (res.ok) {
-            const serverResponse = await res.json()
-            
-            
-            userLibrary && dispatch(setLibrary(serverResponse.library))
+            const serverResponse = await res.json();
+
+            userLibrary && dispatch(setLibrary(serverResponse.library));
             // setLibrary(serverResponse.library)
           }
         } catch (error) {
-          toast.error(error)
-        
+          toast.error(error);
         }
       }
-    }
+    };
     if (data) {
-      fetchlibrary()
-      fetchLikedSongsPlaylist()
+      fetchlibrary();
+      fetchLikedSongsPlaylist();
     }
-  }, [])
-  
-   
+  }, []);
+
   const handleLibraryScroll = (e) => {
-     const totalScrollHeight = e.target.scrollHeight;
-     const percentScrolled = (e.target.scrollTop / totalScrollHeight) * 100;
+    const totalScrollHeight = e.target.scrollHeight;
+    const percentScrolled = (e.target.scrollTop / totalScrollHeight) * 100;
     if (percentScrolled > 3) {
-      setShowLibraryShadow(true)
-      return
+      setShowLibraryShadow(true);
+      return;
     }
-    setShowLibraryShadow(false)
-  }
+    setShowLibraryShadow(false);
+  };
   const handleSearchBtnToogle = () => {
     if (!showSearchInput) {
-      searchInputRef.current.focus()
-      setShowSearchInput(!showSearchInput)
-      return
+      searchInputRef.current.focus();
+      setShowSearchInput(!showSearchInput);
+      return;
     }
-    searchInputRef.current.value=""
-    setShowSearchInput(!showSearchInput)
-  }
+    searchInputRef.current.value = "";
+    setShowSearchInput(!showSearchInput);
+  };
 
   return (
     <div
@@ -205,7 +196,7 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
                 <BiSearch size={20} />
               </span>
               <input
-              ref={searchInputRef}
+                ref={searchInputRef}
                 placeholder="Search"
                 className={cn(
                   " w-full tracking-wide text-sm placeholder:text-sm bg-neutral-800 focus:border-none focus:outline-none "
@@ -234,7 +225,10 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
               playingUrl === `/collection/tracks` && "bg-neutral-800"
             )}
           >
-            <LikedSongComp library={userLibrary && true } showContent={sidebarSpan} />
+            <LikedSongComp
+              library={userLibrary && true}
+              showContent={sidebarSpan}
+            />
           </li>
           {userLibrary?.map((item) => (
             <li
@@ -260,16 +254,18 @@ export const SideBarBottom = ({setSideBarSpan,sidebarSpan}) => {
       </ScrollArea>
     </div>
   );
-}
+};
 
-const SortComponent=({sortTypeSelectedIncludes,sort} )=>{
-  
-   return(
-    <div className={cn('text-sm flex items-center justify-center shrink-0 text-center  font-semibold capitalize rounded-3xl px-5 py-2 mr-2 bg-neutral-800 hover:bg-neutral-700 cursor-pointer ',sortTypeSelectedIncludes && "bg-white text-black font-semibold transition-colors duration-300 hover:bg-white")}>
-      <span className='text-nowrap'>{sort?.sort}</span>
-      </div>
-   )
-}
-
-
-
+const SortComponent = ({ sortTypeSelectedIncludes, sort }) => {
+  return (
+    <div
+      className={cn(
+        "text-sm flex items-center justify-center shrink-0 text-center  font-semibold capitalize rounded-3xl px-5 py-2 mr-2 bg-neutral-800 hover:bg-neutral-700 cursor-pointer ",
+        sortTypeSelectedIncludes &&
+          "bg-white text-black font-semibold transition-colors duration-300 hover:bg-white"
+      )}
+    >
+      <span className="text-nowrap">{sort?.sort}</span>
+    </div>
+  );
+};

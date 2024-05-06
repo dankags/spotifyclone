@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import PlayArtistBtn from './subComponent/PlayArtistBtn'
+import PlayArtistBtn from './PlayArtistBtn'
 import Link from 'next/link'
 import Image from 'next/image'
 

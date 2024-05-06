@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import PlayPlaylistBtn from './subComponents/PlayPlaylistBtn'
+import PlayPlaylistBtn from './PlayPlaylistBtn'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { Skeleton } from '../ui/skeleton'

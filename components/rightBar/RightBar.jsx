@@ -4,11 +4,15 @@ import React, { useEffect, useState } from 'react'
 import { CgClose } from 'react-icons/cg'
 import { ScrollArea } from '../ui/scroll-area'
 import { cn } from '@/lib/utils'
-import ArtistInfoCard from './subcomp/ArtistInfoCard'
-import UpComingMusic from './subcomp/NextQueueMusic'
-import { useAppDispatch, useAppSelector, useAppStore } from '@/lib/hooks/reduxHooks'
-import { closeRightbar } from '@/lib/redux/slices/rightbar'
-import Music from './subcomp/Music'
+import ArtistInfoCard from "./ArtistInfoCard";
+import UpComingMusic from "./NextQueueMusic";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useAppStore,
+} from "@/lib/hooks/reduxHooks";
+import { closeRightbar } from "@/lib/redux/slices/rightbar";
+import Music from "./Music";
 import { useSession } from 'next-auth/react'
 import { setFollowings } from '@/lib/redux/slices/followings'
 
