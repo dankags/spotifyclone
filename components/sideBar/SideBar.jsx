@@ -323,7 +323,7 @@ const Loading = () => {
                </Link>
 
                {/* display artists names and links*/}
-               <div className="flex items-center">
+               <div className="flex items-center truncate">
                  {music.artists ? (
                    <>
                      <Link
