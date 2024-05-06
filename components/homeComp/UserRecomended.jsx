@@ -93,7 +93,7 @@ export const UserRecomended = ({ pageWidth, data, setContainerColor }) => {
     
     if (!recommendedPlaying) {
       const dataSlug = data?.slug ? data.slug : data.artist?.map((i) => i.slug)[0]
-      console.log(dataSlug);
+      
       
       if (dataSlug === "artist") {
         if (playingUrl === `/artist/${data.id}`) {

@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req, { params }) => {
     const { musicId } = params;
     const {user}=await getServerSession(authOptions)
-    console.log(params)
     try {
          if (!user) {
            return NextResponse.json("unautheticaed", { status: 401 });

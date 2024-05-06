@@ -6,7 +6,6 @@ import {  NextResponse } from "next/server";
 export const PUT = async(req,res) => {
     const body = await req.json()
     const {user} = await getServerSession(authOptions);
-    console.log(user)
     if (!user) { return NextResponse.json("unautheticaed", { status: 401 }) }
     if (user.id !== body.userId){ return NextResponse.json("You can create only your own liked playlist", { status: 403 }); }
       try {
@@ -15,14 +14,12 @@ export const PUT = async(req,res) => {
             userId: body.userId,
           },
         });
-        console.log(likedSong);
         if (!likedSong) {
           const createLikedSongs = await prisma.LikedSong.create({
             data: {
               userId: body.userId,
             },
           });
-          console.log(createLikedSongs);
           if (createLikedSongs) {
             await prisma.likedSong.update({
               where: {

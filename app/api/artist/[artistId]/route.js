@@ -23,7 +23,6 @@ export const GET = async (req, { params }) => {
 
 export const PUT = async (req,{params}) => {
     const body = await req.json()
-    console.log(body)
     const {artistId}=params
     try { 
         const artist = await prisma.artist.update({
@@ -36,7 +35,6 @@ export const PUT = async (req,{params}) => {
         })
         return NextResponse.json(artist,{status:200})
     } catch (error) {
-        console.log(error);
         return  NextResponse.json("internal Server Error",{status:500})
     }
 }

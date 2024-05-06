@@ -76,7 +76,6 @@ const CurrentMusicCard = ({ children }) => {
         }
         )
         const response=await res.json()
-        console.log(response)
         if (response === "added to liked songs") {
           setLike(true);
           dispatch(pushToLikedMusics(music.id))

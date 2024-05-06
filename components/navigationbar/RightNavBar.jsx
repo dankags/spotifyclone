@@ -2,7 +2,7 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { BiBell, BiSearch } from "react-icons/bi";
 import { FiArrowDownCircle } from "react-icons/fi";
 import { LuUser2 } from "react-icons/lu";
@@ -13,8 +13,18 @@ import { Tooltip } from "@/components/ui/tooltip";
 
 export const RightNavBar = () => {
   const { data } = useSession();
-  const [showDropDown, setShowDropDown] = useState(false);
+  const searchInputRef=useRef()
   const [showSearchInput, setShowSearchInput] = useState(false);
+
+  const handleShowSearchInput=()=>{
+     if(!showSearchInput){
+      searchInputRef.current.focus()
+      setShowSearchInput(!showSearchInput)
+      return
+     }
+     searchInputRef.current.value=""
+     setShowSearchInput(!showSearchInput)
+  }
 
   return (
     <div className="w-10/12 lg:w-6/12 flex items-center justify-end gap-2 relative pr-2">
@@ -38,12 +48,13 @@ export const RightNavBar = () => {
         )}
       >
         <span
-          onClick={() => setShowSearchInput(!showSearchInput)}
+          onClick={handleShowSearchInput}
           className=" shrink-0 text-stone-50  group-hover:text-white"
         >
           <BiSearch size={20} />
         </span>
         <input
+        ref={searchInputRef}
           placeholder="Search"
           className={cn(
             " w-full tracking-wide text-base font-medium placeholder:text-sm bg-neutral-800 focus:border-none focus:outline-none ",

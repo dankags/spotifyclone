@@ -60,7 +60,7 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
    getBgColor();
   
   }, [imgurl]);
-  console.log(bgColor,currentFileColor);
+
   
 
   const handleFollow = async() => {

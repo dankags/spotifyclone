@@ -73,7 +73,6 @@ export const GET = async (req,{params}) => {
             }
         })
         const playlistIds=likedPlaylist?.playlists
-        console.log(playlistIds)
         const playLists = await prisma.playlist.findMany({
             where: {
                 OR: [
@@ -129,7 +128,6 @@ export const GET = async (req,{params}) => {
             return NextResponse.json({library:library}, { status: 404 })
         }
     } catch (error) {
-        console.log(error)
         return NextResponse.json(error,{status:500})
     }
     

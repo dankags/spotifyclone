@@ -38,7 +38,6 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
         console.log(error)
         return
       })
-      console.log(cloudinaryRes);
       const cloudunaryUrl = cloudinaryRes.secure_url
       if (cloudunaryUrl) {
         const updateBackImage = await fetch(`/api/artist/${artistId}`, {
@@ -53,7 +52,6 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
       const url = URL.createObjectURL(file);
       setImgFile((prev) => ({ ...prev, file: file, url: url }));
       // let extractedUrl = url.split("blob:")[1];
-      // console.log(extracturl)
       // dispatch(setGradientColor(url));
       dispatch(setImageUrl(url));
     }

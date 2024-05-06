@@ -19,7 +19,6 @@ export const POST = async (req, res) => {
         return NextResponse.json("name of music required",{status:400})
        
     } catch (error) {
-        console.log(error);
         return NextResponse.json(error ,{status:500}) 
     }
     

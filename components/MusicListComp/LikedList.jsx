@@ -206,10 +206,10 @@ export const LikedList = ({ music, index,musics }) => {
   //if false (thats if music playing exist in current url & playing url ) the equalizer gif will not show
   useEffect(() => {
     const getActiveSongByPathName = () => {
-    console.log(currentMusic);
+    
     
       if (pathname !== playingUrl) {
-        console.log();
+      
         
         setIsMusicAtiveInPathName(false);
         return;

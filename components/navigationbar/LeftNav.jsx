@@ -68,19 +68,21 @@ const ActiveMusicPlaying=({currentPlaylist,setPlay,playingUrl})=>{
   if(currentPlaylist || !playingUrl){
     return
   }
-  return(
-    <div className='w-full pl-3 h-full flex items-center'>
-    <button
-  className="p-2 flex items-center justify-center shrink-0 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer"
-  onClick={handleClick}
->
-  {isPlaying ? (
-    <IoIosPlay size={27} className=" text-neutral-900 " />
-  ) : (
-    <IoIosPause size={27} className=" text-neutral-900 " />
-  )}
-</button>
-<span className={`pl-2 text-xl  font-bold capitalize truncate`}>daniel kagombe</span>
-   </div> 
-  )
+  return (
+    <div className="w-full pl-3 h-full  items-center hidden lg:flex">
+      <button
+        className="p-2 flex items-center justify-center shrink-0 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer"
+        onClick={handleClick}
+      >
+        {isPlaying ? (
+          <IoIosPlay size={27} className=" text-neutral-900 " />
+        ) : (
+          <IoIosPause size={27} className=" text-neutral-900 " />
+        )}
+      </button>
+      <span className={`pl-2 text-xl  font-bold capitalize truncate`}>
+        daniel kagombe
+      </span>
+    </div>
+  );
 }

@@ -77,7 +77,8 @@ const MusicControls = () => {
         await dispatch(setPlayMusicValue(false));
         return
       } catch (error) {
-        // toast.error(`${error}`)
+        console.log(error);
+        
       }
     }
     if (music) {
@@ -219,7 +220,7 @@ const MusicControls = () => {
    if (!audio) {
      return;
    }
-   console.log(e[0]);
+   
    
    if (e[0] === 0) {
      audio.muted = true;

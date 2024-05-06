@@ -6,10 +6,6 @@ import { NextResponse } from "next/server"
 export const GET = async (req,{params}) => {
     const { id } = params
     const{ user} = await getServerSession(authOptions);
-    console.log(user.id);
-    console.log(id);
-    console.log(user.id !== id);
-    
     
     try {
          if (!user) {

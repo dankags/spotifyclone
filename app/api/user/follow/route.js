@@ -18,14 +18,12 @@ export const POST = async (req,{params}) => {
           }
         if(!followId && !body?.id){return NextResponse.json("you content provided",{status:403})}
         if(followId === body.id){NextResponse.json("you cannot follow your self",{status:403})}
-        console.log(body.id,followId)
         const followExist = await prisma.follow.findMany({
             where: {
                 followerId: followId,
                 followingId:body.id
             }
-          })
-        console.log(followExist)
+        })
         if(followExist.length > 0){return NextResponse.json("You already follow this artist", { status: 403 })}
         
         const follower = await prisma.follow.create({
@@ -38,7 +36,7 @@ export const POST = async (req,{params}) => {
         
         
     } catch (error) {
-        console.log(error)
+        
         return NextResponse.json(error,{status:500})
     }
 }
