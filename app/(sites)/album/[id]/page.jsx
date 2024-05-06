@@ -2,17 +2,17 @@ import { StaticCarosel } from '@/components/StaticCarosel'
 import AlbumActions from '@/components/albumPageComp/AlbumActions'
 import AlbumTableTitle from '@/components/albumPageComp/AlbumTableTitle'
 import AlbumWrapper from '@/components/albumPageComp/AlbumWrapper'
-import DurationDate from '@/components/albumPageComp/DurationDate'
-import { LikedList } from "@/components/musicListComp/LikedList";
-import {  darkVibrantColor } from "@/lib/functions/colorFunc";
-import { authOptions } from '@/utils/auth'
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
-import React, { Suspense } from 'react'
-import LoadingSkeleton from '@/components/LoadingSkeleton'
+import DurationDate from "@/components/albumPageComp/DurationDate";
+import { darkVibrantColor } from "@/lib/functions/colorFunc";
+import { authOptions } from "@/utils/auth";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import React, { Suspense } from "react";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
 import prisma from "@/utils/connect";
+import { LikedList } from "@/components/musicList/LikedList";
 
 export const revalidate = 60 
 const AlbumPage = async(param) => {

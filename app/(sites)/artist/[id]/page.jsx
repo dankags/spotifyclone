@@ -2,19 +2,19 @@ import Image from 'next/image'
 import React, { Suspense } from 'react'
 import ArtistLayout from './_artistpageComp/ArtistLayout'
 import ArtistBottom from './_artistpageComp/ArtistBottom'
-import Footer from '@/components/Footer'
-import { LikedList } from "@/components/musicListComp/LikedList";
-import { StaticCarosel } from '@/components/StaticCarosel'
-import ArtistAbout from './_artistpageComp/ArtistAbout'
-import ArtistPick from './_artistpageComp/ArtistPick'
-import ChangeCoverImg from './_artistpageComp/ChangeCoverImg'
-import prisma from '@/utils/connect'
-import ArtistBackImg from './_artistpageComp/ArtistBackImg'
-import { authOptions } from '@/utils/auth'
-import { getServerSession } from 'next-auth'
-import { MutedColor, darkVibrantColor } from '@/lib/functions/colorFunc'
-import { redirect } from 'next/navigation'
-import LoadingSkeleton from '@/components/LoadingSkeleton'
+import Footer from "@/components/Footer";
+import { StaticCarosel } from "@/components/StaticCarosel";
+import ArtistAbout from "./_artistpageComp/ArtistAbout";
+import ArtistPick from "./_artistpageComp/ArtistPick";
+import ChangeCoverImg from "./_artistpageComp/ChangeCoverImg";
+import prisma from "@/utils/connect";
+import ArtistBackImg from "./_artistpageComp/ArtistBackImg";
+import { authOptions } from "@/utils/auth";
+import { getServerSession } from "next-auth";
+import { MutedColor, darkVibrantColor } from "@/lib/functions/colorFunc";
+import { redirect } from "next/navigation";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
+import { LikedList } from "@/components/musicList/LikedList";
 
 const fetchArtist = async (id) => {
   let artist = null;

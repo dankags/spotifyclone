@@ -2,13 +2,12 @@ import Footer from '@/components/Footer'
 import PlayFollowBtnContainer from '@/components/PlayFollowBtnCont'
 import { StaticCarosel } from '@/components/StaticCarosel'
 import React, { Suspense } from 'react'
-import { MdOutlineAccessTime } from 'react-icons/md'
-import { LikedList } from "@/components/musicListComp/LikedList";
-import prisma from '@/utils/connect'
-import { authOptions } from '@/utils/auth'
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import LoadingSkeleton from '@/components/LoadingSkeleton'
+import { MdOutlineAccessTime } from "react-icons/md";
+import prisma from "@/utils/connect";
+import { authOptions } from "@/utils/auth";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { LikedList } from "@/components/musicList/LikedList";
 
 const Tracks = async () => {
   const session =await getServerSession(authOptions)

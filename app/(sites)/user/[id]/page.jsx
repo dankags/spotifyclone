@@ -2,14 +2,13 @@ import React, { Suspense } from 'react'
 import UserLayOut from '../_userComp/UserLayOut'
 import { BsThreeDots } from 'react-icons/bs'
 import { StaticCarosel } from '@/components/StaticCarosel'
-import ArtistCard from '@/components/artistCard/ArtistCard'
-import { LikedList } from "@/components/musicListComp/LikedList";
-import prisma from '@/utils/connect'
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { authOptions } from '@/utils/auth'
-import { VibrantColor } from '@/lib/functions/colorFunc'
-import LoadingSkeleton from '@/components/LoadingSkeleton'
+import ArtistCard from "@/components/artistCard/ArtistCard";
+import prisma from "@/utils/connect";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/utils/auth";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
+import { LikedList } from "@/components/musicList/LikedList";
 
 
 
