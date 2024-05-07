@@ -9,7 +9,7 @@ const ArtistBackImg = ({ artistBackImg }) => {
   return (
     <>
       {imgurl ? (
-        <div className="relative top-0 w-full h-full">
+        <div className="relative top-0 w-full h-[70vh] md:h-[80vh]">
           <Image
             src={imgurl}
             alt=""
