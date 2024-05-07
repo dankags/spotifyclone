@@ -10,10 +10,10 @@ import Credentials from "next-auth/providers/credentials"
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
     providers: [
-      GoogleProvider({
-        clientId: process.env.GOOGLE_ID,
-        clientSecret: process.env.GOOGLE_SECRET,
-      }),
+      // GoogleProvider({
+      //   clientId: process.env.GOOGLE_ID,
+      //   clientSecret: process.env.GOOGLE_SECRET,
+      // }),
       Credentials({
         // The name to display on the sign in form (e.g. 'Sign in with...')
         name: 'credentials',
