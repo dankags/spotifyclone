@@ -152,7 +152,11 @@ export default function SideBar({children}){
                       pathName === "/" && "text-white"
                     )}
                   >
-                    <GoHome size={24} />
+                    {pathName !== "/" ? (
+                      <GoHome size={26} />
+                    ) : (
+                      <GoHomeFill size={26} />
+                    )}
                     <span className="capitalize text-xs font-bold">home</span>
                   </Link>
                 </div>
@@ -164,7 +168,11 @@ export default function SideBar({children}){
                       pathName === "/search" && "text-white"
                     )}
                   >
-                    <IoSearchSharp size={24} />
+                    {pathName !== "/search" ? (
+                      <IoSearchSharp size={26} />
+                    ) : (
+                      <PiMagnifyingGlassFill size={26} />
+                    )}
                     <span className="capitalize text-xs font-bold">search</span>
                   </Link>
                 </div>
@@ -208,7 +216,11 @@ export default function SideBar({children}){
                     pathName === "/" && "text-white"
                   )}
                 >
-                  <GoHome size={24} />
+                  {pathName !== "/" ? (
+                    <GoHome size={26} />
+                  ) : (
+                    <GoHomeFill size={26} />
+                  )}
                   <span className="capitalize text-xs font-bold">home</span>
                 </Link>
               </div>
@@ -220,7 +232,11 @@ export default function SideBar({children}){
                     pathName === "/search" && "text-white"
                   )}
                 >
-                  <IoSearchSharp size={24} />
+                  {pathName !== "/search" ? (
+                    <IoSearchSharp size={26} />
+                  ) : (
+                    <PiMagnifyingGlassFill size={26} />
+                  )}
                   <span className="capitalize text-xs font-bold">search</span>
                 </Link>
               </div>

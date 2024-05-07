@@ -62,7 +62,7 @@ export const LogInForm = () => {
   return (
     <form
       onSubmit={handleLogin}
-      className="w-7/12 flex flex-col items-center gap-4"
+      className="w-full lg:w-7/12 flex flex-col items-center gap-4"
     >
       <div className="flex justify-center items-center">
         {error ? (
@@ -71,7 +71,7 @@ export const LogInForm = () => {
           <></>
         )}
       </div>
-      <div className="w-8/12 flex flex-col gap-2">
+      <div className="w-10/12 md:w-8/12 flex flex-col gap-2">
         <label htmlFor="Email" className="text-sm font-medium">
           Email
         </label>
@@ -85,7 +85,7 @@ export const LogInForm = () => {
           className="h-10 rounded-sm px-2 text-sm text-black font-medium focus:outline-none focus:ring-2 focus:ring-green-600"
         />
       </div>
-      <div className="w-8/12 flex flex-col gap-2">
+      <div className="w-10/12 md:w-8/12 flex flex-col gap-2">
         <label htmlFor="Password" className="text-sm font-medium">
           Password
         </label>
@@ -116,7 +116,7 @@ export const LogInForm = () => {
           </div>
         </div>
       </div>
-      <div className="w-8/12 flex items-center justify-start mb-4">
+      <div className="w-10/12 md:w-8/12 flex items-center justify-start mb-4">
         <Switch
           checked={rememberMe}
           onCheckedChange={() => setRememberMe((prev) => !prev)}
@@ -137,7 +137,7 @@ export const LogInForm = () => {
       >
         Forgot Your Password?
       </Link>
-      <div className="w-full">
+      <div className=" w-10/12 lg:w-full">
         <hr className="dark:border-neutral-700 mt-5 mb-9" />
       </div>
       <p className="text-sm font-medium text-stone-400">

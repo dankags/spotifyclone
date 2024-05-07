@@ -8,7 +8,7 @@ function Register() {
   return (
     <div className=" w-full col-span-12 flex flex-col items-center bg-white text-black overflow-y-auto scrollbar  scrollbar-thumb-transparent hover:scrollbar-thumb-neutral-500 scro scrollbar-track-transparent ">
      <SignUpProviders/>
-    <div className="w-4/12 flex flex-col items-center gap-4">
+    <div className="w-full md:w-4/12 flex flex-col items-center gap-4">
           
           <Form/>
 
