@@ -153,6 +153,10 @@ export const LikedList = ({ music, index,musics }) => {
         setPlay(true);
         return
       } 
+      if (music.id === currentMusic?.id) {
+        await dispatch(playMusic());
+        return;
+      }
       playlist === null && await dispatch(setPlaylist(musics));
       await dispatch(setIndexBySelect(index - 1));
       await dispatch(setMusicBySelect(musicDetails));
