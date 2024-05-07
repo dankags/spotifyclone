@@ -1,5 +1,6 @@
 import { Figtree } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import AuthProvider from "@/lib/AuthProvider";
 import SideBar from "@/components/sideBar/SideBar";
 import { Player } from "@/components/player/Player";
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
             <Toaster position="bottom-center" />
           </StoreProvider>
         </AuthProvider>
+        <Analytics/>
       </body>
     </html>
   );

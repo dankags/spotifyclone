@@ -52,7 +52,7 @@ export const LogInForm = () => {
           
           setError(null)
           setPending(false)
-          router.replace("/")
+          router.push("/")
         }
       } catch (error) {
         setError(error)
