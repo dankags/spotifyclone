@@ -4,7 +4,7 @@ import React from 'react'
 const ArtistPick = ({ mainArtist, artistMusicPic }) => {
 
   return (
-    <div className="w-6/12 h-72 rounded-sm relative">
+    <div className="w-11/12 lg:w-6/12 h-72 rounded-sm relative">
       <Image
         src={artistMusicPic?.musicImage ?? "/faded.jpg"}
         alt=""

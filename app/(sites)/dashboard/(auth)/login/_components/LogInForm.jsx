@@ -10,7 +10,8 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md'
 
 export const LogInForm = () => {
   const [userCredentials,saveUserCredentials] = useLocalStorage("credential");
-  const router=useRouter()
+  const router = useRouter()
+  const passwordRef=useRef()
     const [inputs,setInputs]=useState({
       email:userCredentials?.email ? userCredentials.email : "",
       password:userCredentials?.password ? userCredentials.password : ""
@@ -58,7 +59,17 @@ export const LogInForm = () => {
         setError(error)
       }
      
+  }
+  const handleShowPassword = () => {
+    if (showPassWord) {
+      passwordRef?.current.focus()
+      setShowPassWord(!showPassWord)
+      return
     }
+    passwordRef?.current.focus();
+    setShowPassWord(!showPassWord);
+    return;
+  }
   return (
     <form
       onSubmit={handleLogin}
@@ -91,6 +102,7 @@ export const LogInForm = () => {
         </label>
         <div className="w-full flex gap-x-2 items-center rounded-sm bg-neutral-50 focus-within:ring-2 focus-within:ring-green-600">
           <input
+            ref={passwordRef}
             type={showPassWord ? "text" : "password"}
             value={inputs.password}
             placeholder={
@@ -102,7 +114,7 @@ export const LogInForm = () => {
             className="h-10 w-[88%] rounded-sm px-2 text-sm text-black font-medium focus:outline-none "
           />
           <div
-            onClick={() => setShowPassWord((prev) => !prev)}
+            onClick={handleShowPassword}
             className={cn(
               "flex items-center justify-center cursor-pointer text-neutral-700 opacity-0 transition",
               inputs?.password ? "opacity-100" : "opacity-0"

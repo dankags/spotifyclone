@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { StaticCarosel } from "@/components/StaticCarosel";
 import ArtistAbout from "./_artistpageComp/ArtistAbout";
 import ArtistPick from "./_artistpageComp/ArtistPick";
-import ChangeCoverImg from "./_artistpageComp/ChangeCoverImg";
+import ChangeCoverImgBtn from "./_artistpageComp/ChangeCoverImgBtn";
 import prisma from "@/utils/connect";
 import ArtistBackImg from "./_artistpageComp/ArtistBackImg";
 import { authOptions } from "@/utils/auth";
@@ -124,7 +124,7 @@ bgColor=await darkVibrantColor(artist.backImg,0.9)
         </div>
         <ArtistLayout imageUrl={artist?.backImg}>
           <div className={`h-64 flex flex-col justify-end md:justify-center relative pl-4 `}>
-            <ChangeCoverImg
+            <ChangeCoverImgBtn
               artistImg={
                 artist
                   ? artist.backImg

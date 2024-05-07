@@ -19,7 +19,9 @@ const months = [
   "December",
 ];
 export const Form = () => {
-  const route=useRouter()
+
+  const route = useRouter()
+  const passwordRef=useRef()
   const [showPassWord,setShowPassWord]=useState(false)
   const [inputValue,setInputValue]=useState({
     email:"",
@@ -57,6 +59,16 @@ export const Form = () => {
       console.log(error);
     }
   };
+   const handleShowPassword = () => {
+     if (showPassWord) {
+       passwordRef?.current.focus();
+       setShowPassWord(!showPassWord);
+       return;
+     }
+     passwordRef?.current.focus();
+     setShowPassWord(!showPassWord);
+     return;
+   };
   return (
     <form onSubmit={handleRegister} className="w-10/12 flex flex-col items-center">
     <div className="w-full flex flex-col items-start gap-3">
@@ -87,6 +99,7 @@ export const Form = () => {
         </label>
         <div className="w-full flex items-center ring-1 ring-gray-500 rounded-md focus-within:outline  focus-within:outline-green-500 focus-within:outline-2">
           <input
+            ref={passwordRef}
             required={true}
             type={showPassWord ? "text" : "password"}
             onChange={(e)=>{setInputValue(prev=>({...prev,[e.target.name]:e.target.value}))}}
@@ -95,17 +108,18 @@ export const Form = () => {
             id=""
             className="w-11/12 focus:outline-none py-2 pl-2 text-base font-medium rounded-md placeholder:text-stone-500 placeholder:text-base placeholder:font-medium "
           />
-          <span
+            <div
+            
             href=""
             className="w-1/12 mr-2 flex justify-center items-center  text-sm font-normal text-gray-600 hover:text-gray-500 cursor-pointer"
-            onClick={() => setShowPassWord(!showPassWord)}
+            onClick={handleShowPassword}
           >
             {showPassWord ? (
               <MdOutlineVisibility size={20} />
             ) : (
               <MdOutlineVisibilityOff size={20} />
             )}
-          </span>
+          </div>
         </div>
       </div>
 

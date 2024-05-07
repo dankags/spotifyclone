@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { MdAddAPhoto } from "react-icons/md";
 import { toast } from "sonner";
 
-const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
+const ChangeCoverImgBtn = ({artistBackImg, artistImg, isArtist,artistId }) => {
   const dispatch = useAppDispatch();
   const { imgurl } = useAppSelector((state) => state.artistBackCover);
   const [currentFileColor,setCurrentFileColor]=useState(null)
@@ -92,4 +92,4 @@ const ChangeCoverImg = ({artistBackImg, artistImg, isArtist,artistId }) => {
   );
 };
 
-export default ChangeCoverImg
+export default ChangeCoverImgBtn

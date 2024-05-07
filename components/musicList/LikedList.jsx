@@ -124,14 +124,19 @@ export const LikedList = ({ music, index,musics }) => {
       if (play) {
         playlistLength === 0&& await dispatch(setPlaylistLength(musics.length))
         playlist === null && dispatch(setPlaylist(musics));
-         if (pathname !== playingUrl) {
-           await dispatch(setPlaylist(musics));
-           await dispatch(setMusicByPlaylist(index - 1));
-           await dispatch(setIndexBySelect(0));
-           await dispatch(setPlaylistLength(musics.length));
-           dispatch(setPlayingUrl(pathname));
-           setPlay(true);
-         } 
+        if (pathname !== playingUrl) {
+          await dispatch(setPlaylist(musics));
+          await dispatch(setMusicByPlaylist(index - 1));
+          await dispatch(setIndexBySelect(0));
+          await dispatch(setPlaylistLength(musics.length));
+          dispatch(setPlayingUrl(pathname));
+          setPlay(true);
+          return
+        } 
+        if (music.id === currentMusic?.id) {
+          await dispatch(playMusic());
+          return
+        }
         !playingUrl&&await dispatch(setPlayingUrl(pathname))
         await dispatch(setIndexBySelect((index-1)))
         dispatch(playMusic())
@@ -146,6 +151,7 @@ export const LikedList = ({ music, index,musics }) => {
         await dispatch(setPlaylistLength(musics.length));
         dispatch(setPlayingUrl(pathname));
         setPlay(true);
+        return
       } 
       playlist === null && await dispatch(setPlaylist(musics));
       await dispatch(setIndexBySelect(index - 1));
