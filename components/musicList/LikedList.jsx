@@ -96,14 +96,15 @@ export const LikedList = ({ music, index,musics }) => {
         const response = await res.json();
         if (response === "added to liked songs") {
           setLiked(true);
-          dispatch(pushToLikedMusics(music.id));
+          await dispatch(pushToLikedMusics(music));
           toast("added to liked songs", {});
           return;
         }
         if (response === "unliked the song") {
           setLiked(false);
-          dispatch(filterLikedMusics(music.id));
-          dispatch(setComponentId(music.id))
+          itemToRemoveInThelist(music)
+          await dispatch(filterLikedMusics(music.id));
+          await dispatch(setComponentId(music.id))
           toast(`unliked this music`, {});
           return;
         }

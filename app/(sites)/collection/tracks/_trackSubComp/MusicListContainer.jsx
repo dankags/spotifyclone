@@ -1,13 +1,14 @@
 "use client"
 import { StaticCarosel } from '@/components/StaticCarosel'
 import { LikedList } from "@/components/musicList/LikedList";
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Musics } from './data'
 
 const MusicListContainer = () => {
+  
   return (
     <>
-    <StaticCarosel displayCol>
+    <StaticCarosel displayCol >
           {Musics.map((item,i)=>
            <LikedList key={item.id} music={item} index={i+1} />
           )}

@@ -31,7 +31,7 @@ const TopSection=({children,changeColor})=>{
       <div className="w-full">{children}</div>
       <div className="w-full  ">
         <div className={`w-full pt-2  mb-4 `}>
-          <span className="w-full  font-bold px-4 text-2xl ">
+          <span className="w-full  font-bold px-4 text-2xl text-white">
             Good afternoon
           </span>
           <div
