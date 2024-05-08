@@ -316,7 +316,7 @@ export const LikedList = ({ music, index,musics }) => {
       <div className="w-3/12 pl-2 flex items-center justify-center shrink-0">
         <button
           onClick={handleLike}
-          className="w-1/6 max-md:w-[50%] flex items-center justify-center "
+          className="w-3/6 lg:w-3/12 max-md:w-[50%] flex items-center justify-center "
         >
           {liked ? (
             <MdOutlineFavorite className=" w-6 h-6 lg:w-5 lg:h-5 text-green-500 cursor-pointer" />
@@ -324,15 +324,15 @@ export const LikedList = ({ music, index,musics }) => {
             <MdOutlineFavoriteBorder className="w-6 h-6 lg:w-5 lg:h-5 text-stone-400 hover:text-white" />
           )}
         </button>
-        <div className="hidden w-3/12  lg:flex items-center justify-end text-sm text-stone-400">
-          <span className="w-[85%] text-sm text-center font-medium">
+        <div className="hidden lg:w-6/12  lg:flex lg:items-center lg:justify-end text-sm text-stone-400 ">
+          <span className="text-sm text-center font-medium">
             {duration ? `${duration.min}:${duration.sec}` : "03:44"}
           </span>
         </div>
-        <div className="w-2/12 max-md:w-[50%] flex items-center justify-center text-sm text-stone-400">
+        <div className=" w-3/6 lg:3/12 max-md:w-[50%]  pr-3  flex items-center justify-center text-sm text-stone-400 ">
           <button
             className={cn(
-              "w-[50%] text-sm text-stone-400 font-normal hidden group-hover:block hover:text-white"
+              "text-sm text-stone-400 font-normal hidden group-hover:block hover:text-white"
             )}
           >
             {" "}
