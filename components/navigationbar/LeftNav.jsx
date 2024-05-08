@@ -22,14 +22,14 @@ export const LeftNav = ({children}) => {
     <div className="w-2/12 lg:w-6/12 flex items-center justify-between gap-x-3 truncate">
     <div className={`w-2/12 flex items-center gap-2 mr-2`}>
       <button 
-      className="p-2 flex items-center justify-center rounded-full bg-neutral-950/80  hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50"
+      className="p-2 flex items-center justify-center rounded-full text-white bg-neutral-950/80  hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50"
        onClick={()=>router.back()}
        
        >
         <IoIosArrowBack size={20} className="" />
       </button>
       <button 
-      className="hidden p-2 lg:flex items-center justify-center rounded-full bg-neutral-950/80 hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50 "
+      className="hidden p-2 lg:flex items-center justify-center rounded-full text-white bg-neutral-950/80 hover:bg-neutral-950/95 disabled:cursor-not-allowed disabled:bg-neutral-950/40 disabled:hover:bg-neutral-950/50 "
       onClick={()=>router.forward()}
       
         >
