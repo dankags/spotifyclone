@@ -80,7 +80,7 @@ export const LikedList = ({ music, index,musics }) => {
     fetchMainArtist();
     fetchFeaturedArtists();
     return artists;
-  }, [pathname]);
+  }, [music]);
 
   //handle likemusic
   const handleLike = async () => {
@@ -96,13 +96,12 @@ export const LikedList = ({ music, index,musics }) => {
         const response = await res.json();
         if (response === "added to liked songs") {
           setLiked(true);
-          await dispatch(pushToLikedMusics(music));
+          await dispatch(pushToLikedMusics(music.id));
           toast("added to liked songs", {});
           return;
         }
         if (response === "unliked the song") {
           setLiked(false);
-          itemToRemoveInThelist(music)
           await dispatch(filterLikedMusics(music.id));
           await dispatch(setComponentId(music.id))
           toast(`unliked this music`, {});
