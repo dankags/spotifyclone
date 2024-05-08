@@ -56,11 +56,10 @@ export const LikedList = ({ music, index,musics }) => {
         });
         if (res.ok) {
           const artist = await res.json();
-          artists.push(artist)
-        
+          artists.push(artist);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
     const fetchFeaturedArtists = async () => {
@@ -72,17 +71,16 @@ export const LikedList = ({ music, index,musics }) => {
         });
         if (res.ok) {
           const otherArtists = await res.json();
-          artists.push(...otherArtists)
-          
+          artists.push(...otherArtists);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
     fetchMainArtist();
     fetchFeaturedArtists();
-    return artists
-  },[music])
+    return artists;
+  }, [pathname]);
 
   //handle likemusic
   const handleLike = async () => {
@@ -274,8 +272,8 @@ export const LikedList = ({ music, index,musics }) => {
             </div>
           )}
         </div>
-        <div className="w-full lg:w-10/12 flex ">
-          <div className="h-12 w-12 max-md:mr-4 lg:mx-4 relative">
+        <div className="w-full lg:w-10/12 flex gap-4">
+          <div className="h-12 w-12 relative">
             <Image
               src={
                 music?.musicImage

@@ -27,7 +27,7 @@ const ArtistBackImg = ({ artistBackImg }) => {
             alt=""
             fill
             loading="lazy"
-            className="object-cover object-center "
+            className="object-cover object-center w-full"
           />
         </div>
       )}

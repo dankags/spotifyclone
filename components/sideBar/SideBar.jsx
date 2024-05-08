@@ -143,7 +143,7 @@ export default function SideBar({children}){
               <div className="px-2 w-full fixed bottom-16 ">
                 <MobilePlayer />
               </div>
-              <div className="w-full h-14 p-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
+              <div className="w-full h-14 px-4 py-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
                 <div>
                   <Link
                     href={"/"}
@@ -207,7 +207,7 @@ export default function SideBar({children}){
             <div className="px-2 w-full fixed bottom-16 ">
               <MobilePlayer />
             </div>
-            <div className="w-full h-14 p-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
+            <div className="w-full h-14 px-4 py-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
               <div>
                 <Link
                   href={"/"}
@@ -354,12 +354,12 @@ const Loading = () => {
      >
        <div
          className={
-           "w-9/12 h-full px-2 flex items-center justify-between  gap-4"
+           "w-9/12 h-full px-2 flex items-center justify-between truncate "
          }
        >
          {music ? (
            <>
-             <div className="w-1/12 ">
+             <div className="">
                <div className="group w-14 h-14 rounded-md relative">
                  <Image
                    src={
@@ -374,7 +374,7 @@ const Loading = () => {
                  />
                </div>
              </div>
-             <div className="w-11/12 pl-4 flex flex-col justify-center items-start  capitalize ">
+             <div className="w-11/12 pl-4 flex flex-col justify-center items-start  capitalize gap-2">
                {/* display musicname and link */}
                <Link
                  key={music.id}
