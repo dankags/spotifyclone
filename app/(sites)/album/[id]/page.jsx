@@ -50,7 +50,7 @@ const AlbumPage = async(param) => {
  
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <div className="w-[100%] h-full rounded-md ">
+      <div className="w-[100%] h-full rounded-md bg-neutral-900">
         <AlbumWrapper album={album} color={bgColor}>
           <div>
             <div
@@ -93,7 +93,7 @@ const AlbumPage = async(param) => {
                           className="rounded-full"
                         />
                       </div>
-                      <span className="pl-2 text-sm font-bold capitalize">
+                      <span className="pl-2 text-sm font-bold capitalize text-white">
                         {artistProfile.name}
                       </span>
                     </div>

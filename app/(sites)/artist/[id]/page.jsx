@@ -145,7 +145,7 @@ bgColor=await darkVibrantColor(artist.backImg,0.9)
                       className="object-cover"
                     />
                   </div>
-                  <span className="flex items-center font-medium text-sm">
+                  <span className="flex items-center font-medium text-sm text-white">
                     Verified Artist
                   </span>
                 </>
@@ -161,7 +161,7 @@ bgColor=await darkVibrantColor(artist.backImg,0.9)
               </span>
             </div>
             <div className="h-[15%] flex flex-col justify-center">
-              <p className="text-base font-medium">
+              <p className="text-base font-medium text-white">
                 31,976,259 <span className="text-sm">monthly listeners </span>
               </p>
             </div>
@@ -178,7 +178,7 @@ bgColor=await darkVibrantColor(artist.backImg,0.9)
             userId={session?.user.id}
           >
             <div className=" pt-3">
-              <span className="mb-3 pl-3 text-xl font-semibold">Popular</span>
+              <span className="mb-3 pl-3 text-xl font-semibold text-white">Popular</span>
               <div className="w-full pt-2">
                 <StaticCarosel displayCol>
                   {musics?.map((song, i) => (
@@ -193,11 +193,11 @@ bgColor=await darkVibrantColor(artist.backImg,0.9)
               </div>
             </div>
             <div className=" flex flex-col p-4 gap-2">
-              <span className="text-xl font-semibold">Artist Pick</span>
+              <span className="text-xl text-white font-semibold">Artist Pick</span>
               <ArtistPick mainArtist={mainArtist} artistMusicPic={musics[0]} />
 
               <div className=" flex flex-col py-4 gap-2">
-                <span className="text-xl font-bold">About</span>
+                <span className="text-xl text-white font-bold">About</span>
                 <ArtistAbout />
               </div>
             </div>

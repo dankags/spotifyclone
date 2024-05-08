@@ -83,7 +83,7 @@ export const LogInForm = () => {
         )}
       </div>
       <div className="w-10/12 md:w-8/12 flex flex-col gap-2">
-        <label htmlFor="Email" className="text-sm font-medium">
+        <label htmlFor="Email" className="text-sm font-medium text-white">
           Email
         </label>
         <input
@@ -97,7 +97,7 @@ export const LogInForm = () => {
         />
       </div>
       <div className="w-10/12 md:w-8/12 flex flex-col gap-2">
-        <label htmlFor="Password" className="text-sm font-medium">
+        <label htmlFor="Password" className="text-sm font-medium text-white">
           Password
         </label>
         <div className="w-full flex gap-x-2 items-center rounded-sm bg-neutral-50 focus-within:ring-2 focus-within:ring-green-600">
@@ -135,7 +135,7 @@ export const LogInForm = () => {
           className="h-4 w-8"
         />
 
-        <span className="text-xs font-bold ml-2">Remember me</span>
+        <span className="text-xs font-bold ml-2 text-white">Remember me</span>
       </div>
       <button
         className="w-8/12 py-3 rounded-3xl text-base font-bold text-neutral-900 bg-green-500 hover:bg-green-400"

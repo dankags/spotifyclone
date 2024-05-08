@@ -42,10 +42,10 @@ const ArtistPick = ({ mainArtist, artistMusicPic }) => {
             />
           </div>
           <div className="flex flex-col gap-1 pl-3 ">
-            <span className="text-sm font-semibold first-letter:capitalize">
+            <span className="text-sm text-white font-semibold first-letter:capitalize">
               {artistMusicPic?.musicName ?? "spectre"}
             </span>
-            <span className="text-stone-300 text-xs font-medium">Single</span>
+            <span className="text-stone-200 text-xs font-medium">Single</span>
           </div>
         </div>
       </div>

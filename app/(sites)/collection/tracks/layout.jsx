@@ -25,7 +25,7 @@ const Layout = ({children}) => {
     <Suspense fallback={<LoadingSkeleton />}>
     <ScrollArea 
     onScrollCapture={handleScroll}
-    className= 'relative w-full h-full rounded-md'
+    className= 'relative w-full h-full rounded-md bg-neutral-900'
     style={{
         backgroundImage: `linear-gradient(to top,rgb(23,23,23),${bgColor} 100%)`,
     }}

@@ -137,7 +137,7 @@ export default function SideBar({children}){
         {opened ? (
           <>
             <main
-              className={cn("lg:w-[70%] relative w-full  h-full rounded-md")}
+              className={cn("lg:w-[70%] relative w-full  h-full rounded-md bg-neutral-900")}
             >
               {children}
               <div className="px-2 w-full fixed bottom-16 ">
@@ -201,7 +201,7 @@ export default function SideBar({children}){
             </div>
           </>
         ) : (
-          <main className={cn("w-full  h-full rounded-md")}>
+          <main className={cn("w-full  h-full rounded-md bg-neutral-900")}>
             {children}
             {/* navbar and footer in small screens */}
             <div className="px-2 w-full fixed bottom-16 ">
