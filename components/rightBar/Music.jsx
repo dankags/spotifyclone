@@ -63,7 +63,7 @@ const Music = ({ musicItem }) => {
           }
           alt={""}
           fill
-          className="rounded-md aspect-square"
+          className="rounded-md aspect-square shadow-[0_4px_60px_0] shadow-black/65"
         />
       </div>
       <div className="w-full flex items-center justify-between pt-2">

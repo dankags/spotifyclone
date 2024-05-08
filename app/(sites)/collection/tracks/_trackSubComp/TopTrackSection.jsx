@@ -15,7 +15,7 @@ const TopTrackSection = ({setColor}) => {
             src="https://res.cloudinary.com/dxqbb56ul/image/upload/v1707399980/likedSongs_sgfefa.png"
             alt="likedImage"
             fill
-            className="shadow-2xl shadow-neutral-950 rounded-md object-cover"
+            className="shadow-[0_4px_60px_0] shadow-black/50 rounded-md object-cover"
           />
         </div>
       </div>
@@ -25,13 +25,13 @@ const TopTrackSection = ({setColor}) => {
       >
         <section className="">
           <div className="mb-2">
-            <span className="hidden md:block font-medium text-neutral-50 ">
+            <span className="hidden md:block font-medium text-neutral-50 drop-shadow-xl">
               Playlist
             </span>
           </div>
-          <div className='w-full flex'>
+          <div className="w-full flex">
             <span
-              className={`w-full  text-center md:text-left  text-3xl md:text-5xl  font-extrabold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden`}
+              className={`w-full  text-center md:text-left  text-3xl md:text-5xl  font-extrabold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden drop-shadow-xl`}
             >
               Liked Songs
             </span>

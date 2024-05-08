@@ -2,7 +2,7 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { BiBell, BiSearch } from "react-icons/bi";
 import { FiArrowDownCircle } from "react-icons/fi";
 import { LuUser2 } from "react-icons/lu";
@@ -10,11 +10,22 @@ import { ToolTip } from "../ToolTip";
 import { NavMenu } from "./NavMenu";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "@/components/ui/tooltip";
+import { usePathname } from "next/navigation";
 
 export const RightNavBar = () => {
   const { data } = useSession();
-  const searchInputRef=useRef()
+  const pathName=usePathname()
+  const searchInputRef = useRef()
+  const [showSearchInputBtn,setShowSearchInputBtn]=useState(false)
   const [showSearchInput, setShowSearchInput] = useState(false);
+
+  useEffect(() => {
+    if (pathName === "/search") {
+      setShowSearchInputBtn(true)
+      return
+    }
+    setShowSearchInputBtn(false)
+  },[pathName])
 
   const handleShowSearchInput=()=>{
      if(!showSearchInput){
@@ -39,29 +50,31 @@ export const RightNavBar = () => {
           <span>Install app</span>
         </span>
       </div>
-      <div
-        className={cn(
-          "lg:hidden group flex p-2  items-center justify-center rounded-full bg-neutral-900/80 hover:bg-neutral-800 transition-all ease-in-out duration-500 overflow-hidden cursor-pointer ",
-          showSearchInput
-            ? "w-full gap-x-2 flex items-center mr-3 bg-neutral-900/80 rounded-3xl  "
-            : "w-8 h-8 rounded-full"
-        )}
-      >
-        <span
-          onClick={handleShowSearchInput}
-          className=" shrink-0 text-stone-50  group-hover:text-white"
-        >
-          <BiSearch size={20} />
-        </span>
-        <input
-        ref={searchInputRef}
-          placeholder="Search"
+      {showSearchInputBtn && (
+        <div
           className={cn(
-            " w-full tracking-wide text-base font-medium placeholder:text-sm bg-neutral-800 focus:border-none focus:outline-none ",
-            showSearchInput && "bg-transparent"
+            "lg:hidden group flex p-2  items-center justify-center rounded-full bg-neutral-900/80 hover:bg-neutral-800 transition-all ease-in-out duration-500 overflow-hidden cursor-pointer ",
+            showSearchInput
+              ? "w-full gap-x-2 flex items-center mr-3 bg-neutral-900/80 rounded-3xl  "
+              : "w-8 h-8 rounded-full"
           )}
-        />
-      </div>
+        >
+          <span
+            onClick={handleShowSearchInput}
+            className=" shrink-0 text-stone-50  group-hover:text-white"
+          >
+            <BiSearch size={20} />
+          </span>
+          <input
+            ref={searchInputRef}
+            placeholder="Search"
+            className={cn(
+              " w-full tracking-wide text-base font-medium placeholder:text-sm bg-neutral-800 focus:border-none focus:outline-none ",
+              showSearchInput && "bg-transparent"
+            )}
+          />
+        </div>
+      )}
       <div className="p-1 rounded-full bg-neutral-900/80  cursor-pointer hover:bg-neutral-800/80">
         <Link
           href={"/"}

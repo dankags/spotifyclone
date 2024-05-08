@@ -71,8 +71,8 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
                     ) : (
                       <LuUser2 className="m-auto text-7xl text-stone-300" />
                     )}
-                    <div className="w-full h-full absolute top-0 left-0 rounded-full flex flex-col justify-center items-center gap-2 opacity-0 transition duration-300 text-neutral-50 group-hover:bg-neutral-900/75 group-hover:opacity-100">
-                      <MdOutlineEdit className="text-6xl" />
+                    <div className="hidden w-full h-full absolute top-0 left-0 rounded-full md:flex flex-col justify-center items-center gap-2 opacity-0 transition duration-300 text-neutral-50 group-hover:bg-neutral-900/75 group-hover:opacity-100">
+                      <MdOutlineEdit className=" text-5xl" />
                       <span className="text-lg font-semibold ">
                         Choose photo
                       </span>
@@ -85,7 +85,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
                     src={data?.user.image ? data?.user.image : ""}
                     alt="likedImage"
                     fill
-                    className="object-cover shadow-2xl shrink-0 shadow-black rounded-full"
+                    className="object-cover shadow-[0_4px_60px_0] shadow-black/50 shrink-0  rounded-full"
                   />
                 </div>
               )}
@@ -94,8 +94,8 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
               className={`pb-1 mt-4 h-full w-9/12 pl-2 flex flex-col justify-end`}
             >
               <section className="flex flex-col justify-end">
-                <div className={``}>
-                  <span className="font-medium text-neutral-50 drop-shadow-xl textShadow">
+                <div className={`hidden md:block`}>
+                  <span className=" font-medium text-neutral-50 drop-shadow-xl textShadow">
                     Profile
                   </span>
                 </div>
@@ -103,7 +103,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
                   {paramsId === data?.user.id ? (
                     <UserDialog setImgName={setImgNameChoosen}>
                       <button
-                        className={`w-[90%] cursor-pointer text-left text-8xl py-3 font-extrabold text-neutral-50  truncate capitalize `}
+                        className={`w-[90%] cursor-pointer text-left text-2xl md:text-6xl lg:text-8xl py-3 font-extrabold text-neutral-50  truncate capitalize drop-shadow-xl`}
                       >
                         {data?.user.name
                           ? data?.user.name
@@ -112,13 +112,13 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
                     </UserDialog>
                   ) : (
                     <span
-                      className={`w-[90%]  text-left text-8xl py-2 font-extrabold text-neutral-50  truncate capitalize textShadow`}
+                      className={`w-[90%]  text-left text-8xl py-2 font-extrabold text-neutral-50  truncate capitalize drop-shadow-xl`}
                     >
                       {data?.user.name ? data?.user.name : imgNameChoosen.name}
                     </span>
                   )}
                 </div>
-                <div className={`flex items-center gap-x-2 pt-7`}>
+                <div className={`flex items-center gap-x-2 pt-3 md:pt-7`}>
                   <span className="mr-2 text-sm text-neutral-50 font-semibold drop-shadow-xl textShadow">
                     {playlist.length} Public Playlist .
                   </span>
