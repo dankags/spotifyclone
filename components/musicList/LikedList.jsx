@@ -244,22 +244,19 @@ export const LikedList = ({ music, index,musics }) => {
       onMouseOut={() => setShowplayIcon(false)}
       className={cn(
         "flex py-2 rounded-md hover:bg-neutral-700/20 group",
-        isMusicAtiveInPathName? "bg-neutral-700/35" : ""
+        isMusicAtiveInPathName ? "bg-neutral-700/35" : ""
       )}
     >
       <div className="w-9/12 lg:w-6/12 pl-4 flex items-center max-md:justify-start shrink-0">
         <div className="hidden lg:w-1/12 lg:flex items-center  overflow-hidden">
           {showPlayIcon ? (
-            <span
-              className="text-lg text-white"
-              onClick={handlePlay}
-            >
+            <span className="text-lg text-white" onClick={handlePlay}>
               {" "}
-              {play ? <IoPause/> : <IoPlay className="" />}
+              {play ? <IoPause /> : <IoPlay className="" />}
             </span>
           ) : (
             <div>
-              {isMusicAtiveInPathName? (
+              {isMusicAtiveInPathName ? (
                 <Image
                   src={"/equaliser-animated-green.f5eb96f2.gif"}
                   alt="equilizer"
@@ -296,18 +293,19 @@ export const LikedList = ({ music, index,musics }) => {
               {music?.musicName ? music.musicName : "none"}
             </Link>
             <p className="flex items-center justify-start text-stone-400">
-              {musicArtists?.map((artist,indx) =>
+              {musicArtists?.map((artist, indx) => (
                 <Link
                   key={artist.id}
-               href={`/artist/${
-                 artist?.id ? artist.id : "uuew948ewn894en89"
-               }`}
-               className="text-sm font-medium capitalize hover:underline"
-             >
-                  {artist?.name ? `${indx===0 ? artist.name :", "+artist.name}` : "Jim Yosef"}
-             </Link>
-              )}
-
+                  href={`/artist/${
+                    artist?.id ? artist.id : "uuew948ewn894en89"
+                  }`}
+                  className="text-sm font-medium capitalize hover:underline"
+                >
+                  {artist?.name
+                    ? `${indx === 0 ? artist.name : ", " + artist.name}`
+                    : "Jim Yosef"}
+                </Link>
+              ))}
             </p>
           </div>
         </div>
@@ -321,15 +319,9 @@ export const LikedList = ({ music, index,musics }) => {
           className="w-1/6 max-md:w-[50%] flex items-center justify-center "
         >
           {liked ? (
-            <MdOutlineFavorite
-              size={20}
-              className=" text-green-500 cursor-pointer"
-            />
+            <MdOutlineFavorite className=" w-6 h-6 lg:w-5 lg:h-5 text-green-500 cursor-pointer" />
           ) : (
-            <MdOutlineFavoriteBorder
-              size={24}
-              className="text-stone-400 hover:text-white"
-            />
+            <MdOutlineFavoriteBorder className="w-6 h-6 lg:w-5 lg:h-5 text-stone-400 hover:text-white" />
           )}
         </button>
         <div className="hidden w-3/12  lg:flex items-center justify-end text-sm text-stone-400">
