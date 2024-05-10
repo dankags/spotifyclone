@@ -21,6 +21,7 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
     if(children){setLoading(false)}
   },[children])
 
+  console.log(width);
   
 
   //filters the list according to the unliked music
@@ -45,12 +46,15 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
   useEffect(() => {
     if (width >= 1250 ) {
       setVisibleCounts(5)
+      return
     }
     if(width <= 500){
       setVisibleCounts(2)
+      return;
     }
     if(width <= 918){
       setVisibleCounts(3)
+      return;
     }
     setVisibleCounts(4)
   }, [width])

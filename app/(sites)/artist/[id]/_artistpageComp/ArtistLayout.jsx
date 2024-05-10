@@ -24,7 +24,7 @@ const ArtistLayout = ({ children,imageUrl }) => {
         </div>
       {children}
       </div>
-      <ScrollBar className="z-20"/>
+      <ScrollBar />
     </ScrollArea>
   )
 }

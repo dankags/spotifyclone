@@ -65,7 +65,7 @@ const AlbumPage = async(param) => {
                 />
               </div>
               <div
-                className={`pb-1 pl-3 w-full md:w-9/12 md:pl-4
+                className={`pb-1 pl-3 w-full md:w-9/12  md:pl-4
               `}
               >
                 <section className="flex flex-col  items-start gap-3 md:gap-0  md:pl-2">

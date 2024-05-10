@@ -39,13 +39,13 @@ export const RightNavBar = () => {
 
   return (
     <div className="w-10/12 lg:w-6/12 flex items-center justify-end gap-2 relative pr-2">
-      <div className="hidden p-2 ml-2  items-center rounded-2xl bg-neutral-50 cursor-pointer lg:flex">
-        <span className="font-bold text-xs text-ellipsis overflow-hidden whitespace-nowrap text-neutral-900 rounded-2xl ">
+      <div className="hidden  ml-2  items-center rounded-2xl bg-neutral-50 cursor-pointer lg:flex">
+        <span className="p-2 font-bold text-xs text-ellipsis overflow-hidden whitespace-nowrap text-neutral-900 rounded-2xl ">
           Explore premium
         </span>
       </div>
-      <div className="hidden py-2 px-3 rounded-2xl bg-neutral-900/80  cursor-pointer hover:bg-neutral-800/80 lg:block">
-        <span className="font-semibold flex shrink-0 gap-x-2 items-center text-xs text-neutral-50  text-nowrap whitespace-nowrap">
+      <div className="hidden cursor-pointer lg:block">
+        <span className="py-2 px-4 rounded-2xl font-semibold bg-neutral-900/80 hover:bg-neutral-800/80  flex shrink-0 gap-x-2 items-center text-xs text-neutral-50  text-nowrap whitespace-nowrap">
           <FiArrowDownCircle size={20} />
           <span>Install app</span>
         </span>

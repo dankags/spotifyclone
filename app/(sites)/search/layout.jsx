@@ -3,12 +3,12 @@ import { NavBar } from "@/components/navigationbar/NavBar";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useAppSelector } from "@/lib/hooks/reduxHooks";
 import { useDebounce } from "@uidotdev/usehooks";
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const SearchLayout = ({ children }) => {
-  const { searchInputvalue } = useAppSelector((state) => {
-    state.mainSearchBarInput;
-  }); 
+  const { searchInputvalue } = useAppSelector((state) => state.mainSearchBarInput);
+  console.log(searchInputvalue);
+  
   const [searchValue,setSearchValue]=useState(null)
   useEffect(() => {
     if (!searchInputvalue) { return }

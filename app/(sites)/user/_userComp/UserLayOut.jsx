@@ -5,10 +5,11 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import {  useNavBarDarkVibrant, useVibrantColor } from '@/lib/hooks/colorHooks'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdOutlineEdit } from 'react-icons/md'
 import UserDialog from './UserDialog'
 import { LuUser2 } from 'react-icons/lu'
+import LoadingSkeleton from '@/components/LoadingSkeleton';
 
 const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColor}) => {
   
@@ -19,6 +20,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
       name:''
     })
     const choosenImgColor= useVibrantColor(`${imgNameChoosen.img ? imgNameChoosen.img:data?.user.image }`,1)
+    const [isLoadingColor,setIsLoadingColor]=useState(true)
     const [navColor, setNavcolor] = useState(false)
     const navBgColor=useNavBarDarkVibrant(user?.image)
     const handleScroll = (e) => {
@@ -30,6 +32,18 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
       }
       setNavcolor(false)
   };
+
+  useEffect(() => {
+    if (choosenImgColor) {
+      setIsLoadingColor(false)
+      return
+    }
+    setIsLoadingColor(true)
+  }, [choosenImgColor])
+  
+  if (isLoadingColor) {
+    return <LoadingSkeleton/>
+  }
   
   return (
     <div
@@ -103,7 +117,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
                   {paramsId === data?.user.id ? (
                     <UserDialog setImgName={setImgNameChoosen}>
                       <button
-                        className={`w-[90%] cursor-pointer text-left text-2xl md:text-6xl lg:text-8xl py-3 font-extrabold text-neutral-50  truncate capitalize drop-shadow-xl`}
+                        className={`w-[90%] cursor-pointer text-left text-2xl md:text-6xl lg:text-8xl py-3 font-bold text-neutral-50  truncate capitalize drop-shadow-xl`}
                       >
                         {data?.user.name
                           ? data?.user.name

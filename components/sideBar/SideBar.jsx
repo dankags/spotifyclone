@@ -61,9 +61,15 @@ export default function SideBar({children}){
      }
     },[pageWidth])
     
+  useEffect(() => {
+    console.log(pageRef?.current?.offsetWidth, pageRef?.current?.clientWidth);
+    const setmainPageWidth = async () => {
+      await dispatch(setWidth(pageRef?.current?.offsetWidth));
+    };
+    setmainPageWidth();
+  }, [opened, sidebarSpan, pageRef?.current?.offsetWidth]);
     console.log(pageRef?.current?.offsetWidth-10, pageRef?.current?.clientWidth+10);
   
-
 
     if(pathName.includes("/dashboard")){
       return(
@@ -79,6 +85,7 @@ export default function SideBar({children}){
         data ? "lg:h-[calc(100vh-80px)]" : "lg:h-[100vh]"
       )}
     >
+      {/* sidebar */}
       <div
         className={cn(
           "hidden lg:block",
@@ -129,138 +136,79 @@ export default function SideBar({children}){
           </div>
         )}
       </div>
+
+      {/* where pages will mount */}
       <div
         className={cn(
           "w-full h-full  flex items-center justify-between",
           sidebarSpan ? "lg:w-[calc(100%-370px)]" : "lg:w-[calc(100%-85px)]"
         )}
       >
-        {opened ? (
-          <>
-            <main
-              className={cn(
-                "lg:w-[70%] relative w-full  h-full rounded-md bg-neutral-900"
-              )}
-            >
-              {children}
-              <div className="px-2 w-full fixed bottom-16 ">
-                <MobilePlayer />
-              </div>
-              <div className="w-full h-14 px-4 py-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
-                <div>
-                  <Link
-                    href={"/"}
-                    className={cn(
-                      "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
-                      pathName === "/" && "text-white"
-                    )}
-                  >
-                    {pathName !== "/" ? (
-                      <GoHome size={26} />
-                    ) : (
-                      <GoHomeFill size={26} />
-                    )}
-                    <span className="capitalize text-xs font-bold">home</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    href={"/search"}
-                    className={cn(
-                      "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
-                      pathName === "/search" && "text-white"
-                    )}
-                  >
-                    {pathName !== "/search" ? (
-                      <IoSearchSharp size={26} />
-                    ) : (
-                      <PiMagnifyingGlassFill size={26} />
-                    )}
-                    <span className="capitalize text-xs font-bold">search</span>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    href={"/collection/tracks"}
-                    className={cn(
-                      "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
-                      pathName === "/collection/tracks" && "text-white"
-                    )}
-                  >
-                    <IoLibrary size={24} />
-                    <span className="capitalize text-xs font-bold">
-                      library
-                    </span>
-                  </Link>
-                </div>
-              </div>
-            </main>
-            <div
-              className={cn(
-                "hidden   h-full overflow-hidden justify-start pl-2 lg:w-[30%] lg:flex "
-              )}
-            >
-              <RightBar />
+        <main
+          ref={pageRef}
+          className={cn(
+            "relative w-full  h-full rounded-md bg-neutral-900"
+          )}
+        >
+          {children}
+          <div className="px-2 w-full fixed bottom-16 ">
+            <MobilePlayer />
+          </div>
+          {/* mobile bottom nvigation */}
+          <div className="w-full h-14 px-4 py-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
+            <div>
+              <Link
+                href={"/"}
+                className={cn(
+                  "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
+                  pathName === "/" && "text-white"
+                )}
+              >
+                {pathName !== "/" ? (
+                  <GoHome size={26} />
+                ) : (
+                  <GoHomeFill size={26} />
+                )}
+                <span className="capitalize text-xs font-bold">home</span>
+              </Link>
             </div>
-          </>
-        ) : (
-          <main
-            ref={pageRef}
-            className={cn("w-full  h-full rounded-md bg-neutral-900")}
-          >
-            {children}
-            {/* navbar and footer in small screens */}
-            <div className="px-2 w-full fixed bottom-16 ">
-              <MobilePlayer />
+            <div>
+              <Link
+                href={"/search"}
+                className={cn(
+                  "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
+                  pathName === "/search" && "text-white"
+                )}
+              >
+                {pathName !== "/search" ? (
+                  <IoSearchSharp size={26} />
+                ) : (
+                  <PiMagnifyingGlassFill size={26} />
+                )}
+                <span className="capitalize text-xs font-bold">search</span>
+              </Link>
             </div>
-            <div className="w-full h-14 px-4 py-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
-              <div>
-                <Link
-                  href={"/"}
-                  className={cn(
-                    "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
-                    pathName === "/" && "text-white"
-                  )}
-                >
-                  {pathName !== "/" ? (
-                    <GoHome size={26} />
-                  ) : (
-                    <GoHomeFill size={26} />
-                  )}
-                  <span className="capitalize text-xs font-bold">home</span>
-                </Link>
-              </div>
-              <div>
-                <Link
-                  href={"/search"}
-                  className={cn(
-                    "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
-                    pathName === "/search" && "text-white"
-                  )}
-                >
-                  {pathName !== "/search" ? (
-                    <IoSearchSharp size={26} />
-                  ) : (
-                    <PiMagnifyingGlassFill size={26} />
-                  )}
-                  <span className="capitalize text-xs font-bold">search</span>
-                </Link>
-              </div>
-              <div>
-                <Link
-                  href={"/collection/tracks"}
-                  className={cn(
-                    "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
-                    pathName === "/collection/tracks" && "text-white"
-                  )}
-                >
-                  <IoLibrary size={24} />
-                  <span className="capitalize text-xs font-bold">library</span>
-                </Link>
-              </div>
+            <div>
+              <Link
+                href={"/collection/tracks"}
+                className={cn(
+                  "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
+                  pathName === "/collection/tracks" && "text-white"
+                )}
+              >
+                <IoLibrary size={24} />
+                <span className="capitalize text-xs font-bold">library</span>
+              </Link>
             </div>
-          </main>
-        )}
+          </div>
+        </main>
+        {opened&&<div
+          className={cn(
+            "hidden h-full overflow-hidden justify-start pl-2 lg:w-[30%] lg:flex "
+          )}
+        >
+          <RightBar />
+        </div>}
       </div>
     </div>
   );
@@ -461,4 +409,9 @@ const Loading = () => {
        </div>
      </div>
    );
- };
+};
+ 
+
+
+        
+                 

@@ -44,17 +44,22 @@ const AlbumWrapper = ({children,album,color}) => {
   }
 
   return (
-    <ScrollArea onScrollCapture={handleScroll} className={' h-full rounded-md'}>
-    <div className='w-full h-full relative' style={{backgroundColor:`${bgColor}`}}>
-      <div className="sticky top-0 z-10">
-        <NavBar bgColor={navColor ? `${navBgColor}`:""}/>
-        </div>  
-      {children}
-      <Footer/>
+    <ScrollArea onScrollCapture={handleScroll} className={" h-full rounded-md"}>
+      <div
+        className="w-full h-full relative"
+        style={{
+          backgroundImage: `linear-gradient(to top,rgb(23,23,23),${bgColor} 100%)`,
+        }}
+      >
+        <div className="sticky top-0 z-10">
+          <NavBar bgColor={navColor ? `${navBgColor}` : ""} />
+        </div>
+        {children}
+        <Footer />
       </div>
-      <ScrollBar className={''} />
-      </ScrollArea>
-  )
+      <ScrollBar className={""} />
+    </ScrollArea>
+  );
 }
 
 export default AlbumWrapper
