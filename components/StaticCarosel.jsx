@@ -21,7 +21,7 @@ export const StaticCarosel = ({children,title,displayCol,showAll}) => {
     if(children){setLoading(false)}
   },[children])
 
-  console.log(width);
+  
   
 
   //filters the list according to the unliked music

@@ -62,13 +62,13 @@ export default function SideBar({children}){
     },[pageWidth])
     
   useEffect(() => {
-    console.log(pageRef?.current?.offsetWidth, pageRef?.current?.clientWidth);
+   
     const setmainPageWidth = async () => {
       await dispatch(setWidth(pageRef?.current?.offsetWidth));
     };
     setmainPageWidth();
   }, [opened, sidebarSpan, pageRef?.current?.offsetWidth]);
-    console.log(pageRef?.current?.offsetWidth-10, pageRef?.current?.clientWidth+10);
+    
   
 
     if(pathName.includes("/dashboard")){
