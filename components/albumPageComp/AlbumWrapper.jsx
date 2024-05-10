@@ -1,9 +1,10 @@
 "use client"
 import { useDarkVibrantColor, useNavBarDarkVibrant, useVibrantColor } from '@/lib/hooks/colorHooks'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavBar } from "../navigationbar/NavBar";
 import Footer from '../Footer'
 import { ScrollArea, ScrollBar } from '../ui/scroll-area'
+import LoadingSkeleton from '../LoadingSkeleton';
 
 
 const getVibrantColor=(img,opacity=0.8)=>{
@@ -18,6 +19,7 @@ const getVibrantColor=(img,opacity=0.8)=>{
 const AlbumWrapper = ({children,album,color}) => {
   const bgColor = useDarkVibrantColor(`${album?.musicImage}`, 0.8)
   const [navColor, setNavcolor] = useState(false)
+  const [isLoading,setIsLoading]=useState(true)
   const navBgColor=useNavBarDarkVibrant(album?.musicImage)
   const handleScroll = (e) => {
     const totalScrollHeight=e.target.scrollHeight
@@ -28,6 +30,19 @@ const AlbumWrapper = ({children,album,color}) => {
     }
     setNavcolor(false)
   };
+
+  useEffect(() => {
+    if (bgColor) {
+      setIsLoading(false)
+      return
+    }
+    setIsLoading(true)
+  }, [bgColor])
+  
+  if (isLoading) {
+    return <LoadingSkeleton />
+  }
+
   return (
     <ScrollArea onScrollCapture={handleScroll} className={' h-full rounded-md'}>
     <div className='w-full h-full relative' style={{backgroundColor:`${bgColor}`}}>

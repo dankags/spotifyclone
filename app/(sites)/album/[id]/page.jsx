@@ -61,7 +61,7 @@ const AlbumPage = async(param) => {
                   src={album?.musicImage}
                   alt="likedImage"
                   fill
-                  className="z-0 rounded-[4px] shadow-[0_4px_60px_0] shadow-black/50"
+                  className="z-0 rounded-[4px] shadow-[0_4px_60px_0] shadow-black/80"
                 />
               </div>
               <div
@@ -70,11 +70,11 @@ const AlbumPage = async(param) => {
               >
                 <section className="flex flex-col  items-start gap-3 md:gap-0  md:pl-2">
                   <div className="order-3 md:order-none">
-                    <p className="text-sm md:text-base font-medium text-neutral-50 ">single <span className='md:hidden'>.{" "}{albumYearRelease}</span></p>
+                    <p className="text-sm md:text-base font-medium text-neutral-50 drop-shadow-2xl">single <span className='md:hidden'>.{" "}{albumYearRelease}</span></p>
                   </div>
                   <div className="order-1 md:order-none">
                     <span
-                      className={`w-full capitalize text-2xl md:text-5xl font-extrabold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden`}
+                      className={`w-full capitalize text-2xl md:text-5xl font-bold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden drop-shadow-2xl`}
                     >
                       {album.musicName}
                     </span>
@@ -93,11 +93,11 @@ const AlbumPage = async(param) => {
                           className="rounded-full"
                         />
                       </div>
-                      <span className="pl-2 text-sm font-bold capitalize text-white">
+                      <span className="pl-2 text-sm font-bold capitalize text-white drop-shadow-2xl">
                         {artistProfile.name}
                       </span>
                     </div>
-                    <p className="hidden md:block text-sm text-left text-stone-200 font-medium">
+                    <p className="hidden md:block text-sm text-left text-stone-200 font-medium drop-shadow-2xl">
                       <span className="capitalize">. {album.musicName}</span>
                       <DurationDate album={album} />
                       <span className="capitalize"> . 57,862,629</span>

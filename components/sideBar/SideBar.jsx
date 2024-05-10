@@ -36,7 +36,8 @@ export default function SideBar({children}){
   const pathName=usePathname()
   const { opened } = useAppSelector(state => state.rightbar)
   const [sidebarSpan,setSideBarSpan]=useState(true)
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch()
+  
   const routes = useMemo(
     () => [
       {
@@ -60,7 +61,8 @@ export default function SideBar({children}){
      }
     },[pageWidth])
     
-    
+    console.log(pageRef?.current?.offsetWidth-10, pageRef?.current?.clientWidth+10);
+  
 
 
     if(pathName.includes("/dashboard")){
@@ -128,7 +130,6 @@ export default function SideBar({children}){
         )}
       </div>
       <div
-        ref={pageRef}
         className={cn(
           "w-full h-full  flex items-center justify-between",
           sidebarSpan ? "lg:w-[calc(100%-370px)]" : "lg:w-[calc(100%-85px)]"
@@ -137,7 +138,9 @@ export default function SideBar({children}){
         {opened ? (
           <>
             <main
-              className={cn("lg:w-[70%] relative w-full  h-full rounded-md bg-neutral-900")}
+              className={cn(
+                "lg:w-[70%] relative w-full  h-full rounded-md bg-neutral-900"
+              )}
             >
               {children}
               <div className="px-2 w-full fixed bottom-16 ">
@@ -201,7 +204,10 @@ export default function SideBar({children}){
             </div>
           </>
         ) : (
-          <main className={cn("w-full  h-full rounded-md bg-neutral-900")}>
+          <main
+            ref={pageRef}
+            className={cn("w-full  h-full rounded-md bg-neutral-900")}
+          >
             {children}
             {/* navbar and footer in small screens */}
             <div className="px-2 w-full fixed bottom-16 ">
