@@ -11,11 +11,13 @@ import { NavMenu } from "./NavMenu";
 import { cn } from "@/lib/utils";
 import { Tooltip } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 export const RightNavBar = () => {
   const { data } = useSession();
   const pathName=usePathname()
   const searchInputRef = useRef()
+  const dispatch=useDispatch()
   const [showSearchInputBtn,setShowSearchInputBtn]=useState(false)
   const [showSearchInput, setShowSearchInput] = useState(false);
 
@@ -36,6 +38,14 @@ export const RightNavBar = () => {
      searchInputRef.current.value=""
      setShowSearchInput(!showSearchInput)
   }
+
+  const handleSearchInput = async (e) => {
+     const searchValue = e.target.value;
+
+     if (searchValue) {
+       await dispatch(setSearchinputValue(searchValue));
+     }
+   };
 
   return (
     <div className="w-10/12 lg:w-6/12 flex items-center justify-end gap-2 relative pr-2">
@@ -66,10 +76,11 @@ export const RightNavBar = () => {
             <BiSearch size={20} />
           </span>
           <input
+            onChange={handleSearchInput}
             ref={searchInputRef}
             placeholder="Search"
             className={cn(
-              " w-full tracking-wide text-base font-medium placeholder:text-sm bg-neutral-800 focus:border-none focus:outline-none ",
+              " w-full tracking-wide text-base font-medium placeholder:text-sm bg-neutral-800 focus:border-none focus:outline-none text-white placeholder:text-stone-300",
               showSearchInput && "bg-transparent"
             )}
           />

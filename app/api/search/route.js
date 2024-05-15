@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req, res) => {
     const body = await req.json();
-    console.log(body);
     
     try {
       if(!body){return NextResponse.json("no input provided",{status:400})}
@@ -57,11 +56,11 @@ export const POST = async (req, res) => {
                 },
               });
                artists.push(artistId[0]);
-              const response = { ...searchedMusic, artists:JSON.stringify(artists), slug: "song" };
+              const response = { searched:searchedMusic, artist:artists, slug: "song" };
               return NextResponse.json(response, { status: 200 });
             }
           if (searchedMusic.artistId === artistId[0].id) {
-            const response = { ...searchedMusic, artists:artistId, slug: "song" };
+            const response = { searched:searchedMusic, artist:[artistId], slug: "song" };
             return NextResponse.json(response, { status: 200 });
             }
             
@@ -69,7 +68,7 @@ export const POST = async (req, res) => {
             if (saerchedPlaylist && artistId.length !==0) {
                 if (saerchedPlaylist.creatorId === artistId[0].id) {
                     const artists = Array([]).push(artistId[0]);
-                    const response = { ...saerchedPlaylist, artists, slug: "playlist" };
+                    const response = { searched:saerchedPlaylist, artist:artists, slug: "playlist" };
                     return NextResponse.json(response, { status: 200 });
                 }
             }
@@ -111,7 +110,7 @@ export const POST = async (req, res) => {
       });
 
         if (saerchedMusic) {
-          console.log(saerchedMusic);
+          // console.log(saerchedMusic);
           
           const mainArtist = await prisma.user.findUnique({
               where: {
@@ -123,8 +122,10 @@ export const POST = async (req, res) => {
                   
               }
           })
-          const artist={...mainArtist,slug:"artist"}
-           const artistResponse = { searched:saerchedMusic,artist:artist, slug: "song" };
+          const artist=[{...mainArtist,slug:"artist"}]
+          const artistResponse = { searched: saerchedMusic, artist: artist, slug: "song" };
+          console.log(artistResponse);
+          
            return NextResponse.json(artistResponse, { status: 200 });
       }
 
