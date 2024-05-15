@@ -2,6 +2,7 @@
 import { NavBar } from "@/components/navigationbar/NavBar";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/reduxHooks";
+import { setSearchinputValue } from "@/lib/redux/slices/mainSearchBar";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@uidotdev/usehooks";
 import Image from "next/image";
@@ -31,6 +32,7 @@ const SearchLayout = ({ children }) => {
         if (serverRes.ok) {
           const res=await serverRes.json()
           setSearchValue(res);
+          await dispatch(setSearchinputValue(null)) 
           console.log(res);
           return
         }
