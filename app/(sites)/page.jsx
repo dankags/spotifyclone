@@ -11,12 +11,12 @@ import LoadingSkeleton from '@/components/LoadingSkeleton'
 import { Suspense } from 'react'
 
 export default async function Home () {
-  const serverSession=await getServerSession(authOptions)
+  const {user}=await getServerSession(authOptions)
   let likedSong=null;
-  if(serverSession?.user){
+  if(user){
      likedSong = await prisma.likedSong.findUnique({
        where: {
-         userId: serverSession.user.id,
+         userId: user.id,
        },
      });
   }

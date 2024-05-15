@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
       <body className={figtree.className}>
         <AuthProvider>
           <StoreProvider>
-            <main className="relative">
+            <main className="relative bg-neutral-950">
               <SideBar>{children}</SideBar>
               <Player />
             </main>
