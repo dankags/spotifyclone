@@ -115,8 +115,10 @@ const MusicForm = () => {
         }
       )
       if (cloudinaryRes.ok) {
-        const imgData=await cloudinaryRes.json()
-        setImgCloudinaryUrl(`${imgData.url}`);
+        const imgData = await cloudinaryRes.json()
+     
+        
+        setImgCloudinaryUrl(`${imgData?.secure_url}`);
         toast.success("image uploaded successfully")
         return
       }
