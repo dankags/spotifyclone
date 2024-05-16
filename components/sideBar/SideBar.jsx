@@ -23,7 +23,7 @@ import { MdSkipNext } from 'react-icons/md'
 import Image from 'next/image'
 import { addMusicIndex } from '@/lib/redux/slices/playlistMusicIndex'
 import { playMusic, setMusicByPlaylist } from '@/lib/redux/slices/currentMusic'
-import { useDarkVibrantColor } from '@/lib/hooks/colorHooks'
+import { useDarkVibrantColor,useMutedColor } from '@/lib/hooks/colorHooks'
 
 
 
@@ -231,7 +231,7 @@ const Loading = () => {
      (state) => state.musicIndex
    );
    const dispatch = useAppDispatch();
-   const color = useDarkVibrantColor(music && music.musicImage, 1);
+   const color = useMutedColor(music && music.musicImage, 1);
    const [mainArtist, setMainArtist] = useState(null);
    const [artists, setArtists] = useState(null);
    const [isPlaying, setIsPlaying] = useState(false);
