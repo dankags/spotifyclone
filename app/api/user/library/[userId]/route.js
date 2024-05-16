@@ -52,7 +52,8 @@ export const GET = async (req,{params}) => {
                 where: {
                     id: {
                     in:followingsIds
-                    },
+                     },
+                    roles:"ARTIST"
                  },
                  select: {
                     image: true,
