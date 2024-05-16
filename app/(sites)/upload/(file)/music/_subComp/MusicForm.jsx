@@ -143,8 +143,10 @@ const MusicForm = () => {
           method: "POST",
           body: JSON.stringify(musicdata),
         })
-          .then((res) => toast.success(res.json()) )
-          .catch((error) => console.log(error));
+        if (res.ok) {
+          toast.success("uploaded music susseccfully")
+          return
+          }
       } catch (error) {
         console.log(error);
       }

@@ -63,7 +63,7 @@ const ChangeCoverImgBtn = ({artistBackImg, artistImg, isArtist,artistId }) => {
     <label htmlFor="backImgFile" className="absolute bottom-6 right-6 ">
       {imgFile.file ? (
         <div
-          className={`flex justify-center items-center p-3 rounded-full cursor-pointer  hover:shadow-xl hover:shadow-neutral-900`}
+          className={`flex justify-center text-white items-center p-3 rounded-full cursor-pointer  hover:shadow-xl hover:shadow-neutral-900`}
           style={{
             backgroundColor: `${bgColor}`,
           }}
@@ -72,7 +72,7 @@ const ChangeCoverImgBtn = ({artistBackImg, artistImg, isArtist,artistId }) => {
         </div>
       ) : (
         <div
-          className={`flex justify-center items-center p-3 rounded-full cursor-pointer  hover:shadow-xl hover:shadow-neutral-900`}
+          className={`flex justify-center items-center p-3 text-white rounded-full cursor-pointer  hover:shadow-xl hover:shadow-neutral-900`}
           style={{
             backgroundColor: `${btnBgColor}`,
           }}
