@@ -160,7 +160,7 @@ const SearchLayout = ({ children }) => {
                 </div>
                 {/* search component on mobile */}
                 <div
-                  className="p-3 rounded-sm w-full flex items-center gap-3 md:hidden hover:bg-neutral-800 active:hover:bg-neutral-700/60"
+                  className="p-3 rounded-md w-full flex items-center gap-3 md:hidden hover:bg-neutral-800 active:hover:bg-neutral-700/60"
                   onClick={() =>
                     router.push(
                       `/${

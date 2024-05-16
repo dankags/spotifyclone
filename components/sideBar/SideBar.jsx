@@ -303,7 +303,7 @@ const Loading = () => {
 
    return (
      <div
-       className="w-full rounded-md p-3 flex items-center justify-between lg:hidden shadow-[0_4px_60px_0] shadow-black/80"
+       className="w-full rounded-md pl-1 pr-3 py-1 flex items-center justify-between lg:hidden shadow-[0_4px_60px_0] shadow-black/80"
        style={{ backgroundColor: `${color}` }}
      >
        <div
@@ -313,8 +313,8 @@ const Loading = () => {
        >
          {music ? (
            <>
-             <div className="">
-               <div className="group w-14 h-14 rounded-md relative">
+             <div className="p-2">
+               <div className="group w-14 h-14  rounded-md relative shadow-[0_4px_20px_0] shadow-black/60">
                  <Image
                    src={
                      music?.musicImage
@@ -324,7 +324,7 @@ const Loading = () => {
                    alt="music"
                    width={56}
                    height={56}
-                   className="object-cover rounded-md shadow-lg shadow-black/80"
+                   className="object-cover rounded-md "
                  />
                </div>
              </div>
