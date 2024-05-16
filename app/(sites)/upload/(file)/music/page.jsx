@@ -17,8 +17,8 @@ const Music = async () => {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <ScrollArea className={` w-full h-full rounded-md`}>
-        <div className={`h-full rounded-md relative bg-neutral-900`}>
-          <div className="sticky top-0">
+        <div className={`h-full rounded-md relative bg-neutral-900 `}>
+          <div className="sticky top-0 z-10">
             <NavBar />
           </div>
           <MusicForm />

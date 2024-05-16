@@ -49,6 +49,14 @@ const PlaylistAction = ({ musics }) => {
     const handleLike=()=>{
         setLiked(prev=>!prev)
     }
+
+  useEffect(() => {
+    if (playingUrl === pathName) {
+      setPlay(playing);
+      return;
+    }
+  }, [playingUrl]);
+  
   return (
     <div className='relative py-3 flex justify-start items-center '>
        <button

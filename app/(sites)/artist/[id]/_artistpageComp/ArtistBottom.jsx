@@ -24,7 +24,10 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
   const [followState, setFollowState] = useState(false);
   const [play,setPlay]=useState(false)
   const [currentFileColor,setCurrentFileColor] = useState(null);
-  const [following,setFollowing]=useState(null)
+  const [following, setFollowing] = useState(null)
+  const [artistBackgroundImg, setArtistBackgroundImg] = useState(
+    artist.backImg ??"\pexels-ahmed-adly-1270184.jpg"
+  );
   const { imgurl } = useAppSelector((state) => state.artistBackCover)
   const { musicIndex } = useAppSelector((state) => state.musicIndex);
   
@@ -54,7 +57,7 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
   useEffect(() => {
     const getBgColor = async () => {
       setCurrentFileColor(
-        await darkVibrantColor(`${imgurl ? imgurl : artist.backImg}`, 0.9)
+        await darkVibrantColor(`${imgurl ? imgurl : artistBackgroundImg}`, 0.9)
       ); 
     }
    getBgColor();

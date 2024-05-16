@@ -32,7 +32,10 @@ export const authOptions = {
               name:true,
               id:true,
               image:true,
-              admin:true}});
+              admin: true,
+              roles:true
+            }
+          });
           if (!user) {throw new Error("invalid user credentials")}
           const correctPassword=await bcrypt.compare(credentials.password,user.password);
           if (!correctPassword) {throw new Error("invalid user credentials") }
@@ -54,12 +57,13 @@ export const authOptions = {
     async session({session,token}){
       
       if(token){
-      //  session.user=token
+      
        session.user.id=token.sub;
        session.user.image=token.picture
        session.user.name=token.name
        session.user.email=token.email
-       session.user.admin=token.admin
+        session.user.admin = token.admin
+        session.user.role=token.role
      }
       return session
    },
@@ -88,13 +92,13 @@ export const authOptions = {
           })
         }
       }
-       if(user){
+       if (user) { 
          token.name=user.name;
          token.picture=user.image;
          token.email=user.email;
          token.admin=user.admin
          token.sub=user.id
-         
+         token.role=user.roles
         }
         return token
       },

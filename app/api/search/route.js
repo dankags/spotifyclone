@@ -145,13 +145,14 @@ export const POST = async (req, res) => {
       }
       const saerchedMusic = await prisma.music.findMany({
         where: {
-          musicName: {contains:body?.searchQuery},
+          musicName: { contains: body?.searchQuery },
         },
         select: {
           id: true,
           musicName: true,
           musicImage: true,
-          artistId:true,
+          artistId: true,
+          duration:true,
         },
       });
 

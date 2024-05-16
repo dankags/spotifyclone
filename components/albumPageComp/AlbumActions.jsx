@@ -5,7 +5,7 @@ import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl'
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs'
 import { IoIosPause, IoIosPlay } from 'react-icons/io'
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from 'react-icons/md'
@@ -21,7 +21,9 @@ const AlbumActions = ({ album }) => {
   );
   const dispatch = useDispatch();
     const [play,setPlay]=useState(false)
-    const [liked,setLiked]=useState(false)
+  const [liked, setLiked] = useState(false)
+  
+
   const handlePlay = async() => {
        if (!data) { return }
       if (!playingUrl) {
@@ -48,7 +50,15 @@ const AlbumActions = ({ album }) => {
     }
     const handleLike=()=>{
         setLiked(prev=>!prev)
+  }
+  
+  useEffect(() => {
+    if (playingUrl === pathName) {
+      setPlay(playing)
+      return
     }
+},[playingUrl])
+
   return (
     <div className='relative py-3 flex justify-start items-center '>
        <button

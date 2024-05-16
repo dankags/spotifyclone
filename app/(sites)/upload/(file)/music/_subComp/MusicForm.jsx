@@ -148,7 +148,7 @@ const MusicForm = () => {
     }
   };
   return (
-    <div>
+    <div >
       <div className="p-3 flex justify-start items-center">
         <span className="text-2xl font-bold mb-3">Upload music</span>
       </div>
@@ -201,7 +201,7 @@ const MusicForm = () => {
               name=""
               id="musicName"
               required
-              className="h-10 rounded-sm px-2 text-sm text-black font-medium focus:dark:outline-green-600"
+              className="h-10 rounded-sm px-2 text-sm text-black font-medium focus:dark:outline-green-600 "
             />
           </div>
 

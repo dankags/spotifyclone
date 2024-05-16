@@ -49,11 +49,14 @@ export const LogInForm = () => {
               remember:rememberMe,
               ...inputs
             })
+            setPending(false);
+            router.push("/");
+            return
           }
           
           setError(null)
           setPending(false)
-          router.push("/")
+          
         }
       } catch (error) {
         setError(error)
@@ -138,7 +141,7 @@ export const LogInForm = () => {
         <span className="text-xs font-bold ml-2 text-white">Remember me</span>
       </div>
       <button
-        className="w-8/12 py-3 rounded-3xl text-base font-bold text-neutral-900 bg-green-500 hover:bg-green-400"
+        className="w-8/12 py-3 rounded-3xl text-base font-bold text-neutral-900 bg-green-500 hover:bg-green-400 disabled:cursor-not-allowed"
         disabled={pending}
       >
         Log in
