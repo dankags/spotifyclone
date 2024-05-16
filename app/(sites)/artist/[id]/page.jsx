@@ -103,7 +103,7 @@ const artist = await fetchArtist(params.params.id);
 const mainArtist = await fetchMainArtist(artist)
 const musics = await fetchMusics(params.params.id);
 bgColor = await darkVibrantColor(
-  artist?.backImg ?? "public\pexels-ahmed-adly-1270184.jpg",
+  artist?.backImg ?? "public/pexels-ahmed-adly-1270184.jpg",
   0.9
 );
   
@@ -123,7 +123,8 @@ bgColor = await darkVibrantColor(
     <Suspense fallback={<LoadingSkeleton />}>
       <div className="relative w-full h-full overflow-hidden rounded-md">
         <div className="absolute left-0 w-full h-[95%]  rounded-md overflow-hidden ">
-          <ArtistBackImg artistBackImg={artist?.backImg} />
+          {artist?.backImg&&
+          <ArtistBackImg artistBackImg={artist?.backImg} />}
         </div>
         <ArtistLayout imageUrl={artist?.backImg}>
           <div className={`h-64 flex flex-col justify-end md:justify-center relative pl-4 `}>

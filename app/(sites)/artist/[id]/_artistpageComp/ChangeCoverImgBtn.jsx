@@ -46,14 +46,14 @@ const ChangeCoverImgBtn = ({artistBackImg, artistImg, isArtist,artistId }) => {
           backImg: cloudunaryUrl,
         })
       })
-      if (updateBackImage.ok) {
+        if (updateBackImage.ok) {
+          const url = URL.createObjectURL(file);
+        setImgFile((prev) => ({ ...prev, file: file, url: url }));
+        // let extractedUrl = url.split("blob:")[1];
+        // dispatch(setGradientColor(url));
+        await dispatch(setImageUrl(url));
         toast.success("updated successfully")
       }}
-      const url = URL.createObjectURL(file);
-      setImgFile((prev) => ({ ...prev, file: file, url: url }));
-      // let extractedUrl = url.split("blob:")[1];
-      // dispatch(setGradientColor(url));
-      dispatch(setImageUrl(url));
     }
   };
   if (!isArtist) {
