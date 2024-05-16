@@ -37,7 +37,7 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
       setFollowing(followings)
      followings.some((item)=>item.followingId === artist.userId)? setFollowState(true) : setFollowState(false)
    }
-  })
+  },[])
   
   //when the pathname changes the play button is set to default
   
@@ -82,12 +82,14 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
             setFollowState(true)
             setFollowing(prev=>[...prev,artistId])
             toast.success(`${resMessage}`)
+            return
           }
+          setFollowState(false);
+          return
         } catch (error) {
           setFollowState(false)
           toast.error(`${error}`)
         }
-        return
     }
     //handle unfollow
     try {
@@ -103,13 +105,17 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
         setFollowState(prev => !prev)
         setFollowing(followings.filter((item)=>item !== artistId))
         toast.success(`${resMessage}`)
+        return
       }
+      setFollowState(true);
+      return
     } catch (error) {
       setFollowState(true)
       console.log(error)
       toast.error(`${error}`)
     }
   }
+  console.log(followState);
   
   
   //dispatches the musics playlist and sets the current music to the fist one in the list
@@ -160,9 +166,9 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
         {artist?.userId !== userId && (
           <button
             onClick={handleFollow}
-            className="py-1 px-6 text-center text-white text-base font-bold rounded-3xl ring-1 ring-stone-300 transition ease-in-out hover:ring-white hover:ring-1 hover:text-base hover:font-bold hover:scale-105 "
+            className="py-1 px-6 text-center text-white text-base font-bold rounded-3xl ring-1 ring-stone-300 transition ease-in-out hover:ring-white hover:ring-1 hover:text-base hover:font-bold hover:scale-105 active:scale-100"
           >
-            {followState ? <span>following</span> : <span>follow</span>}
+            {followState ? "following" : "follow"}
           </button>
         )}
         <DropDown>

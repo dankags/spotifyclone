@@ -215,7 +215,10 @@ const MusicControls = () => {
   }
   
   //TODO:fix the music index problem
-   const handleNext=()=>{
+  const handleNext = () => {
+      if (isLooping) {
+        return;
+      }
    if (!audio || playlist === null) {
      return;
      }
@@ -224,7 +227,9 @@ const MusicControls = () => {
     dispatch(addMusicIndex());
   }
   const handlePrev = () => {
-     
+      if (isLooping) {
+        return;
+      }
      if (!audio || playlist === null) {
        return;
      }
@@ -279,7 +284,23 @@ const MusicControls = () => {
 
   const handleLoop = () => {
    setIsLooping(!isLooping)
- }
+  }
+  
+  const handleShuffle = async() => {
+    if (!playlist) { return }
+    if(isLooping){return}
+    const currentIndex = musicIndex
+    const calcRandomNum = Math.floor(Math.random() * playlistLength)
+    if (calcRandomNum === currentIndex) {
+       const calcRandomNum = Math.floor(Math.random() * playlistLength);
+       await dispatch(setMusicByPlaylist(calcRandomNum));
+       await dispatch(setIndexBySelect(calcRandomNum));
+      return
+    }
+    await dispatch(setMusicByPlaylist(calcRandomNum))
+    await dispatch(setIndexBySelect(calcRandomNum))
+
+  }
 
   return (
     <div className="flex items-center justify-between">
@@ -287,6 +308,7 @@ const MusicControls = () => {
         <div className="w-full flex items-center justify-center gap-x-3">
           <button
             disabled={music ? false : true}
+            onClick={handleShuffle}
             className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
           >
             <LuShuffle size={18} />

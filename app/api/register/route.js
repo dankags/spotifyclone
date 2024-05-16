@@ -23,7 +23,14 @@ export const POST =async (req,res) => {
         password:hashpassword
        },
     }) 
-       if(user){ return NextResponse.json({message:"registered successfully"},{status:201}) }else{
+       if (user) {
+           await prisma.LikedSong.create({
+             data: {
+               userId: user.id,
+             },
+           });
+           return NextResponse.json({ message: "registered successfully" }, { status: 201 })
+       } else {
            return NextResponse.json({message:"something went wrong"},{status:400})
        }
    
