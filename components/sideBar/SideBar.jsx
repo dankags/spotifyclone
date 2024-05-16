@@ -303,7 +303,7 @@ const Loading = () => {
 
    return (
      <div
-       className="w-full rounded-md p-3 flex items-center justify-between lg:hidden"
+       className="w-full rounded-md p-3 flex items-center justify-between lg:hidden shadow-[0_4px_60px_0] shadow-black/80"
        style={{ backgroundColor: `${color}` }}
      >
        <div
@@ -324,7 +324,7 @@ const Loading = () => {
                    alt="music"
                    width={56}
                    height={56}
-                   className="object-cover rounded-md shadow-md shadow-neutral-900"
+                   className="object-cover rounded-md shadow-lg shadow-black/80"
                  />
                </div>
              </div>
@@ -333,7 +333,7 @@ const Loading = () => {
                <Link
                  key={music.id}
                  href={`/album/${music.id}`}
-                 className="text-base font-medium truncate text-white cursor-pointer hover:underline"
+                 className="text-base font-medium truncate text-white cursor-pointer hover:underline drop-shadow-xl"
                >
                  {music.musicName}
                </Link>
@@ -345,7 +345,7 @@ const Loading = () => {
                      <Link
                        key={music.artists[0]?.id}
                        href={`/artist/${music.artists[0]?.id}`}
-                       className="text-xs font-medium truncate  cursor-pointer text-white hover:underline "
+                       className="text-xs font-medium truncate  cursor-pointer text-white hover:underline drop-shadow-xl "
                      >
                        {music.artists[0]?.name}
                      </Link>
