@@ -1,5 +1,5 @@
 "use client"
-import { useDarkVibrantColor, useNavBarDarkVibrant, useVibrantColor } from '@/lib/hooks/colorHooks'
+import { useDarkVibrantColor, useMutedColor, useNavBarDarkVibrant, useVibrantColor } from '@/lib/hooks/colorHooks'
 import React, { useEffect, useState } from 'react'
 import { NavBar } from "../navigationbar/NavBar";
 import Footer from '../Footer'
@@ -17,7 +17,7 @@ const getVibrantColor=(img,opacity=0.8)=>{
 }
 
 const AlbumWrapper = ({children,album,color}) => {
-  const bgColor = useDarkVibrantColor(`${album?.musicImage}`, 0.8)
+  const bgColor = useMutedColor(`${album?.musicImage}`, 0.8)
   const [navColor, setNavcolor] = useState(false)
   const [isLoading,setIsLoading]=useState(true)
   const navBgColor=useNavBarDarkVibrant(album?.musicImage)
