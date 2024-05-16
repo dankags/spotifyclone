@@ -14,9 +14,10 @@ import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
-import { playMusic, setMusicByPlaylist, setPlayMusicValue } from '@/lib/redux/slices/currentMusic'
+import { playMusic, setMusicByPlaylist, setNotByPlayList, setPlayMusicValue } from '@/lib/redux/slices/currentMusic'
 import { addMusicIndex, reduceMusicIndex, setIndexBySelect } from '@/lib/redux/slices/playlistMusicIndex'
 import { ToolTip } from '@/components/ToolTip'
+import { playingUrl } from '@/lib/redux/slices/currentPlayingUrl'
 
 const MusicControls = () => {
   const [audio,setAudio]=useState(null)
@@ -41,10 +42,12 @@ const MusicControls = () => {
   const [mute, setMute] = useState(false)
   const dispatch=useAppDispatch()
   const { music, playlist, playing } = useAppSelector(state => state.currentmusic)
+   const { playingUrl } = useAppSelector((state) => state.urlPlaying);
   const { musicIndex, playlistLength } = useAppSelector(
     (state) => state.musicIndex
   );
   const [hasMusicEnded, setHasMusicEnded] = useState(false)
+  const [isLooping,setIsLooping]=useState(false)
   
   //initialize audio
   useEffect(()=>{
@@ -112,9 +115,13 @@ const MusicControls = () => {
     }
   },[playing])
 
+  useEffect(() => {
+    setIsLooping(false)
+  },[playingUrl])
+
   //calulate current time whenever the audio sourcechanges or is playing 
   useEffect(() => {
-    const handleTimeUpdate = (e) => {
+    const handleTimeUpdate = async(e) => {
        const currentTime = e.target.currentTime;
        const musicDuration = e.target.duration;
        const currentminute = Math.floor((currentTime % 3600) / 60);
@@ -126,12 +133,22 @@ const MusicControls = () => {
 
       if (currentTime === parseFloat(music?.duration)) {
          audio.pause()
-         setTrackAudioSrc(null)
          setHasMusicEnded(true);
-         dispatch(playMusic());
-         if (playlist) {
-           dispatch(addMusicIndex());
-         }
+        dispatch(playMusic());
+        if (!isLooping) {
+          setTrackAudioSrc(null);
+          if (playlist) {
+           await dispatch(addMusicIndex());
+          }
+          setMusicProgress(0);
+          setPlay(false);
+          setCurrentTime({ min: "00", sec: "00" });
+          return
+        }
+
+        if (!playlist) {
+        await dispatch(setNotByPlayList(music))
+      }
          setMusicProgress(0);
          setPlay(false);
        setCurrentTime({ min: "00", sec: "00",});
@@ -152,10 +169,14 @@ const MusicControls = () => {
   useEffect(() => {
       const dispatchActions = () => {
         
+        if (isLooping) { 
+        if (music) {
+          audio.play()
+        }
+        return
+        }
         if (playlist) {
-         
           dispatch(setMusicByPlaylist(musicIndex))
-          
         }
       }
       // if music has ended it will dispatch this actions
@@ -255,6 +276,11 @@ const MusicControls = () => {
      setMusicProgress(tempSliderValue);
      audio.currentTime = (tempSliderValue * audio.duration) / 100;
   }
+
+  const handleLoop = () => {
+   setIsLooping(!isLooping)
+ }
+
   return (
     <div className="flex items-center justify-between">
       <div className="w-8/12 flex flex-col justify-center gap-y-2">
@@ -268,27 +294,31 @@ const MusicControls = () => {
           <button
             onClick={handlePrev}
             disabled={playlist ? false : true}
-            className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
+            className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400 hover:scale-105 active:scale-100"
           >
             <MdSkipPrevious size={30} />
           </button>
           <button
             onClick={handleplay}
             disabled={music ? false : true}
-            className="h-8 w-8 text-black flex justify-center items-center bg-white rounded-full disabled:cursor-not-allowed disabled:bg-neutral-700"
+            className="p-1 text-black flex justify-center items-center bg-white rounded-full disabled:cursor-not-allowed disabled:bg-neutral-700 hover:scale-105 active:scale-100"
           >
             {play ? <IoIosPause size={25} /> : <IoIosPlay size={25} />}
           </button>
           <button
             onClick={handleNext}
             disabled={playlist ? false : true}
-            className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
+            className="text-stone-400 hover:text-white disabled:cursor-not-allowed disabled:text-stone-400 hover:scale-105 active:scale-100"
           >
             <MdSkipNext size={30} />
           </button>
           <button
+            onClick={handleLoop}
             disabled={music ? false : true}
-            className="text-stone-400  hover:text-white disabled:cursor-not-allowed disabled:text-stone-400"
+            className={cn(
+              "text-stone-400  hover:text-white disabled:cursor-not-allowed disabled:text-stone-400",
+              isLooping && "text-emerald-500 hover:text-emerald-400"
+            )}
           >
             <SlLoop className="rounded-md" size={18} strokeWidth={30} />
           </button>

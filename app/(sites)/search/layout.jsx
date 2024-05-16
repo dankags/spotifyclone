@@ -313,7 +313,7 @@ const PlayBtn = ({item,classname}) => {
     }
     handlePlayingState()
 
-  },[item])
+  },[item,playing])
 
   return (
     <button
