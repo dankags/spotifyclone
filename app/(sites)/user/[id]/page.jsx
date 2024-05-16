@@ -102,7 +102,7 @@ if( session?.user.id !== params.params.id){
                 </StaticCarosel>
               </div>
             ) : (
-              <div className="flex items-center justify-center font-bold text-3xl text-white first-letter:capitalize">
+              <div className="flex items-center justify-center font-bold text-2xl text-white first-letter:capitalize">
                 Not following any artist
               </div>
             )}
@@ -120,7 +120,7 @@ if( session?.user.id !== params.params.id){
                 </StaticCarosel>
               </div>
             ) : (
-              <div className="mt-4 flex items-center justify-center font-bold text-3xl text-white first-letter:capitalize">
+              <div className="mt-4 flex items-center justify-center font-bold text-2xl text-white first-letter:capitalize">
                 No music liked
               </div>
             )}

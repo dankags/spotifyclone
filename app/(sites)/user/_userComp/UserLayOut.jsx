@@ -19,7 +19,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
       img:'',
       name:''
     })
-    const choosenImgColor= useVibrantColor(`${imgNameChoosen.img ? imgNameChoosen.img:data?.user.image }`,1)
+    const choosenImgColor= useVibrantColor(`${imgNameChoosen.img ? imgNameChoosen.img:data?.user.image ? data?.user.image : "/pexels-ahmed-adly-1270184.jpg"}`,1)
     const [isLoadingColor,setIsLoadingColor]=useState(true)
     const [navColor, setNavcolor] = useState(false)
     const navBgColor=useNavBarDarkVibrant(user?.image)
@@ -69,7 +69,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
               {paramsId === data?.user.id ? (
                 <UserDialog setImgName={setImgNameChoosen}>
                   <button
-                    className={`group relative w-full aspect-square cursor-pointer `}
+                    className={`group relative w-full aspect-square cursor-pointer bg-neutral-900 rounded-full shadow-[0_4px_60px_0] shadow-black/60`}
                   >
                     {data?.user.image ? (
                       <Image
@@ -80,7 +80,7 @@ const UserLayOut = ({children,followings,followers,playlist,paramsId,user,bgColo
                         }
                         alt="userImage"
                         fill
-                        className="object-cover  shrink-0 shadow-[0_4px_60px_0] shadow-black/50 rounded-full"
+                        className="object-cover  shrink-0  rounded-full"
                       />
                     ) : (
                       <LuUser2 className="m-auto text-7xl text-stone-300" />
