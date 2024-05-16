@@ -91,7 +91,7 @@ const SearchLayout = ({ children }) => {
                 <span className="text-xl font-bold">Top results</span>
               </div>
               <div className="w-full  flex md:justify-start items-center p-3">
-                <div className=" group p-3 relative w-5/12 aspect-video bg-neutral-800 rounded-md transition-all duration-300 hover:bg-neutral-700/60 hover:shadow-[0_4px_60px_0] hover:shadow-neutral-950">
+                <div className=" hidden md:block group p-3 relative w-5/12 aspect-video bg-neutral-800 rounded-md transition-all duration-300 hover:bg-neutral-700/60 hover:shadow-[0_4px_60px_0] hover:shadow-neutral-950">
                   <div className=" p-4 w-full  flex flex-col justify-center gap-2 hover:cursor-pointer">
                     <div
                       className="w-full flex flex-col justify-center gap-2"
@@ -157,6 +157,67 @@ const SearchLayout = ({ children }) => {
                     </div>
                   </div>
                   <PlayBtn item={searchValue} />
+                </div>
+                {/* search component on mobile */}
+                <div
+                  className="p-3 rounded-sm w-full flex items-center gap-3 md:hidden hover:bg-neutral-800 active:hover:bg-neutral-700/60"
+                  onClick={() =>
+                    router.push(
+                      `/${
+                        searchValue?.slug === "song"
+                          ? "album"
+                          : searchValue?.slug
+                      }/${searchValue?.searched.id}`
+                    )
+                  }
+                >
+                  <div className="relative w-16 aspect-square rounded-full">
+                    {searchValue?.slug === "artist" ? (
+                      <Image
+                        src={
+                          searchValue?.searched.image ??
+                          "/604199df880fb029291ddd7c382e828b.jpg"
+                        }
+                        alt={""}
+                        fill
+                        className="rounded-full object-cover shadow-[0_4px_60px_0] shadow-black/60"
+                      />
+                    ) : (
+                      <Image
+                        src={
+                          searchValue?.searched.musicImage ??
+                          "/604199df880fb029291ddd7c382e828b.jpg"
+                        }
+                        alt={""}
+                        fill
+                        className="rounded-md object-cover shadow-[0_4px_60px_0] shadow-black/60"
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start justify-center gap-2">
+                    <div className="capitalize text-start text-lg font-semibold text-white">
+                      {searchValue?.slug === "artist"
+                        ? searchValue?.searched.name
+                        : searchValue?.searched.musicName}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="capitalize text-stone-400 font-semibold text-sm">
+                        {searchValue?.slug ?? song} .{" "}
+                      </span>
+                      {searchValue?.artist.length !== 0 && (
+                        <div className="flex items-center text-white">
+                          {searchValue?.artist.map((item, i) => (
+                            <span
+                              key={item?.id}
+                              className={"capitalize font-semibold text-sm"}
+                            >
+                              {i > 1 ? `,${item?.name}` : item.name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="w-full md:hidden"></div>
@@ -236,14 +297,14 @@ const PlayBtn = ({item,classname}) => {
   };
 
   useEffect(() => {
-    console.log("item changed");
+
     
       if (!data) {return;}
     if (!item) { return; }
     const handlePlayingState=async()=>{
       const dataUrl = item.slug === "song" ? `/album/${item.searched.id}` : `/${item.slug}/${item.searched.id}`;
       if (dataUrl === playingUrl) {
-        console.log(playingUrl,dataUrl);
+      
         
         setIsPlay(playing);
         return;

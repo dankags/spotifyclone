@@ -153,11 +153,11 @@ const MusicForm = () => {
   return (
     <div>
       <div className="p-3 flex justify-start items-center">
-        <span className="text-2xl font-bold mb-3">Upload music</span>
+        <span className="text-2xl text-white font-bold mb-3">Upload music</span>
       </div>
       <form
         onSubmit={handleUploadMusic}
-        className="w-full px-3 flex justify-center relative"
+        className="w-full px-3 flex gap-3 flex-col md:flex-row md:justify-center justify-center items-center relative"
       >
         <div className="w-5/12 h-full">
           <label
@@ -172,10 +172,10 @@ const MusicForm = () => {
               className="rounded-md"
             />
             <div className="w-full h-full gap-y-3 flex flex-col items-center justify-center absolute top-0 left-0 bg-neutral-900/60 opacity-0 cursor-pointer group-hover:opacity-100">
-              <span className="">
+              <span className="text-white">
                 <IoCreate className="text-5xl" />
               </span>
-              <span className="text-base font-semibold">Choose a photo</span>
+              <span className="text-base text-white font-semibold">Choose a photo</span>
             </div>
             <input
               onChange={handleImageFile}
@@ -209,7 +209,7 @@ const MusicForm = () => {
           </div>
 
           <div className="w-full flex flex-col gap-2">
-            <label htmlFor="Email" className="text-sm font-medium">
+            <label htmlFor="Email" className="text-sm text-white font-medium">
               category
             </label>
             <select
@@ -234,11 +234,11 @@ const MusicForm = () => {
           </div>
 
           <div className=" w-full flex flex-col gap-2 ">
-            <span className="text-sm font-medium">music file</span>
-            <div className="flex justify-between">
-              <div className="w-10/12 flex items-center gap-2 ">
+            <span className="text-sm text-white font-medium">music file</span>
+            <div className="flex flex-col gap-3 items-center md:flex-row md:gap-0 justify-between">
+              <div className="w-full md:w-10/12 flex items-center gap-2 ">
                 <Image src="/apple2.jpg" alt="" width={45} height={45} />
-                <span className="text-base font-medium whitespace-nowrap text-ellipsis overflow-hidden">
+                <span className="text-base text-white font-medium whitespace-nowrap text-ellipsis overflow-hidden">
                   {audioName
                     ? `Choosen file is ${audioName}`
                     : "Enter music file"}
@@ -251,9 +251,9 @@ const MusicForm = () => {
               </div>
               <label
                 htmlFor="audio"
-                className="w-2/12 text-sm font-medium flex justify-end "
+                className="w-full md:w-2/12 text-sm font-medium flex justify-end "
               >
-                <span className="w-11/12 py-2 px-4 rounded-3xl text-base text-center font-bold text-black bg-green-500 cursor-pointer hover:dark:bg-green-400 capitalize">
+                <span className="w-11/12 py-2 px-4 rounded-3xl text-base text-center font-bold text-black bg-green-500 cursor-pointer hover:bg-green-400 capitalize">
                   file
                 </span>
                 <input
@@ -268,8 +268,8 @@ const MusicForm = () => {
               </label>
             </div>
           </div>
-          <div className="w-full flex justify-end items-center ">
-            <button className="w-4/12 py-2 rounded-3xl text-base font-bold capitalize text-black  bg-green-500 hover:dark:bg-green-400">
+          <div className="w-full pt-3 flex justify-center md:justify-end items-center ">
+            <button className="w-4/12 py-2 rounded-3xl text-base font-bold capitalize text-black  bg-green-500 hover:bg-green-400 hover:scale-105 active:scale-100">
               upload
             </button>
           </div>

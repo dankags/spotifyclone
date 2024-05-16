@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Tooltip } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
+import { setSearchinputValue } from "@/lib/redux/slices/mainSearchBar";
 
 export const RightNavBar = () => {
   const { data } = useSession();
