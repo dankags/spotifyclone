@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { IoCreate } from "react-icons/io5";
+import { TbProgress } from "react-icons/tb";
 import { toast } from "sonner";
 
 const categories = [
@@ -31,6 +32,7 @@ const MusicForm = () => {
   const [audio, setAudio] = useState(null);
   const [fireBaseAudioUrl, setFirebaseAudioUrl] = useState("");
   const [imgCloudinaryUrl, setImgCloudinaryUrl] = useState("");
+  const [audioUploadProgress,setAudiouploadProgress]=useState(0)
 
   useEffect(() => {
     setAudio(new Audio());
@@ -73,6 +75,7 @@ const MusicForm = () => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log("Upload is " + progress + "% done");
+          setAudiouploadProgress(progress)
           switch (snapshot.state) {
             case "paused":
               console.log("Upload is paused");
@@ -111,12 +114,12 @@ const MusicForm = () => {
           body: formData,
         }
       )
-        .then((res) => res.json())
-        .catch((error) => {
-          console.log(error);
-          return;
-        });
-      setImgCloudinaryUrl(`${cloudinaryRes.url}`);
+      if (cloudinaryRes.ok) {
+        const imgData=await cloudinaryRes.json()
+        setImgCloudinaryUrl(`${imgData.url}`);
+        toast.success("image uploaded successfully")
+        return
+      }
     };
     imageFile && upload();
   }, [imageFile]);
@@ -148,7 +151,7 @@ const MusicForm = () => {
     }
   };
   return (
-    <div >
+    <div>
       <div className="p-3 flex justify-start items-center">
         <span className="text-2xl font-bold mb-3">Upload music</span>
       </div>
@@ -240,6 +243,11 @@ const MusicForm = () => {
                     ? `Choosen file is ${audioName}`
                     : "Enter music file"}
                 </span>
+                {audioUploadProgress > 0 && (
+                  <span className="text-white text-sm font-semibold">
+                    {`Upload is ${audioUploadProgress} % done`}
+                  </span>
+                )}
               </div>
               <label
                 htmlFor="audio"
