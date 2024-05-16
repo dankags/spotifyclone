@@ -103,7 +103,7 @@ const artist = await fetchArtist(params.params.id);
 const mainArtist = await fetchMainArtist(artist)
 const musics = await fetchMusics(params.params.id);
 bgColor = await darkVibrantColor(
-  artist?.backImg ?? "public/pexels-ahmed-adly-1270184.jpg",
+  artist?.backImg ? artist?.backImg : "public/pexels-ahmed-adly-1270184.jpg",
   0.9
 );
   
