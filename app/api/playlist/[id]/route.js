@@ -100,6 +100,7 @@ export const POST = async (req,  {params}) => {
   }
 }
 
+//adding some musics in playlist
 export const PUT = async (req, { params }) => {
   const { id } = params;
   const body = await req.json();
@@ -154,6 +155,7 @@ export const PUT = async (req, { params }) => {
   }
 };
 
+//deleting music in the playlist
 export const DELETE = async (req, { params }) => {
   const { id } = params;
   const body = await req.json();
