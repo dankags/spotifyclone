@@ -25,7 +25,7 @@ export const GET = async (req, { params }) => {
         }
         const musics = await prisma.music.findMany({
           where: {
-            id: playlist,
+            id: { in: playlist.musiclist },
           },
           select: {
             id: true,

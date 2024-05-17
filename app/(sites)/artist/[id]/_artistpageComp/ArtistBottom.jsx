@@ -12,7 +12,7 @@ import { playMusic,  setMusicByPlaylist,  setPlaylist } from '@/lib/redux/slices
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
 import { filterLibrary, pushToLibrary } from '@/lib/redux/slices/library'
 import { usePathname } from 'next/navigation'
-import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl'
+import { setPlayingUrl, setPlayingUrlName } from '@/lib/redux/slices/currentPlayingUrl'
 
 const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,musics,userId}) => {
   
@@ -115,13 +115,18 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
       toast.error(`${error}`)
     }
   }
-  console.log(followState);
+
   
   
   //dispatches the musics playlist and sets the current music to the fist one in the list
   const handlePlay =async () => {
     if (!data) { return }
-    if(!playingUrl){await dispatch(setPlayingUrl(pathName))}
+    if (!playingUrl) {
+      console.log(artist);
+      
+      await dispatch(setPlayingUrl(pathName))
+      await dispatch(setPlayingUrlName(mainArtist?.name));
+    }
       if (!play) {
         if (playlist === null) {
           dispatch(setPlaylist(musics))
@@ -129,6 +134,7 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
         }
         if (pathName !== playingUrl) {
           await dispatch(setPlayingUrl(pathName))
+          await dispatch(setPlayingUrlName(mainArtist?.name))
           await dispatch(setPlaylist(musics));
           await dispatch(setMusicByPlaylist(0)); 
           await dispatch(setIndexBySelect(0));

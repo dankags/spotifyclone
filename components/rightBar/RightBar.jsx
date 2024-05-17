@@ -24,12 +24,14 @@ export default function RightBar({children}){
   const { opened } = useAppSelector(state => state.rightbar)
   const { followings } = useAppSelector((state) => state.userFollowings);
   const { music, playlist } = useAppSelector((state) => state.currentmusic);
+  const { playingUrl,name } = useAppSelector((state) => state.urlPlaying);
   const { musicIndex, playlistLength } = useAppSelector(
      (state) => state.musicIndex
   );
   const [showNextQueueMusic,setShowNextQueueMusic]=useState(true)
   const dispatch = useAppDispatch()
-  const [userFollowings,setUserFollowings]=useState(null)
+  const [userFollowings, setUserFollowings] = useState(null)
+  const [currentPlayingUrl,setCurrentPlayingUrl]=useState({urlname:"",url:""})
   
   useEffect(() => {
     const fetchUserFollowings = async () => {
@@ -58,6 +60,12 @@ export default function RightBar({children}){
     setShowNextQueueMusic(true)
   },[playlistLength])
 
+  useEffect(() => {
+    if (playingUrl) {
+      setCurrentPlayingUrl({urlname:name,url:playingUrl})
+    }
+  }, [name])
+ 
   
   
 
@@ -68,8 +76,8 @@ export default function RightBar({children}){
       >
         <div className="w-full pb-3">
           <section className="py-2 mb-3 flex items-center justify-between">
-            <Link href={"/"} className="font-bold text-sm hover:underline">
-              Liked Songs
+            <Link href={currentPlayingUrl.url} className="font-bold text-sm text-white first-letter:capitalize hover:underline">
+              {currentPlayingUrl.urlname}
             </Link>
             <button
               onClick={() => dispatch(closeRightbar())}
@@ -79,7 +87,7 @@ export default function RightBar({children}){
             </button>
           </section>
           <section className="w-full flex flex-col justify-center gap-y-2">
-            <Music musicItem={music} />
+            {music&&<Music musicItem={music} />}
           </section>
           <section className="mt-3">
             <ArtistInfoCard

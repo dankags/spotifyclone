@@ -1,7 +1,7 @@
 "use client"
 import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { playMusic, setMusicByPlaylist, setNotByPlayList, setPlaylist } from '@/lib/redux/slices/currentMusic'
-import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl'
+import { setPlayingUrl, setPlayingUrlName } from '@/lib/redux/slices/currentPlayingUrl'
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
@@ -37,6 +37,7 @@ const AlbumActions = ({ album }) => {
         }
         if (pathName !== playingUrl) {
           await dispatch(setPlayingUrl(pathName))
+          await dispatch(setPlayingUrlName(album?.musicName))
           await dispatch(setPlaylist(null));
           await dispatch(setIndexBySelect(0));
           await dispatch(setPlaylistLength(0));
@@ -53,11 +54,13 @@ const AlbumActions = ({ album }) => {
   }
   
   useEffect(() => {
+    console.log(pathName,playingUrl);
+    
     if (playingUrl === pathName) {
       setPlay(playing)
       return
     }
-},[playingUrl])
+},[playingUrl,playing])
 
   return (
     <div className='relative py-3 flex justify-start items-center '>

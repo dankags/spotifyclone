@@ -8,9 +8,10 @@ import {
   setLikedSongs,
   setMusicByPlaylist,
   setMusicBySelect,
+  setNotByPlayList,
   setPlaylist,
 } from "@/lib/redux/slices/currentMusic";
-import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl';
+import { setPlayingUrl, setPlayingUrlName } from '@/lib/redux/slices/currentPlayingUrl';
 import { filterLikedMusics, pushToLikedMusics } from '@/lib/redux/slices/likedSongs';
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex';
 import { cn } from "@/lib/utils";
@@ -25,7 +26,7 @@ import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { TbRuler } from 'react-icons/tb';
 import { toast } from "sonner";
 
-export const LikedList = ({ music, index,musics }) => {
+export const LikedList = ({ music, index,musics,urlName }) => {
   const { data } = useSession();
   const pathname = usePathname();
   const [showPlayIcon, setShowplayIcon] = useState(false);
@@ -120,14 +121,18 @@ export const LikedList = ({ music, index,musics }) => {
     if (data) {
       //play is true
       if (play) {
-        playlistLength === 0&& await dispatch(setPlaylistLength(musics.length))
-        playlist === null && dispatch(setPlaylist(musics));
+       if(musics){ playlistLength === 0&& await dispatch(setPlaylistLength(musics.length))
+        playlist === null && dispatch(setPlaylist(musics));}
         if (pathname !== playingUrl) {
-          await dispatch(setPlaylist(musics));
-          await dispatch(setMusicByPlaylist(index - 1));
+          if (musics) {
+            await dispatch(setPlaylist(musics));
+            await dispatch(setMusicByPlaylist(index - 1));
+            await dispatch(setPlaylistLength(musics.length));
+            
+          }
           await dispatch(setIndexBySelect(0));
-          await dispatch(setPlaylistLength(musics.length));
-          dispatch(setPlayingUrl(pathname));
+          await dispatch(setPlayingUrl(pathname));
+          await dispatch(setPlayingUrlName(urlName))
           setPlay(true);
           return
         } 
@@ -135,19 +140,29 @@ export const LikedList = ({ music, index,musics }) => {
           await dispatch(playMusic());
           return
         }
-        !playingUrl&&await dispatch(setPlayingUrl(pathname))
-        await dispatch(setIndexBySelect((index-1)))
+        if (!playingUrl) {
+          await dispatch(setPlayingUrl(pathname))
+          await dispatch(setPlayingUrlName(urlName));
+        }
+        musics && await dispatch(setIndexBySelect((index-1)))
         dispatch(playMusic())
         setPlay(prev => !prev)
         return
       }
       // if play var is false
-      if (pathname !== playingUrl) {
-        await dispatch(setPlaylist(musics));
-        await dispatch(setMusicByPlaylist(index - 1));
+      if (pathname !== playingUrl || !playingUrl) {
+        
+        
+        if (musics) {
+          await dispatch(setPlaylist(musics));
+          await dispatch(setMusicByPlaylist(index - 1));
+          await dispatch(setPlaylistLength(musics.length));
+        }
+        await dispatch(setNotByPlayList(music))
         await dispatch(setIndexBySelect(0));
-        await dispatch(setPlaylistLength(musics.length));
-        dispatch(setPlayingUrl(pathname));
+        await dispatch(setPlayingUrl(pathname));
+        await dispatch(setPlayingUrlName(urlName));
+        await dispatch(playMusic());
         setPlay(true);
         return
       } 
@@ -158,7 +173,7 @@ export const LikedList = ({ music, index,musics }) => {
       playlist === null && await dispatch(setPlaylist(musics));
       await dispatch(setIndexBySelect(index - 1));
       await dispatch(setMusicBySelect(musicDetails));
-      dispatch(playMusic())
+      await dispatch(playMusic())
       setPlay(true)
     }
 
@@ -236,7 +251,7 @@ export const LikedList = ({ music, index,musics }) => {
     }
     getActiveSongByPathName()
 
-  },[pathname,currentMusic,playlist])
+  },[pathname,currentMusic,playlist,playingUrl])
 
   return (
     <div

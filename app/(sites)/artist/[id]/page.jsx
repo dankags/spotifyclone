@@ -123,11 +123,12 @@ bgColor = await darkVibrantColor(
     <Suspense fallback={<LoadingSkeleton />}>
       <div className="relative w-full h-full overflow-hidden rounded-md">
         <div className="absolute left-0 w-full h-[95%]  rounded-md overflow-hidden ">
-          {artist?.backImg&&
-          <ArtistBackImg artistBackImg={artist?.backImg} />}
+          {artist?.backImg && <ArtistBackImg artistBackImg={artist?.backImg} />}
         </div>
         <ArtistLayout imageUrl={artist?.backImg}>
-          <div className={`h-64 flex flex-col justify-end md:justify-center relative pl-4 `}>
+          <div
+            className={`h-64 flex flex-col justify-end md:justify-center relative pl-4 `}
+          >
             <ChangeCoverImgBtn
               artistImg={
                 artist
@@ -161,7 +162,7 @@ bgColor = await darkVibrantColor(
               <span
                 className={`py-2 text-4xl md:text-5xl text-white font-bold truncate capitalize cursor-default`}
               >
-                { mainArtist?.name??"hello" }
+                {mainArtist?.name ?? "hello"}
               </span>
             </div>
             <div className="h-[15%] flex flex-col justify-center">
@@ -182,7 +183,9 @@ bgColor = await darkVibrantColor(
             userId={session?.user.id}
           >
             <div className=" pt-3">
-              <span className="mb-3 pl-3 text-xl font-semibold text-white">Popular</span>
+              <span className="mb-3 pl-3 text-xl font-semibold text-white">
+                Popular
+              </span>
               <div className="w-full pt-2">
                 <StaticCarosel displayCol>
                   {musics?.map((song, i) => (
@@ -191,13 +194,16 @@ bgColor = await darkVibrantColor(
                       index={i + 1}
                       music={song}
                       musics={musics}
+                      urlName={mainArtist.name}
                     />
                   ))}
                 </StaticCarosel>
               </div>
             </div>
             <div className=" flex flex-col p-4 gap-2">
-              <span className="text-xl text-white font-semibold">Artist Pick</span>
+              <span className="text-xl text-white font-semibold">
+                Artist Pick
+              </span>
               <ArtistPick mainArtist={mainArtist} artistMusicPic={musics[0]} />
 
               <div className=" flex flex-col py-4 gap-2">

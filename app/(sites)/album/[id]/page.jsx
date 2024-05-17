@@ -13,6 +13,7 @@ import React, { Suspense } from "react";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import prisma from "@/utils/connect";
 import { LikedList } from "@/components/musicList/LikedList";
+import { IoDiscOutline, IoMusicalNotesOutline } from 'react-icons/io5';
 
 export const revalidate = 60 
 const AlbumPage = async(param) => {
@@ -56,21 +57,33 @@ const AlbumPage = async(param) => {
             <div
               className={`w-full flex flex-col gap-3 items-center md:flex-row  md:items-end md:pl-4 md:pb-4 md:pt-6  relative "`}
             >
-              <div className={`pb-1 w-[70%] aspect-square md:w-3/12  relative`}>
-                <Image
-                  src={album?.musicImage}
-                  alt="likedImage"
-                  fill
-                  className="z-0 rounded-[4px] shadow-[0_4px_60px_0] shadow-black/80"
-                />
+              <div
+                className={`pb-1 w-[70%] text-stone-400 rounded-md flex justify-center items-center text-4xl bg-neutral-900 aspect-square md:w-3/12  relative shadow-[0_4px_60px_0] shadow-black/65`}
+              >
+                {album.musicImage ? (
+                  <Image
+                    src={
+                      album?.musicImage
+                        ? album?.musicImage
+                        : "/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"
+                    }
+                    alt={""}
+                    fill
+                    className="rounded-md aspect-square shadow-[0_4px_60px_0] shadow-black/65"
+                  />
+                ) : (
+                  <IoMusicalNotesOutline />
+                )}
               </div>
               <div
-                className={`pb-1 pl-3 w-full md:w-9/12  md:pl-4
-              `}
+                className={`pb-1 pl-3 w-full md:w-9/12  md:pl-4 `}
               >
                 <section className="flex flex-col  items-start gap-3 md:gap-0  md:pl-2">
                   <div className="order-3 md:order-none">
-                    <p className="text-sm md:text-base font-medium text-neutral-50 drop-shadow-2xl">single <span className='md:hidden'>.{" "}{albumYearRelease}</span></p>
+                    <p className="text-sm md:text-base font-medium text-neutral-50 drop-shadow-2xl">
+                      single{" "}
+                      <span className="md:hidden">. {albumYearRelease}</span>
+                    </p>
                   </div>
                   <div className="order-1 md:order-none">
                     <span
@@ -134,7 +147,13 @@ const AlbumPage = async(param) => {
             </div>
             <AlbumTableTitle />
             <StaticCarosel displayCol showAll>
-              <LikedList music={album} mainArtist={artistProfile} index={1} />
+              <LikedList
+                music={album}
+                mainArtist={artistProfile}
+                index={1}
+                musics={[]}
+                urlName={album.musicName}
+              />
             </StaticCarosel>
           </div>
         </AlbumWrapper>

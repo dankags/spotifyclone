@@ -3,7 +3,7 @@ import { NavBar } from "@/components/navigationbar/NavBar";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/reduxHooks";
 import { setMusicBySelect, setNotByPlayList, setPlayMusicValue, setPlaylist } from "@/lib/redux/slices/currentMusic";
-import { setPlayingUrl, setPlayngId } from "@/lib/redux/slices/currentPlayingUrl";
+import { setPlayingUrl, setPlayingUrlName, setPlayngId } from "@/lib/redux/slices/currentPlayingUrl";
 import { setSearchinputValue } from "@/lib/redux/slices/mainSearchBar";
 import { setIndexBySelect, setPlaylistLength } from "@/lib/redux/slices/playlistMusicIndex";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,6 @@ const fetchData = async ( slug, id ) => {
       const res = await fetch(`/api/playlist/${id}`)
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
         return data;
       }
     }
@@ -32,7 +31,6 @@ const fetchData = async ( slug, id ) => {
       const res = await fetch(`/api/music/artist/${id}`)
       if (res.ok) {
         const data=await res.json()
-      
         return data.musics;
       }
     }
@@ -117,20 +115,35 @@ const SearchLayout = ({ children }) => {
                             className="rounded-full object-cover shadow-[0_4px_60px_0] shadow-black/60"
                           />
                         ) : (
-                          <Image
-                            src={
-                              searchValue?.searched.musicImage ??
-                              "/604199df880fb029291ddd7c382e828b.jpg"
-                            }
-                            alt={""}
-                            fill
-                            className="rounded-md object-cover shadow-[0_4px_60px_0] shadow-black/60"
-                          />
+                          <>
+                            {searchValue?.slug === "playlist" ? (
+                              <Image
+                                src={
+                                  searchValue?.searched.image ??
+                                  "/604199df880fb029291ddd7c382e828b.jpg"
+                                }
+                                alt={""}
+                                fill
+                                className="rounded-md object-cover shadow-[0_4px_60px_0] shadow-black/60"
+                              />
+                            ) : (
+                              <Image
+                                src={
+                                  searchValue?.searched.musicImage ??
+                                  "/604199df880fb029291ddd7c382e828b.jpg"
+                                }
+                                alt={""}
+                                fill
+                                className="rounded-md object-cover shadow-[0_4px_60px_0] shadow-black/60"
+                              />
+                            )}
+                          </>
                         )}
                       </div>
                       <div className="text-white text-xl font-bold first-letter:capitalize">
                         {" "}
-                        {searchValue?.slug === "artist"
+                        {searchValue?.slug === "artist" ||
+                        searchValue?.slug === "playlist"
                           ? searchValue?.searched.name
                           : searchValue?.searched.musicName}
                       </div>
@@ -183,20 +196,35 @@ const SearchLayout = ({ children }) => {
                         className="rounded-full object-cover shadow-[0_4px_60px_0] shadow-black/60"
                       />
                     ) : (
-                      <Image
-                        src={
-                          searchValue?.searched.musicImage ??
-                          "/604199df880fb029291ddd7c382e828b.jpg"
-                        }
-                        alt={""}
-                        fill
-                        className="rounded-md object-cover shadow-[0_4px_60px_0] shadow-black/60"
-                      />
+                      <>
+                        {searchValue?.slug === "playlist" ? (
+                          <Image
+                            src={
+                              searchValue?.searched.image ??
+                              "/604199df880fb029291ddd7c382e828b.jpg"
+                            }
+                            alt={""}
+                            fill
+                            className="rounded-md object-cover shadow-[0_4px_60px_0] shadow-black/60"
+                          />
+                        ) : (
+                          <Image
+                            src={
+                              searchValue?.searched.musicImage ??
+                              "/604199df880fb029291ddd7c382e828b.jpg"
+                            }
+                            alt={""}
+                            fill
+                            className="rounded-md object-cover shadow-[0_4px_60px_0] shadow-black/60"
+                          />
+                        )}
+                      </>
                     )}
                   </div>
                   <div className="flex flex-col items-start justify-center gap-2">
                     <div className="capitalize text-start text-lg font-semibold text-white">
-                      {searchValue?.slug === "artist"
+                      {searchValue?.slug === "artist" ||
+                      searchValue?.slug === "playlist"
                         ? searchValue?.searched.name
                         : searchValue?.searched.musicName}
                     </div>
@@ -272,6 +300,7 @@ const PlayBtn = ({item,classname}) => {
           await dispatch(setPlaylist(null))
           await dispatch(setIndexBySelect(0));
           await dispatch(setPlaylistLength(0));
+          await dispatch(setPlayingUrlName(item.searched.musicName))
           setIsPlay(!isPlay);
           return
         }
@@ -283,6 +312,7 @@ const PlayBtn = ({item,classname}) => {
         
         if (musics || musics.length > 0) {
         await dispatch(setPlayingUrl(`/${item.slug}/${item.searched.id}`));
+        await dispatch(setPlayingUrlName(item.searched.name));
         await dispatch(setPlayngId(item.searched.id));
         await dispatch(setPlaylist(musics));
         await dispatch(setPlaylistLength(musics.length));

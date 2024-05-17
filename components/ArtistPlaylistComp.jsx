@@ -60,8 +60,7 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
               <div
                 className={cn(
                   "capitalize truncate text-white text-base font-medium",
-                  playingUrl === `/playlist/${item.id}` ||
-                    (playingUrl === `/artist/${item.id}` && "text-green-500")
+                  (playingUrl === `/playlist/${item.id}` || playingUrl === `/artist/${item.id}` ? "text-green-500":"")
                 )}
               >
                 {item.name}
@@ -85,8 +84,7 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
               <div
                 className={cn(
                   "w-full h-full pr-3 text-green-500 hidden items-center justify-end",
-                  playingUrl === `/playlist/${item.id}` ||
-                    (playingUrl === `/artist/${item.id}` && "flex")
+                  (playingUrl === `/playlist/${item.id}` || playingUrl === `/artist/${item.id}` ? "flex":"")
                 )}
               >
                 <BiSolidVolumeLow  size={20} />

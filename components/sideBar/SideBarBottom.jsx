@@ -237,8 +237,7 @@ export const SideBarBottom = ({ setSideBarSpan, sidebarSpan }) => {
                 "rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
                 !sidebarSpan &&
                   "aspect-square rounded-md flex items-center justify-center",
-                playingUrl === `/playlist/${item.id}` ||
-                  (playingUrl === `/artist/${item.id}` && "bg-neutral-800")
+                playingUrl === `/playlist/${item.id}` || playingUrl === `/artist/${item.id}` ? "bg-neutral-800":""
               )}
             >
               <ArtistPlaylistComp

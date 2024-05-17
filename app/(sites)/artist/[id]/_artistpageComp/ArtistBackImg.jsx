@@ -9,17 +9,17 @@ const ArtistBackImg = ({ artistBackImg }) => {
   return (
     <>
       {imgurl ? (
-        <div className="relative top-0 w-full h-[70vh] md:h-[80vh]">
+        <div className="relative top-0 w-full aspect-square md:aspect-video ">
           <Image
             src={imgurl}
             alt=""
             fill
             loading="lazy"
-            className=" object-cover object-center w-full"
+            className=" object-cover object-center "
           />
         </div>
       ) : (
-        <div className="w-full h-[70vh] md:h-[80vh] relative top-0">
+        <div className="w-full aspect-square md:aspect-video relative top-0">
           <Image
             src={
               artistBackImg ? artistBackImg : "/pexels-ahmed-adly-1270184.jpg"
@@ -27,7 +27,7 @@ const ArtistBackImg = ({ artistBackImg }) => {
             alt=""
             fill
             loading="lazy"
-            className="object-cover object-center w-full"
+            className="object-cover object-center "
           />
         </div>
       )}

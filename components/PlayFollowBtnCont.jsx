@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { playMusic, setMusicByPlaylist, setPlaylist } from '@/lib/redux/slices/currentMusic'
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
-import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl'
+import { setPlayingUrl, setPlayingUrlName } from '@/lib/redux/slices/currentPlayingUrl'
 
 const PlayFollowBtnContainer = ({params,musics}) => {
     const {data}=useSession()
@@ -40,6 +40,9 @@ const PlayFollowBtnContainer = ({params,musics}) => {
       if (!data) { return }
       if (!playingUrl) {
         await dispatch(setPlayingUrl(pathName));
+        if (pathName === "/collection/tracks") {
+          await dispatch(setPlayingUrlName("liked songs"));
+        }
       }
       if (!play) {
       
@@ -51,6 +54,9 @@ const PlayFollowBtnContainer = ({params,musics}) => {
           
           
           await dispatch(setPlayingUrl(pathName))
+          if (pathName === "/collection/tracks") {
+            await dispatch(setPlayingUrlName("liked songs"));
+          }
           await dispatch(setPlaylist(musics));
           await dispatch(setMusicByPlaylist(0)); 
           await dispatch(setIndexBySelect(0));

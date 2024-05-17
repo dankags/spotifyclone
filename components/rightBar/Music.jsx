@@ -1,22 +1,21 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import LikeButton from "./likeButton";
 import { toast } from "sonner";
+import { IoDiscOutline } from "react-icons/io5";
 
 const Music = ({ musicItem }) => {
-  let music = null;
-  if (!musicItem.musicImage) {
-    music = fetchmusic(musicItem);
-  }
-
-  if (musicItem.musicImage) {
-    music = musicItem;
-  }
   const [mainArtist, setMainArtist] = useState(null);
   const [featuredArtists, setFeaturedArtists] = useState(null);
+  const music = useMemo(() => {
+    if (musicItem) {
+      return musicItem
+    }
+  },[musicItem])
+
   useEffect(() => {
     const fetchMainArtist = async () => {
       try {
@@ -54,17 +53,21 @@ const Music = ({ musicItem }) => {
   }, [music]);
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className=" relative aspect-square ">
-        <Image
+      <div className=" relative flex items-center justify-center rounded-md aspect-square bg-neutral-950 text-stone-400 text-4xl">
+        {music.musicImage ? (
+          <Image
           src={
-            music?.musicImage
-              ? music?.musicImage
-              : "/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"
-          }
-          alt={""}
-          fill
-          className="rounded-md aspect-square shadow-[0_4px_60px_0] shadow-black/65"
-        />
+              music?.musicImage
+                ? music?.musicImage
+                : "/ab67616d0000b2732f6aa01115e00a9ea60eed31.jfif"
+            }
+            alt={""}
+            fill
+            className="rounded-md aspect-square shadow-[0_4px_60px_0] shadow-black/65"
+            />
+          ) : (
+          <IoDiscOutline  className="" />
+        )}
       </div>
       <div className="w-full flex items-center justify-between pt-2">
         <div className="w-[75%]">
@@ -128,5 +131,7 @@ const Music = ({ musicItem }) => {
     </div>
   );
 };
+
+
 
 export default Music;
