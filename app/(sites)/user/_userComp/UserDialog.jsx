@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import { MdOutlineEdit } from 'react-icons/md'
 import { useSession } from 'next-auth/react'
-import { LuUser2 } from 'react-icons/lu'
+import { LuPen, LuUser2 } from 'react-icons/lu'
 
 const UserDialog = ({children,setImgName}) => {
     const {data,update}=useSession();
@@ -92,7 +92,7 @@ const UserDialog = ({children,setImgName}) => {
                   )}
                 </div>
                 <div className="w-full h-full absolute top-0 left-0 rounded-full flex flex-col justify-center items-center gap-2 opacity-0 text-neutral-50 group-hover:bg-neutral-900/75 group-hover:opacity-100">
-                  <MdOutlineEdit className="text-4xl" />
+                  <LuPen className="text-4xl" />
                   <span className="text-base font-semibold ">Choose photo</span>
                 </div>
                 <input

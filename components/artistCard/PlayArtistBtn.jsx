@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { IoIosPause, IoIosPlay } from 'react-icons/io'
 import { playMusic,  setMusicByPlaylist,  setPlaylist } from '@/lib/redux/slices/currentMusic'
 import { setIndexBySelect, setPlaylistLength } from '@/lib/redux/slices/playlistMusicIndex'
-import { setPlayingUrl } from '@/lib/redux/slices/currentPlayingUrl'
+import { setPlayingUrl, setPlayingUrlName } from '@/lib/redux/slices/currentPlayingUrl'
 
 const fetchArtistMusics = async (id) => {
   try {
@@ -35,7 +35,10 @@ const PlayArtistBtn = ({ item, className }) => {
 
     const handleClick=async()=>{
       if (!data) { return }
-      if (!playingUrl) { await dispatch(setPlayingUrl(pathName)) }
+      if (!playingUrl) { 
+        await dispatch(setPlayingUrl(pathName))
+        await dispatch(setPlayingUrlName(item.name))
+      }
       
       if (!play) {
         if (playlist === null) {
@@ -46,6 +49,7 @@ const PlayArtistBtn = ({ item, className }) => {
         if (`/artist/${item.id}` !== playingUrl) {
           const musics = await fetchArtistMusics(item.id);
           await dispatch(setPlayingUrl(`/artist/${item.id}`));
+          await dispatch(setPlayingUrlName(item.name));
           await dispatch(setPlaylist(musics));
           await dispatch(setMusicByPlaylist(0));
           await dispatch(setIndexBySelect(0));

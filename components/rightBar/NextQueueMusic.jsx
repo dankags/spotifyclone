@@ -85,7 +85,7 @@ const UpComingMusic = () => {
   
   return (
     <div
-      className="flex w-full items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-neutral-700"
+      className="flex w-full items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-neutral-700 truncate"
       onMouseOver={() => setMouseOver(true)}
       onMouseOut={() => setMouseOver(false)}
     >
@@ -112,7 +112,7 @@ const UpComingMusic = () => {
         >
           {nextMusic?.musicName}
         </Link>
-        <div>
+        <div className='truncate'>
           <Link
             href={`/artist/${mainArtist?.id}`}
             className="font-normal text-sm capitalize text-zinc-400 whitespace-nowrap text-ellipsis overflow-hidden hover:underline hover:text-white"

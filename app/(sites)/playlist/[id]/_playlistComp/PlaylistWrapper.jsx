@@ -6,6 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useDarkVibrantColor, useMutedColor, useNavBarDarkVibrant, useVibrantColor } from '@/lib/hooks/colorHooks'
 import React, { useEffect, useState } from 'react'
 
+
 const PlaylistWrapper = ({children,playlistImg}) => {
 
   const [navColor, setNavcolor] = useState(false);
@@ -38,21 +39,23 @@ const PlaylistWrapper = ({children,playlistImg}) => {
   }
 
   return (
-    <ScrollArea
-      onScrollCapture={handleScroll}
-      className="w-full h-full rounded-md"
-      style={{
-        backgroundImage: `linear-gradient(to top,rgb(23,23,23),${bgColor} 100%)`,
-      }}
-    >
-      <div>
-        <div className="sticky top-0 z-10">
-          <NavBar bgColor={navColor ? `${navBgColor}` : ""} />
+    <div className="w-full h-full">
+      <ScrollArea
+        onScrollCapture={handleScroll}
+        className="w-full h-full rounded-md"
+        style={{
+          backgroundImage: `linear-gradient(to top,rgb(23,23,23),${bgColor} 100%)`,
+        }}
+      >
+        <div>
+          <div className="sticky top-0 z-10">
+            <NavBar bgColor={navColor ? `${navBgColor}` : ""} />
+          </div>
+          {children}
+          <Footer />
         </div>
-        {children}
-        <Footer />
-      </div>
-    </ScrollArea>
+      </ScrollArea>
+    </div>
   );
 }
 

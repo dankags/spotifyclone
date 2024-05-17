@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/utils/auth";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { LikedList } from "@/components/musicList/LikedList";
+import UserDialog from '../_userComp/UserDialog';
 
 
 
@@ -89,9 +90,11 @@ if( session?.user.id !== params.params.id){
         >
           <div className="p-3 flex flex-col justify-center">
             <div className="py-3 ">
-              <button className="p-2  rounded-full text-stone-400 hover:text-white transition">
-                <BsThreeDots size={35} />
-              </button>
+              <UserDialog>
+                <button className="p-2  rounded-full text-stone-400 hover:text-white transition">
+                  <BsThreeDots size={35} />
+                </button>
+              </UserDialog>
             </div>
             {following.length > 0 ? (
               <div>

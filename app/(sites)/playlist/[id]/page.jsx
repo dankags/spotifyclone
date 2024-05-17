@@ -13,6 +13,8 @@ import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { LikedList } from "@/components/musicList/LikedList";
 import prisma from "@/utils/connect";
 import { LuUser } from "react-icons/lu";
+import  PlaylistUpdateForm  from "./_playlistComp/PlaylistUpdateForm";
+
 
 const PlayList = async ({ params }) => {
   const session = await getServerSession(authOptions);
@@ -24,6 +26,7 @@ const PlayList = async ({ params }) => {
       id: params.id,
     },
     select: {
+      id:true,
       creatorId: true,
       musiclist: true,
       image: true,
@@ -35,7 +38,7 @@ const PlayList = async ({ params }) => {
    if (!playlist) {
      redirect("/not-found");
    }
-  const creator =playlist.creatorId === session.user.id ? session.user : await prisma.findUnique({
+  const creator =playlist.creatorId === session.user.id ? session.user : await prisma.user.findUnique({
     where: {
       id: playlist.creatorId,
     },
@@ -67,22 +70,43 @@ const PlayList = async ({ params }) => {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <div className="w-full h-full">
-        <PlaylistWrapper playlistImg={playlist.image} >
+        <PlaylistWrapper playlistImg={playlist.image} > 
           <div>
             <div className={`w-full flex pl-4 pb-4 pt-6 relative items-end `}>
               <div
                 className={`pb-1 w-3/12 rounded-md flex justify-center items-center `}
               >
-                {playlist.image ? (
-                  <Image
-                    src={playlist.image}
-                    alt={playlist.name}
-                    width={230}
-                    height={220}
-                    className="shadow-[0_4px_60px_0]  shadow-black/60 rounded-md object-cover"
-                  />
+                {playlist.creatorId === session?.user.id ? (
+                  <PlaylistUpdateForm playlist={playlist}>
+                    <button
+                      className={`pb-1 w-full aspect-square rounded-md flex justify-center items-center relative `}
+                    >
+                      {playlist.image ? (
+                        <Image
+                          src={playlist.image}
+                          alt={playlist.name}
+                          fill
+                          className="shadow-[0_4px_60px_0]  shadow-black/60 rounded-md object-cover"
+                        />
+                      ) : (
+                        <LuUser className="text-white" size={27} />
+                      )}
+                    </button>
+                  </PlaylistUpdateForm>
                 ) : (
-                  <LuUser className="text-white" size={27} />
+                  <>
+                    {playlist.image ? (
+                      <Image
+                        src={playlist.image}
+                        alt={playlist.name}
+                        width={230}
+                        height={220}
+                        className="shadow-[0_4px_60px_0]  shadow-black/60 rounded-md object-cover"
+                      />
+                    ) : (
+                      <LuUser className="text-white" size={27} />
+                    )}
+                  </>
                 )}
               </div>
               <div
@@ -95,13 +119,26 @@ const PlayList = async ({ params }) => {
                       {playlist.slug}
                     </span>
                   </div>
-                  <div className="drop-shadow-xl">
-                    <span
-                      className={`w-full capitalize  text-3xl md:text-5xl font-bold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden drop-shadow-xl`}
-                    >
-                      {playlist.name}
-                    </span>
-                  </div>
+                  {playlist.creatorId === session?.user.id ? (
+                    <PlaylistUpdateForm playlist={playlist}>
+                      <button className="drop-shadow-xl">
+                        <span
+                          className={`w-full capitalize  text-3xl md:text-5xl font-bold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden drop-shadow-xl`}
+                        >
+                          {playlist.name}
+                        </span>
+                       {playlist.Desc&& <p className="text-start text-stone-100 text-base font-normal first-letter:capitalize">{playlist.Desc}</p>}
+                      </button>
+                    </PlaylistUpdateForm>
+                  ) : (
+                    <div className="drop-shadow-xl">
+                      <span
+                        className={`w-full capitalize  text-3xl md:text-5xl font-bold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden drop-shadow-xl`}
+                      >
+                        {playlist.name}
+                      </span>
+                    </div>
+                  )}
                   <div className="pt-6 flex items-center gap-x-2">
                     <div className="flex items-center justify-between drop-shadow-xl">
                       <div className="relative rounded-full min-w-[30px] min-h-[30px]">
@@ -116,7 +153,7 @@ const PlayList = async ({ params }) => {
                           <LuUser className="text-white" size={20} />
                         )}
                       </div>
-                      <span className="pl-2 text-sm font-bold capitalize">
+                      <span className="pl-2 text-sm text-white font-bold capitalize">
                         {creator.name}
                       </span>
                     </div>
@@ -129,11 +166,17 @@ const PlayList = async ({ params }) => {
             </div>
           </div>
           <div className="p-3 bg-gradient-to-t from-[94%] from-neutral-900 to-neutral-900/30">
-            <PlaylistAction musics={musics} playlistName={playlist.name}/>
+            <PlaylistAction musics={musics} playlistName={playlist.name} />
             <MusicTitles />
             <StaticCarosel displayCol showAll>
               {musics.map((item, i) => (
-                <LikedList key={item.id} music={item} index={i + 1} urlName={playlist.name} musics={musics}/>
+                <LikedList
+                  key={item.id}
+                  music={item}
+                  index={i + 1}
+                  urlName={playlist.name}
+                  musics={musics}
+                />
               ))}
             </StaticCarosel>
           </div>

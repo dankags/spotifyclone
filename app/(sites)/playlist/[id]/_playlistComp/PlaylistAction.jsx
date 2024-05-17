@@ -10,6 +10,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import { IoIosPause, IoIosPlay } from 'react-icons/io'
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from 'react-icons/md'
 
+
 const PlaylistAction = ({ musics,playlistName }) => {
   
     const [play,setPlay]=useState(false)
@@ -87,10 +88,11 @@ const PlaylistAction = ({ musics,playlistName }) => {
           />
         )}
       </button>
-
-      <button className="p-2  rounded-full text-stone-400 hover:text-white transition">
-        <BsThreeDots size={29} />
-      </button>
+      
+        <button className="p-2 rounded-full text-stone-400 hover:text-white transition">
+          <BsThreeDots size={29} />
+        </button>
+      
     </div>
   );
 }
