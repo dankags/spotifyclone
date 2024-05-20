@@ -41,6 +41,7 @@ const fetchMainArtist = async (artistsInfo) => {
          name: true,
          id: true,
          image: true,
+         roles:true,
          artist: {
            select: {
              slug: true,

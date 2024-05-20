@@ -160,7 +160,7 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
       <div className="w-full px-4 py-3 relative flex items-center gap-5 ">
         <button
           onClick={handlePlay}
-          className="group p-4 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:scale-105 hover:bg-green-400 hover:shadow-md hover:shadow-neutral-900 transition-transform shadow shadow-neutral-950 cursor-pointer"
+          className="group p-4 flex items-center sticky top-16 justify-center rounded-full bg-green-500 hover:scale-105 active:scale-100 hover:bg-green-400 hover:shadow-md hover:shadow-neutral-900 transition-transform shadow shadow-neutral-950 cursor-pointer"
           role="play button"
         >
           {play ? (

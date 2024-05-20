@@ -82,7 +82,7 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
               </div>
               <div className="text-sm font-medium text-stone-400 capitalize">
                 <p className="font-semibold">
-                  {item.slug ? item.slug : item.roles.toLowerCase()}
+                  {item.slug ? item.slug : item.roles?.toLowerCase()}
                   <span>
                     {item.numberOfMusics
                       ? ` .${item.numberOfMusics} songs`
