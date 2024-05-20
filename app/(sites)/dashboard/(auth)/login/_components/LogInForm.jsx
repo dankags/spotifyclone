@@ -27,6 +27,8 @@ export const LogInForm = () => {
     }
     const handleLogin=async(e)=>{
       e.preventDefault();
+      setError(null)
+
       if (!inputs.email || !inputs.password) {
         setError("credentials required to login")
         return
