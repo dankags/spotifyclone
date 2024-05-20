@@ -154,8 +154,8 @@ export default function SideBar({children}){
           <div className="px-2 w-full fixed bottom-16 ">
             <MobilePlayer />
           </div>
-          {/* mobile bottom nvigation */}
-          <div className="w-full h-14 px-8 py-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
+          {/* mobile bottom navigation */}
+          <div className="w-full h-14 px-10 py-3 fixed bottom-0 bg-neutral-900/95  flex items-center justify-between lg:hidden">
             <div>
               <Link
                 href={"/"}
