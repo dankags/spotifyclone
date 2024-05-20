@@ -52,7 +52,7 @@ const UserLibrary = () => {
                         src={data?.user.image}
                         alt={data?.user.name}
                         fill
-                        className={"rounded-full"}
+                        className={"rounded-full object-cover"}
                       />
                     ) : (
                       <LuUser2 className="text-xl text-white" />
