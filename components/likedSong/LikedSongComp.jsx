@@ -37,7 +37,7 @@ const LikedSongComp = ({showContent,library}) => {
         <div>
           <div
             className={cn(
-              "h-12 w-12 flex items-center justify-center relative",
+              "w-14 aspect-square md:h-12 md:w-12 flex items-center justify-center relative",
               !showContent && "h-11 w-11"
             )}
           >
@@ -51,7 +51,7 @@ const LikedSongComp = ({showContent,library}) => {
         </div>
         {showContent ? (
           <div className="w-full h-full flex items-center justify-between">
-            <div className=" h-full flex flex-col shrink-0 justify-center pl-3">
+            <div className=" h-full flex flex-col shrink-0 justify-center gap-2 md:gap-0 pl-3">
               <div
                 className={cn(
                   "capitalize truncate text-white text-base font-medium",
