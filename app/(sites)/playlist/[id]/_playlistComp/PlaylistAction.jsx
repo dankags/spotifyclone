@@ -18,7 +18,10 @@ const PlaylistAction = ({ musics,playlistName,urlPlaylist }) => {
   const [liked, setLiked] = useState(false)
    const { data } = useSession();
    const pathName = usePathname();
-   const { playingUrl } = useAppSelector((state) => state.urlPlaying);
+  const { playingUrl } = useAppSelector((state) => state.urlPlaying);
+   const { playlistMusics } = useAppSelector(
+     (state) => state.playlistPageMusics
+   );
    const dispatch = useAppDispatch();
    const { music, playing, playlist } = useAppSelector(
      (state) => state.currentmusic
@@ -28,13 +31,28 @@ const PlaylistAction = ({ musics,playlistName,urlPlaylist }) => {
     const handlePlay=async()=>{
       if (!data) { return }
       if (!play) {
-         if (playlist === null) {
-           dispatch(setPlaylist(musics));
-           dispatch(setPlaylistLength(musics.length));
+        if (playlist === null) {
+          if (data.user.id === urlPlaylist.creatorId) {
+             await dispatch(setPlaylist(playlistMusics));
+             await dispatch(setPlaylistLength(playlistMusics.length));
+             return
+           }
+             await dispatch(setPlaylist(musics));
+           await dispatch(setPlaylistLength(musics.length));
          }
         if (pathName !== playingUrl) {
           await dispatch(setPlayingUrl(pathName))
           await dispatch(setPlayingUrlName(playlistName))
+           if (data.user.id === urlPlaylist.creatorId) {
+             await dispatch(setPlaylist(playlistMusics));
+             await dispatch(setPlaylistLength(playlistMusics.length));
+             await dispatch(setMusicByPlaylist(0));
+             await dispatch(setIndexBySelect(0));
+             !music && dispatch(setMusicByPlaylist(musicIndex));
+             !playing && dispatch(playMusic());
+             setPlay(true);
+             return;
+           }
           await dispatch(setPlaylist(musics));
           await dispatch(setMusicByPlaylist(0)); 
           await dispatch(setIndexBySelect(0));
@@ -62,7 +80,7 @@ const PlaylistAction = ({ musics,playlistName,urlPlaylist }) => {
   return (
     <div className="relative py-3 flex justify-start items-center ">
       <button
-        disabled={musics.length === 0}
+        disabled={musics.length === 0 || playlistMusics.length === 0}
         onClick={handlePlay}
         className="p-3 flex items-center sticky top-16 justify-center rounded-full bg-green-500/80 hover:bg-green-500 hover:scale-105 transition cursor-pointer shadow shadow-neutral-950 disabled:cursor-not-allowed"
         role="play button"

@@ -32,7 +32,7 @@ const DynamicCarosel = ({ children, musics,playlist }) => {
           {dynamicPlaylistMusics ? (
             dynamicPlaylistMusics.map((item, idx) => (
               <LikedList
-                musics={musics}
+                musics={playlistMusics}
                 index={idx +1}
                 urlName={playlist.name}
                 key={item.id}
