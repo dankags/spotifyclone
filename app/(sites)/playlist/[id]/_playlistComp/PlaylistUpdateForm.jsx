@@ -14,13 +14,15 @@ import Image from 'next/image'
 import { RiAlbumLine } from "react-icons/ri";
 import { LuPen} from 'react-icons/lu'
 import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { filterLibrary, pushToLibrary } from '@/lib/redux/slices/library';
 
 const updatePlaylistInfo = async (info,id) => {
     try {
         console.log(info,id);
         
         const updatePlaylist = await fetch(`/api/playlist/${id}`, {
-          method: "POST",
+          method: "PUT",
           body: JSON.stringify(info),
         });
         if (updatePlaylist.ok) {
@@ -35,7 +37,7 @@ const updatePlaylistInfo = async (info,id) => {
     }
 }
 
-export default function PlaylistUpdateForm ({ children, playlist }){
+export default function PlaylistUpdateForm ({ children, playlist,setPlaylist }){
   
   const [personalInfo, setPersonalinfo] = useState({
     image: "",
@@ -43,6 +45,7 @@ export default function PlaylistUpdateForm ({ children, playlist }){
     Desc:""
   });
   const [imageFile, setImgFile] = useState(null);
+  const dispatch=useDispatch()
 
   useEffect(() => {
     const upload = async () => {
@@ -62,8 +65,16 @@ export default function PlaylistUpdateForm ({ children, playlist }){
               
               if (cloudinaryRes.ok) {
                   const res = await cloudinaryRes.json()
-                  const updatedImage = await updatePlaylistInfo({image:res.secure_url},playlist.id)
+                const updatedImage = await updatePlaylistInfo({ image: res.secure_url }, playlist.id)
+                if (updatedImage) {
+                  
+                  
+                  setPlaylist({ image: res.secure_url });
+                  await dispatch(filterLibrary(playlist));
+                  await dispatch(pushToLibrary(updatedImage));
+                  setPersonalInfo(prev => ({ ...prev, image: res.secure_url }))
                   return
+                }
               }
               
         } catch (error) {
@@ -93,22 +104,32 @@ export default function PlaylistUpdateForm ({ children, playlist }){
       if(!playlist){return}
       if (personalInfo.name && personalInfo.Desc) {
           const { image, ...info } = personalInfo
-          const res = await updatePlaylistInfo(info,playlist.id)
+        const res = await updatePlaylistInfo(info, playlist.id)
+        if (res) {
+          await dispatch(filterLibrary(playlist))
+        await dispatch(pushToLibrary(res))
+        setPlaylist(info)
           return
+        }
       }
       if (personalInfo.name && !personalInfo.Desc) {
           const { name, ...info } = personalInfo
           
           
           const res = await updatePlaylistInfo({ name:name.toLowerCase() },playlist.id);
-          
-         return
+        if (res) {
+          await dispatch(filterLibrary(playlist));
+          await dispatch(pushToLibrary(res));
+          setPlaylist({name:name})
+          return
+        }
       }
       if (!personalInfo.name && personalInfo.Desc) {
         const { Desc, ...info } = personalInfo;
-        const res = await updatePlaylistInfo({ Desc:Desc.toLowerCase() },playlist.id)
-        console.log(res)
-        return;
+        const res = await updatePlaylistInfo({ Desc: Desc.toLowerCase() }, playlist.id)
+        if (res) {
+        setPlaylist({ Desc: Desc });}
+        return
       }
     };
     
@@ -131,9 +152,11 @@ export default function PlaylistUpdateForm ({ children, playlist }){
               className="group relative h-44 w-44 cursor-pointer"
             >
               <div className="min-h-44 min-w-44 flex items-center justify-center relative rounded-md shadow-[0_4px_60px_0] shadow-black/60">
-                {playlist.image ? (
+                {playlist?.image ? (
                   <Image
-                    src={playlist.image ? playlist.image : personalInfo.image}
+                    src={
+                      personalInfo.image ?personalInfo.image : playlist.image
+                    }
                     alt={"profile"}
                     fill
                     className=" object-cover rounded-md"
@@ -159,7 +182,7 @@ export default function PlaylistUpdateForm ({ children, playlist }){
           <div className="w-8/12 pl-3 flex flex-col justify-center gap-3">
             <input
               type="text"
-              placeholder={playlist.name ? playlist.name : "Username"}
+              placeholder={playlist?.name ? playlist.name : "Username"}
               name="name"
               id=""
               onChange={handleInputs}
@@ -168,9 +191,9 @@ export default function PlaylistUpdateForm ({ children, playlist }){
             <textarea
               name="Desc"
               id=""
-              placeholder={playlist.Desc ? playlist.Desc : "Description"}
+              placeholder={playlist?.Desc ? playlist.Desc : "Description"}
               className="min-h-20 max-h-24 px-3 py-3 text-sm font-medium rounded-md bg-neutral-700  placeholder:text-stone-200 placeholder:capitalize focus:outline-1 focus:outline-neutral-50 "
-              onChange={handleInputs }
+              onChange={handleInputs}
             ></textarea>
             <div className="w-full flex items-center justify-center pt-3 md:pt-0 md:justify-end ">
               <button

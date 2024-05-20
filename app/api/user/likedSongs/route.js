@@ -22,7 +22,10 @@ export const GET = async (req) => {
         songs: true,
       },
     });
-      if(!likedList){return NextResponse.json("user does not have liked songs library",{status:404})}
+    if (!likedList) { return NextResponse.json("user does not have liked songs library", { status: 404 }) }
+    if(likedList.songs.length ===0){return NextResponse.json("you have no songs", {
+      status: 404,
+    });}
     const musics = await prisma.music.findMany({
       where: {
         id: {

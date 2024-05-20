@@ -12,8 +12,11 @@ import { redirect } from "next/navigation";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { LikedList } from "@/components/musicList/LikedList";
 import prisma from "@/utils/connect";
-import { LuUser } from "react-icons/lu";
+import { LuMusic4, LuUser } from "react-icons/lu";
 import  PlaylistUpdateForm  from "./_playlistComp/PlaylistUpdateForm";
+import TopSection from "./_playlistComp/TopSection";
+import DynamicCarosel from "./_playlistComp/DynamicCarosel";
+import PlaylistSearchComp from "./_playlistComp/PlaylistSearchComp";
 
 
 const PlayList = async ({ params }) => {
@@ -70,105 +73,91 @@ const PlayList = async ({ params }) => {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <div className="w-full h-full">
-        <PlaylistWrapper playlistImg={playlist.image} > 
-          <div>
-            <div className={`w-full flex pl-4 pb-4 pt-6 relative items-end `}>
-              <div
-                className={`pb-1 w-3/12 rounded-md flex justify-center items-center `}
-              >
-                {playlist.creatorId === session?.user.id ? (
-                  <PlaylistUpdateForm playlist={playlist}>
-                    <button
-                      className={`pb-1 w-full aspect-square rounded-md flex justify-center items-center relative `}
-                    >
-                      {playlist.image ? (
-                        <Image
-                          src={playlist.image}
-                          alt={playlist.name}
-                          fill
-                          className="shadow-[0_4px_60px_0]  shadow-black/60 rounded-md object-cover"
-                        />
-                      ) : (
-                        <LuUser className="text-white" size={27} />
-                      )}
-                    </button>
-                  </PlaylistUpdateForm>
-                ) : (
+        <PlaylistWrapper playlistImg={playlist.image}>
+          {playlist.creatorId === session.user.id ? (
+            <TopSection playlist={playlist} creator={creator} />
+          ) : (
+            <div>
+              <div className={`w-full flex pl-4 pb-4 pt-6 relative items-end `}>
+                <div
+                  className={` w-3/12 aspect-square relative rounded-md flex justify-center items-center shadow-[0_4px_60px_0]  shadow-black/60`}
+                >
                   <>
                     {playlist.image ? (
                       <Image
                         src={playlist.image}
                         alt={playlist.name}
-                        width={230}
-                        height={220}
+                        fill
                         className="shadow-[0_4px_60px_0]  shadow-black/60 rounded-md object-cover"
                       />
                     ) : (
-                      <LuUser className="text-white" size={27} />
+                      <LuMusic4 className="text-stone-400 text-5xl" />
                     )}
                   </>
-                )}
-              </div>
-              <div
-                className={`pb-1 w-9/12 pl-4
+                </div>
+                <div
+                  className={`pb-1 w-9/12 pl-4
               }`}
-              >
-                <section className="">
-                  <div className="mb-2">
-                    <span className="font-medium text-neutral-50 drop-shadow-xl">
-                      {playlist.slug}
-                    </span>
-                  </div>
-                  {playlist.creatorId === session?.user.id ? (
-                    <PlaylistUpdateForm playlist={playlist}>
-                      <button className="drop-shadow-xl">
+                >
+                  <section className="">
+                    <div className="mb-2">
+                      <span className="font-medium text-neutral-50 drop-shadow-xl">
+                        {playlist.slug}
+                      </span>
+                    </div>
+                    
+                      <div className="drop-shadow-xl">
                         <span
                           className={`w-full capitalize  text-3xl md:text-5xl font-bold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden drop-shadow-xl`}
                         >
                           {playlist.name}
                         </span>
-                       {playlist.Desc&& <p className="text-start text-stone-100 text-base font-normal first-letter:capitalize">{playlist.Desc}</p>}
-                      </button>
-                    </PlaylistUpdateForm>
-                  ) : (
-                    <div className="drop-shadow-xl">
-                      <span
-                        className={`w-full capitalize  text-3xl md:text-5xl font-bold text-neutral-50  whitespace-nowrap text-ellipsis overflow-hidden drop-shadow-xl`}
-                      >
-                        {playlist.name}
-                      </span>
-                    </div>
-                  )}
-                  <div className="pt-6 flex items-center gap-x-2">
-                    <div className="flex items-center justify-between drop-shadow-xl">
-                      <div className="relative rounded-full min-w-[30px] min-h-[30px]">
-                        {creator.image ? (
-                          <Image
-                            src={creator.image}
-                            alt=""
-                            fill
-                            className="rounded-full"
-                          />
-                        ) : (
-                          <LuUser className="text-white" size={20} />
+                        {playlist.Desc && (
+                          <p className="text-start text-stone-100 text-base font-normal first-letter:capitalize">
+                            {playlist.Desc}
+                          </p>
                         )}
                       </div>
-                      <span className="pl-2 text-sm text-white font-bold capitalize">
-                        {creator.name}
-                      </span>
+                    
+                    <div className="pt-6 flex items-center gap-x-2">
+                      <div className="flex items-center justify-between drop-shadow-xl">
+                        <div className="relative rounded-full min-w-[30px] min-h-[30px]">
+                          {creator.image ? (
+                            <Image
+                              src={creator.image}
+                              alt=""
+                              fill
+                              className="rounded-full"
+                            />
+                          ) : (
+                            <LuUser className="text-white" size={20} />
+                          )}
+                        </div>
+                        <span className="pl-2 text-sm text-white font-bold capitalize">
+                          {creator.name}
+                        </span>
+                      </div>
+                      <p className="text-sm text-left text-stone-200 font-medium truncate">
+                        {creator.Desc}
+                      </p>
                     </div>
-                    <p className="text-sm text-left text-stone-200 font-medium truncate">
-                      {creator.Desc}
-                    </p>
-                  </div>
-                </section>
+                  </section>
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="p-3 bg-gradient-to-t from-[94%] from-neutral-900 to-neutral-900/30">
-            <PlaylistAction musics={musics} playlistName={playlist.name} />
+            <PlaylistAction
+              musics={musics}
+              playlistName={playlist.name}
+              urlPlaylist={playlist}
+            />
             <MusicTitles />
-            <StaticCarosel displayCol showAll>
+            {playlist.creatorId === session.user.id ? 
+              <DynamicCarosel musics={musics} playlist={playlist}>
+                <PlaylistSearchComp playlist={playlist}/>
+             </DynamicCarosel>
+          : <StaticCarosel displayCol showAll>
               {musics.map((item, i) => (
                 <LikedList
                   key={item.id}
@@ -176,9 +165,10 @@ const PlayList = async ({ params }) => {
                   index={i + 1}
                   urlName={playlist.name}
                   musics={musics}
+                  urlPlaylist={playlist}
                 />
               ))}
-            </StaticCarosel>
+            </StaticCarosel>}
           </div>
         </PlaylistWrapper>
       </div>

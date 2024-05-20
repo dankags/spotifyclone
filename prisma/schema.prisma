@@ -126,7 +126,7 @@ model Music{
   uploaded DateTime @default(now())
   
   
-  music User @relation(fields: [artistId],references: [id] ,onDelete: Cascade)
+  mainArtist User @relation(fields: [artistId],references: [id] ,onDelete: Cascade)
   category Category @relation(fields: [categoryName],references: [category],onDelete: Cascade)
   
 } 
@@ -143,10 +143,10 @@ musics Music[]
 model Playlist{
   id String @id @default(uuid()) @map("_id")
   creatorId String 
-  name String @unique
-  image String
+  name String 
+  image String ?
   Desc String ?
-  listeners Int
+  listeners Int ? @default(0)
   musiclist String [] @default([])
   slug String @default("playlist")
 

@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import { useAppSelector } from '@/lib/hooks/reduxHooks'
 import { HiOutlineSpeakerWave } from 'react-icons/hi2'
 import { BiSolidVolumeLow } from 'react-icons/bi'
+import { LuMusic4, LuUser2 } from 'react-icons/lu'
 
 
 export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
@@ -39,19 +40,30 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
         <div>
           <div
             className={cn(
-              "h-12 w-12 flex items-center justify-center relative",
-              !showContent && "h-11 w-11"
+              "h-12 w-12 flex items-center justify-center bg-neutral-700/50 rounded-md relative",
+              !showContent && "h-11 w-11",
+              item.roles === "ARTIST" && "rounded-full "
             )}
           >
-            <Image
-              src={item.image ? item.image : "/noavatar.png"}
-              alt={`${item.name}.jpg`}
-              fill
-              className={cn(
-                "",
-                item.slug === "playlist" ? "rounded-md " : "rounded-full "
-              )}
-            />
+            {item.image ? (
+              <Image
+                src={item.image ? item.image : "/noavatar.png"}
+                alt={`${item.name}.jpg`}
+                fill
+                className={cn(
+                  "",
+                  item.slug === "playlist" ? "rounded-md " : "rounded-full "
+                )}
+              />
+            ) : (
+              <>
+                {item.slug === "playlist" ? (
+                  <LuMusic4 className="text-xl text-stone-200" />
+                ) : (
+                  <LuUser2 className="text-xl text-stone-200" />
+                )}
+              </>
+            )}
           </div>
         </div>
         {showContent && (
@@ -60,21 +72,24 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
               <div
                 className={cn(
                   "capitalize truncate text-white text-base font-medium",
-                  (playingUrl === `/playlist/${item.id}` || playingUrl === `/artist/${item.id}` ? "text-green-500":"")
+                  playingUrl === `/playlist/${item.id}` ||
+                    playingUrl === `/artist/${item.id}`
+                    ? "text-green-500"
+                    : ""
                 )}
               >
                 {item.name}
               </div>
               <div className="text-sm font-medium text-stone-400 capitalize">
                 <p className="font-semibold">
-                  {item.slug ? item.slug : item.artist?.map((i) => i.slug)}
+                  {item.slug ? item.slug : item.roles.toLowerCase()}
                   <span>
                     {item.numberOfMusics
                       ? ` .${item.numberOfMusics} songs`
                       : `${
                           item.creatorId === userData?.user.id
                             ? ` .${userData.user.name}`
-                            : ""
+                            : ``
                         }`}
                   </span>
                 </p>
@@ -84,10 +99,13 @@ export const ArtistPlaylistComp = ({ square, item, showContent ,userData}) => {
               <div
                 className={cn(
                   "w-full h-full pr-3 text-green-500 hidden items-center justify-end",
-                  (playingUrl === `/playlist/${item.id}` || playingUrl === `/artist/${item.id}` ? "flex":"")
+                  playingUrl === `/playlist/${item.id}` ||
+                    playingUrl === `/artist/${item.id}`
+                    ? "flex"
+                    : ""
                 )}
               >
-                <BiSolidVolumeLow  size={20} />
+                <BiSolidVolumeLow size={20} />
               </div>
             )}
           </div>

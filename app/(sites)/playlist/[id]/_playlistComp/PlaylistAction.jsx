@@ -9,9 +9,10 @@ import React, { useEffect, useState } from 'react'
 import { BsThreeDots } from 'react-icons/bs'
 import { IoIosPause, IoIosPlay } from 'react-icons/io'
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from 'react-icons/md'
+import PlaylistDropDown from './PlaylistDropDown'
 
 
-const PlaylistAction = ({ musics,playlistName }) => {
+const PlaylistAction = ({ musics,playlistName,urlPlaylist }) => {
   
     const [play,setPlay]=useState(false)
   const [liked, setLiked] = useState(false)
@@ -61,8 +62,9 @@ const PlaylistAction = ({ musics,playlistName }) => {
   return (
     <div className="relative py-3 flex justify-start items-center ">
       <button
+        disabled={musics.length === 0}
         onClick={handlePlay}
-        className="p-3 flex items-center sticky top-16 justify-center rounded-full bg-green-500/80 hover:bg-green-500 hover:scale-105 transition cursor-pointer shadow shadow-neutral-950"
+        className="p-3 flex items-center sticky top-16 justify-center rounded-full bg-green-500/80 hover:bg-green-500 hover:scale-105 transition cursor-pointer shadow shadow-neutral-950 disabled:cursor-not-allowed"
         role="play button"
       >
         {play ? (
@@ -88,11 +90,11 @@ const PlaylistAction = ({ musics,playlistName }) => {
           />
         )}
       </button>
-      
+      <PlaylistDropDown playlist={urlPlaylist}>
         <button className="p-2 rounded-full text-stone-400 hover:text-white transition">
           <BsThreeDots size={29} />
         </button>
-      
+      </PlaylistDropDown>
     </div>
   );
 }

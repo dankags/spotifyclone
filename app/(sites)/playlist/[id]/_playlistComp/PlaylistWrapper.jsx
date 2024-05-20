@@ -10,9 +10,9 @@ import React, { useEffect, useState } from 'react'
 const PlaylistWrapper = ({children,playlistImg}) => {
 
   const [navColor, setNavcolor] = useState(false);
-  const bgColor = useMutedColor(playlistImg ? playlistImg : "/playlist.jpg", 0.9);
+  const bgColor = useMutedColor(playlistImg ? playlistImg : "/pexels-ahmed-adly-1270184.jpg", 0.9);
   const navBgColor = useNavBarDarkVibrant(
-    playlistImg ? playlistImg : "/playlist.jpg"
+    playlistImg ? playlistImg : "/pexels-ahmed-adly-1270184.jpg"
   );
   const [isLoading,setIsLoading]=useState(true)
   

@@ -13,6 +13,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { BiLibrary, BiSearch } from "react-icons/bi";
 import { FaList } from "react-icons/fa";
 import { toast } from "sonner";
+import CreatePlaylistDropDown from "./CreatePlaylistDropDown";
 
 const sortTypes = [
   {
@@ -97,6 +98,9 @@ export const SideBarBottom = ({ setSideBarSpan, sidebarSpan }) => {
     setShowSearchInput(!showSearchInput);
   };
 
+  console.log(userLibrary);
+  
+
   return (
     <div
       className={cn(
@@ -125,10 +129,12 @@ export const SideBarBottom = ({ setSideBarSpan, sidebarSpan }) => {
         </div>
         {sidebarSpan ? (
           <div className="flex justify-between items-center gap-3 ">
-            <PlusIcon
-              size={30}
-              className="p-1 rounded-full text-stone-400 hover:text-white hover:bg-neutral-800/80 cursor-pointer"
-            />
+            <CreatePlaylistDropDown>
+              <button className="group rounded-full  hover:bg-neutral-800/80 cursor-pointer">
+                {" "}
+                <PlusIcon size={30} className="p-1 text-stone-400 group-hover:text-white" />
+              </button>
+            </CreatePlaylistDropDown>
             <ArrowRight
               size={30}
               className="p-1 rounded-full text-stone-400 hover:text-white hover:bg-neutral-800/80 cursor-pointer"
@@ -237,7 +243,10 @@ export const SideBarBottom = ({ setSideBarSpan, sidebarSpan }) => {
                 "rounded-md hover:bg-neutral-800/75 active:bg-neutral-950 cursor-pointer",
                 !sidebarSpan &&
                   "aspect-square rounded-md flex items-center justify-center",
-                playingUrl === `/playlist/${item.id}` || playingUrl === `/artist/${item.id}` ? "bg-neutral-800":""
+                playingUrl === `/playlist/${item.id}` ||
+                  playingUrl === `/artist/${item.id}`
+                  ? "bg-neutral-800"
+                  : ""
               )}
             >
               <ArtistPlaylistComp

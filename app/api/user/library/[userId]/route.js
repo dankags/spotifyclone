@@ -32,11 +32,12 @@ export const GET = async (req,{params}) => {
                 select: {
                     image: true,
                     name: true,
-                    id:true
+                    id: true,
+                    roles:true,
                 }
 
             })
-            artist={slug:isArtist.slug,...artistInfo}
+            artist={...artistInfo}
         }
         const followings = await prisma.follow.findMany({
             where: {
@@ -59,11 +60,7 @@ export const GET = async (req,{params}) => {
                     image: true,
                     id: true,
                     name: true,
-                    artist: {
-                        select: {
-                         slug:true   
-                        }
-                    }
+                    roles:true
                 } 
              })
             artists=artistsProfile
@@ -94,6 +91,7 @@ export const GET = async (req,{params}) => {
                 image: true,
                 slug:true
             },
+           
 
         })
         

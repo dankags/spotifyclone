@@ -25,8 +25,9 @@ import { IoPause, IoPlay } from "react-icons/io5";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { TbRuler } from 'react-icons/tb';
 import { toast } from "sonner";
+import ListMenu from './ListMenu';
 
-export const LikedList = ({ music, index,musics,urlName }) => {
+export const LikedList = ({ music, index,musics,urlName,urlPlaylist }) => {
   const { data } = useSession();
   const pathname = usePathname();
   const [showPlayIcon, setShowplayIcon] = useState(false);
@@ -44,6 +45,7 @@ export const LikedList = ({ music, index,musics,urlName }) => {
   const [liked, setLiked] = useState(false);
   const [play, setPlay] = useState(false)
   const [isMusicAtiveInPathName,setIsMusicAtiveInPathName]=useState(false)
+  const [isFocused,setIsFocused]=useState(false)
 
   //fetch music artists
   const musicArtists = useMemo(() => {
@@ -253,13 +255,20 @@ export const LikedList = ({ music, index,musics,urlName }) => {
 
   },[pathname,currentMusic,playlist,playingUrl])
 
+  const handleMouseOut = () => {
+    setShowplayIcon(false);
+    // setIsFocused(false)
+  }
+ 
+  
   return (
     <div
       onMouseOver={() => setShowplayIcon(true)}
-      onMouseOut={() => setShowplayIcon(false)}
+      onMouseOut={handleMouseOut}
       className={cn(
-        "flex py-2 rounded-md hover:bg-neutral-700/20 group",
-        isMusicAtiveInPathName ? "bg-neutral-700/35" : ""
+        "flex py-2 rounded-md hover:bg-neutral-700/20 group focus-within:bg-neutral-700/35",
+        isMusicAtiveInPathName && "bg-neutral-700/35",
+        isFocused && "bg-neutral-700/35"
       )}
     >
       <div className="w-9/12 lg:w-6/12 pl-4 flex items-center max-md:justify-start shrink-0">
@@ -339,20 +348,28 @@ export const LikedList = ({ music, index,musics,urlName }) => {
             <MdOutlineFavoriteBorder className="w-6 h-6 lg:w-5 lg:h-5 text-stone-400 hover:text-white" />
           )}
         </button>
-        <div className="hidden lg:w-6/12  lg:flex lg:items-center lg:justify-end text-sm text-stone-400 ">
+        <div className="hidden lg:w-6/12 lg:flex lg:items-center lg:justify-center text-sm text-stone-400 ">
           <span className="text-sm text-center font-medium">
             {duration ? `${duration.min}:${duration.sec}` : "03:44"}
           </span>
         </div>
-        <div className=" w-3/6 lg:3/12 max-md:w-[50%]  pr-3  flex items-center justify-center text-sm text-stone-400 ">
-          <button
-            className={cn(
-              "text-sm text-stone-400 font-normal hidden group-hover:block hover:text-white"
-            )}
+        <div className=" w-3/6 md:w-3/12  pr-3  flex items-center justify-center text-sm text-stone-400 ">
+          <ListMenu
+            playlist={urlPlaylist}
+            music={music}
+            setIsListFocused={setIsFocused}
           >
-            {" "}
-            <BsThreeDots size={24} />
-          </button>
+            <button
+              onClick={() => setIsFocused(true)}
+              className={cn(
+                "text-sm text-stone-400 font-normal opacity-0 group-hover:opacity-100 hover:text-white",
+                isFocused && "opacity-100"
+              )}
+            >
+              {" "}
+              <BsThreeDots size={24} />
+            </button>
+          </ListMenu>
         </div>
       </div>
     </div>
