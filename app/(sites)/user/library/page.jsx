@@ -174,12 +174,12 @@ const SortComponent = ({ sortTypeSelectedIncludes, sort }) => {
   return (
     <div
       className={cn(
-        "text-sm flex items-center justify-center shrink-0 text-center  font-semibold capitalize rounded-3xl px-5 py-2 mr-2 bg-neutral-800 hover:bg-neutral-700 cursor-pointer ",
+        "text-white text-sm flex items-center justify-center shrink-0 text-center  font-semibold capitalize rounded-3xl px-5 py-2 mr-2 bg-neutral-800 hover:bg-neutral-700 cursor-pointer ",
         sortTypeSelectedIncludes &&
           "bg-white text-black font-semibold transition-colors duration-300 hover:bg-white"
       )}
     >
-      <span className="text-nowrap text-white">{sort?.sort}</span>
+      <span className="text-nowrap ">{sort?.sort}</span>
     </div>
   );
 };
