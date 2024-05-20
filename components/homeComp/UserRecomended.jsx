@@ -122,10 +122,10 @@ export const UserRecomended = ({ pageWidth, data, setContainerColor }) => {
         }
         try {
           const musics = await fetch(`/api/playlist/${data.id}`).then((res)=>res.json());
-           console.log(musics);
+          
            
           if (musics !== 'This musics do not exist') {
-            console.log("its working");
+            
             
             await dispatches("playlist", data, musics);
             setRecommendedPlaying(true);

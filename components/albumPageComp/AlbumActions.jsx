@@ -54,7 +54,7 @@ const AlbumActions = ({ album }) => {
   }
   
   useEffect(() => {
-    console.log(pathName,playingUrl);
+   
     
     if (playingUrl === pathName) {
       setPlay(playing)

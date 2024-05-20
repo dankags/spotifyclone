@@ -98,7 +98,7 @@ export const SideBarBottom = ({ setSideBarSpan, sidebarSpan }) => {
     setShowSearchInput(!showSearchInput);
   };
 
-  console.log(userLibrary);
+  
   
 
   return (
@@ -273,7 +273,7 @@ const SortComponent = ({ sortTypeSelectedIncludes, sort }) => {
           "bg-white text-black font-semibold transition-colors duration-300 hover:bg-white"
       )}
     >
-      <span className="text-nowrap">{sort?.sort}</span>
+      <span className="text-nowrap text-white">{sort?.sort}</span>
     </div>
   );
 };

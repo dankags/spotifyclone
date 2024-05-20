@@ -26,7 +26,7 @@ const UpComingMusic = () => {
   
   useEffect(() => {
     const handleNextMusic = () => {
-      console.log(musicIndex);
+      
       
       const nextIndex = (musicIndex + 1) % playlistLength ;
       setNextMusic(playlist[nextIndex])

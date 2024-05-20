@@ -112,7 +112,7 @@ const UserLibrary = () => {
           <div>
             <div className="flex items-center justify-between pt-3 px-3">
               <div className="flex items-center gap-2 cursor-pointer">
-                <span>
+                <span className={"text-white"}>
                   <LuArrowDownUp />
                 </span>
                 <span className="text-xs font-semibold text-white first-letter:capitalize ">
@@ -179,7 +179,7 @@ const SortComponent = ({ sortTypeSelectedIncludes, sort }) => {
           "bg-white text-black font-semibold transition-colors duration-300 hover:bg-white"
       )}
     >
-      <span className="text-nowrap">{sort?.sort}</span>
+      <span className="text-nowrap text-white">{sort?.sort}</span>
     </div>
   );
 };

@@ -45,10 +45,11 @@ export const LikedList = ({ music, index,musics,urlName,urlPlaylist }) => {
   const [liked, setLiked] = useState(false);
   const [play, setPlay] = useState(false)
   const [isMusicAtiveInPathName,setIsMusicAtiveInPathName]=useState(false)
-  const [isFocused,setIsFocused]=useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const [musicArtists,setMusicArtists]=useState([])
 
   //fetch music artists
-  const musicArtists = useMemo(() => {
+  useEffect(() => {
     const controller = new AbortController();
     let artists = [];
     const fetchMainArtist = async () => {
@@ -60,6 +61,7 @@ export const LikedList = ({ music, index,musics,urlName,urlPlaylist }) => {
         if (res.ok) {
           const artist = await res.json();
           artists.push(artist);
+         
         }
       } catch (error) {
         console.log(error);
@@ -74,7 +76,8 @@ export const LikedList = ({ music, index,musics,urlName,urlPlaylist }) => {
         });
         if (res.ok) {
           const otherArtists = await res.json();
-          artists.push(...otherArtists);
+          artists.push(...otherArtists)
+         
         }
       } catch (error) {
         console.log(error);
@@ -82,8 +85,16 @@ export const LikedList = ({ music, index,musics,urlName,urlPlaylist }) => {
     };
     fetchMainArtist();
     fetchFeaturedArtists();
-    return artists;
-  }, [music]);
+    setMusicArtists(artists)
+    
+    return () => {
+     artists=null
+   }
+  },[pathname,music]);
+
+  
+  
+  
 
   //handle likemusic
   const handleLike = async () => {
@@ -196,19 +207,7 @@ export const LikedList = ({ music, index,musics,urlName,urlPlaylist }) => {
     setLiked(likedMusics?.includes(`${music?.id}`));
   }, [likedMusics]);
 
-  //set current music play icon whenever it changes
-//   useEffect(() => {
-//     if (currentMusic) {
-//       if (currentMusic.id === music.id) {
-//         const musicIndex = musics?.findIndex((item) => item.id === currentMusic.id)
-//         setIsMusicAtiveInPathName(true)
-//         dispatch(setIndexBySelect(index-1))
-//         setPlay(true)
-//         return
-//       }
-//       setPlay(false)
-//     }
-// },[currentMusic])
+
 
 //calculate the duration of the given music
   useEffect(() => {
@@ -362,7 +361,7 @@ export const LikedList = ({ music, index,musics,urlName,urlPlaylist }) => {
             <button
               onClick={() => setIsFocused(true)}
               className={cn(
-                "text-sm text-stone-400 font-normal opacity-0 group-hover:opacity-100 hover:text-white",
+                "text-sm text-stone-400 font-normal opacity-100 md:opacity-0  group-hover:opacity-100 hover:text-white",
                 isFocused && "opacity-100"
               )}
             >

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const TopSection = ({ playlist,creator }) => {
     const [playlistInfo, setPlaylistInfo] = useState(null)
-    console.log(playlistInfo);
+   
     
   return (
     <div>

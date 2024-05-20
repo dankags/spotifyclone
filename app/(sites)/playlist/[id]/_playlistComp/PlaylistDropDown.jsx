@@ -22,7 +22,7 @@ const PlaylistDropDown = ({ children, playlist }) => {
  const dispatch = useDispatch();
 
  const handleDeletePlaylist = async () => {
-     console.log(playlist.id);
+    
      try {
        
      const res = await fetch(`/api/playlist/${playlist.id}`, {

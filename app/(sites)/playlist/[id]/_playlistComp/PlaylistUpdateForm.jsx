@@ -19,7 +19,7 @@ import { filterLibrary, pushToLibrary } from '@/lib/redux/slices/library';
 
 const updatePlaylistInfo = async (info,id) => {
     try {
-        console.log(info,id);
+       
         
         const updatePlaylist = await fetch(`/api/playlist/${id}`, {
           method: "PUT",
@@ -27,7 +27,6 @@ const updatePlaylistInfo = async (info,id) => {
         });
         if (updatePlaylist.ok) {
             const res=await updatePlaylist.json()
-            console.log(res);
             toast.success("updated playlist")
             return res
         }
@@ -133,7 +132,6 @@ export default function PlaylistUpdateForm ({ children, playlist,setPlaylist }){
       }
     };
     
-    console.log(personalInfo);
     
   return (
     <Dialog>

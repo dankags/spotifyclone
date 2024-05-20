@@ -24,8 +24,6 @@ const CreatePlaylistDropDown = ({children}) => {
           })
           if (res.ok) {
               const playlist = await res.json()
-              console.log(playlist);
-              
               await dispatch(pushToLibrary(playlist))
               toast.success("playlist created successfully")
               return

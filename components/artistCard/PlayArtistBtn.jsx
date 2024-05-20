@@ -30,7 +30,7 @@ const PlayArtistBtn = ({ item, className }) => {
   const {music,playing,playlist}=useAppSelector((state)=>state.currentmusic)
   const [play, setPlay] = useState(false)
   
-  console.log(pathName);
+  
   
 
     const handleClick=async()=>{

@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export const POST = async (req, { params }) => {
   const { id } = params;
   const { user } = await getServerSession(authOptions);
-  console.log(id);
+  
   
   try {
     if (!user) {
@@ -26,7 +26,7 @@ export const POST = async (req, { params }) => {
         id: true,
       }
     });
-    console.log(usersPlaylists);
+   
     
     const playlist = await prisma.playlist.create({
       data: {
@@ -42,7 +42,7 @@ export const POST = async (req, { params }) => {
       },
     });
   
-    console.log(playlist);
+  
     
     if (!playlist) {
       return NextResponse.json("Playlist couldnot created", {
@@ -55,7 +55,7 @@ export const POST = async (req, { params }) => {
       });
     
   } catch (error) {
-    console.log(error);
+   
     
     return NextResponse.json("internal server error", { status: 500 });
   }

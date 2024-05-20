@@ -122,7 +122,7 @@ const ArtistBottom = ({children,mainArtist,artist,bgColor,followings,artistId,mu
   const handlePlay =async () => {
     if (!data) { return }
     if (!playingUrl) {
-      console.log(artist);
+     
       
       await dispatch(setPlayingUrl(pathName))
       await dispatch(setPlayingUrlName(mainArtist?.name));

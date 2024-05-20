@@ -27,7 +27,7 @@ export const POST = async (req, res) => {
         const musicname = splitedSearch[0] ?? body.searchQuery.split("by")[0];
         const artist =
           body.searchQuery.split("by")[1] ?? splitedSearch.slice(1).join(" ");
-        console.log(artist, musicname);
+        
 
         const searchedMusic = await prisma.music.findMany({
           where: {
@@ -70,7 +70,7 @@ export const POST = async (req, res) => {
           });
         }
 
-        console.log(artistId, searchedMusic);
+        
 
         if (searchedMusic.length !== 0 && artistId.length !== 0) {
           if (searchedMusic[0]?.otherFeaturedArtist.includes(artistId[0].id)) {
@@ -135,7 +135,7 @@ export const POST = async (req, res) => {
       
 
     if (saerchedMusic.length !== 0) {
-      // console.log(saerchedMusic)
+     
       return NextResponse.json(saerchedMusic, { status: 200 });
     }
 
@@ -146,7 +146,7 @@ export const POST = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
+   
     return NextResponse.json({ message: error }, { status: 500 });
   }
 };

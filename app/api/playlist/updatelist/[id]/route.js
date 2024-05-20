@@ -128,7 +128,7 @@ export const DELETE = async (req, { params }) => {
       });
     }
   } catch (error) {
-    console.log(error);
+   
     
     return NextResponse.json("internal server error", { status: 500 });
   }

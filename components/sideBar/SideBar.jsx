@@ -193,7 +193,7 @@ export default function SideBar({children}){
                 href={`${data?.user?"/user/library":"/dashboard/login"}`}
                 className={cn(
                   "flex flex-col justify-center items-center gap-y-2 text-stone-400 hover:text-white",
-                  pathName === "/collection/tracks" && "text-white"
+                  pathName === "/user/library" && "text-white"
                 )}
               >
                 <IoLibrary size={24} />

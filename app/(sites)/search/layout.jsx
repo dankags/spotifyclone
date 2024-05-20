@@ -61,7 +61,7 @@ const SearchLayout = ({ children }) => {
           const res=await serverRes.json()
           setSearchValue(res);
           await dispatch(setSearchinputValue(null)) 
-          console.log(res);
+          
           return
         }
         
@@ -270,7 +270,7 @@ const PlayBtn = ({item,classname}) => {
   const { music, playing, playlist } = useAppSelector(
     (state) => state.currentmusic
   );
-  console.log(item);
+  
   
   const handlePlay = async () => {
     //if not logged in redirects you to sign in page || log in page
@@ -282,11 +282,11 @@ const PlayBtn = ({item,classname}) => {
     if (!item) {return}
     const dataUrl = item.slug === "song" ? `/album/${item.searched.id}` : `/${item.slug}/${item.searched.id}`
     if (dataUrl === playingUrl) {
-      console.log(dataUrl,playingUrl);
+      
       
       await dispatch(setPlayMusicValue(!playing))
       setIsPlay(!isPlay)
-      console.log("this playing url logic runs");
+    
       
       return
     }
