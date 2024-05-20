@@ -38,7 +38,7 @@ const UserLibrary = () => {
     return (
       <ScrollArea className="w-full h-full">
         <div className="w-full relative ">
-          <div className="sticky top-0 flex flex-col gap-3">
+          <div className="sticky top-0 flex flex-col gap-3 z-10">
             <div className="w-full h-[16%] pr-2 flex items-center justify-between ">
               <div className={"w-full flex items-center justify-center "}>
                 <div
